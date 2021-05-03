@@ -20,3 +20,14 @@ jobs:
     - name: Run test
       run: |
         npm test
+  fake_deploy:
+      name: Fake deploy with metrics
+      runs-on: ubuntu-latest
+      needs: [test]
+      steps:
+        - name: Quickmetrics
+          uses: screendriver/quickmetrics-action@v1
+          with:
+            name: fake-deploy
+            api-key: ${{ secrets.QUICKMETRICS_API_KEY }}
+          
