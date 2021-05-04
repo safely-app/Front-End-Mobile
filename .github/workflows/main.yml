@@ -46,4 +46,10 @@ jobs:
           with:
             name: fake-deploy-mobile
             api-key: ${{ secrets.QUICKMETRICS_API_KEY }}
+        - name: Discord notification
+          env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          uses: Ilshidur/action-discord@master
+          with:
+            args: 'Mobile has been deployed.'
           
