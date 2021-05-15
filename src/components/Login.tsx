@@ -7,11 +7,13 @@ interface Props {
   onLogin: (username: string, password: string) => void;
   goToRegister: () => void;
   username: string;
+  emailError: string;
   password: string;
+  passwordError: string;
   isLoading: boolean;
 }
 
-export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister}) => {
+export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError}) => {
 
   const display = isLoading ? "none" : undefined;
 
@@ -23,31 +25,37 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
           onChangeText={setUsername}
           value={username}
           placeholder="Username"
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={setPassword}
-          value={password}
-          secureTextEntry={true}
-          placeholder="Password"
-        />
-        <TouchableOpacity
-          style={[styles.button, {display}]}
-          onPress={() => {onLogin(username, password)}}
-        >
-            <Text>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, {display}]}
-          onPress={() => {goToRegister()}}
-        >
-            <Text>Register</Text>
-        </TouchableOpacity>
-        <ActivityIndicator 
-          size="large"
-          color="#0000ff"
-          animating={isLoading}
-        />
+      />
+      <Text style={{color: 'red', marginLeft: 12}}>
+        {emailError ? emailError[0] : ''}
+      </Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setPassword}
+        value={password}
+        secureTextEntry={true}
+        placeholder="Password"
+      />
+      <Text style={{color: 'red', marginLeft: 12}}>
+        {passwordError ? passwordError[0] : ''}
+      </Text>
+      <TouchableOpacity
+        style={[styles.button, {display}]}
+        onPress={() => {onLogin(username, password)}}
+      >
+        <Text>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, {display}]}
+        onPress={() => {goToRegister()}}
+      >
+        <Text>Register</Text>
+      </TouchableOpacity>
+      <ActivityIndicator
+        size="large"
+        color="#0000ff"
+        animating={isLoading}
+      />
     </SafeAreaView>
   );
 };
