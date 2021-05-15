@@ -5,31 +5,11 @@ import {RootState} from '../redux/reducers';
 import {LoginComponent} from '../components/index';
 import {useNavigation} from '@react-navigation/native';
 import {validate} from 'validate.js';
+import {constraints} from '../utils/constraints';
+import { FastField } from 'formik';
 // import {StackNavigationProp} from '@react-navigation/stack';
 // import {RootStackParamList} from '../redux/types';
 // type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
-
-export const constraints = {
-  emailAddress: {
-    presence: {
-      allowEmpty: false,
-      message: "^Please enter an email address"
-    },
-    email: {
-      message: "^Please enter a valid email address"
-    }
-  },
-  password: {
-    presence: {
-      allowEmpty: false,
-      message: "^Please enter a password"
-    },
-    length: {
-      minimum: 4,
-      message: 'Your password is too short'
-    }
-  }
-};
 
 interface Props {
   // navigation: ProfileScreenNavigationProp,
@@ -56,9 +36,8 @@ export const Login: React.FC<Props> = () => {
 
 
     if (!emailErrorMsg || !passwordErrorMsg) {
-      // dispatch(loginUser({username, password}));
-      // setisLoading(true);
-      console.log('Success Validation !');
+      setisLoading(true);
+      dispatch(loginUser({username, password}));
     }
   }
 
@@ -69,11 +48,12 @@ export const Login: React.FC<Props> = () => {
   useEffect(() => {
     if (credentials.token) {
       console.warn('Logged In');
+      setisLoading(false);
     } else if (credentials.token === undefined) {
       console.warn('Wrong credentials, try again.');
       setisLoading(false);
     }
-  })
+  });
 
   return (
     <>
