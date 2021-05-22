@@ -3,9 +3,10 @@ import {useSelector, useDispatch} from 'react-redux';
 import {registerUser} from '../redux/actions/user.actions';
 import {RootState} from '../redux/reducers';
 import {RegisterComponent} from '../components/index';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../routes';
+import {resetFetch} from '../redux/actions/common.actions';
+// import {StackNavigationProp} from '@react-navigation/stack';
+// import {useNavigation} from '@react-navigation/native';
+// import {RootStackParamList} from '../routes';
 import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 
@@ -15,7 +16,7 @@ interface Props {
 
 export const Register: React.FC<Props> = () => {
   const dispatch = useDispatch();
-  const {credentials} = useSelector((state: RootState) => state.user);
+  const {error} = useSelector((state: RootState) => state.common);
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [password, setPassword] = useState('');
@@ -23,7 +24,6 @@ export const Register: React.FC<Props> = () => {
   const [passwordError, setPasswordError] = useState('');
   const [email, setEmail] = useState('');
   const [isLoading, setisLoading] = useState(false);
-  const navigation = useNavigation();
 
   function onRegister(username: string, password: string, email: string) {
     const validateObj = validate({username: username, emailAddress: email, password: password}, constraints);
@@ -43,14 +43,12 @@ export const Register: React.FC<Props> = () => {
   }
 
   useEffect(() => {
-    if (credentials.token) {
-      console.warn('Registered');
-      setisLoading(false);
-    } else if (credentials.token === undefined) {
-      console.warn('Wrong credentials, try again.');
+    if (Object.keys(error).length > 0) {
+      console.warn(error);
+      dispatch(resetFetch());
       setisLoading(false);
     }
-  });
+  })
 
   return (
     <>

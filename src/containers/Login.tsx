@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {loginUser} from '../redux/actions/user.actions';
+import {resetFetch} from '../redux/actions/common.actions';
 import {RootState} from '../redux/reducers';
 import {LoginComponent} from '../components/index';
 import {useNavigation} from '@react-navigation/native';
 import {validate} from 'validate.js';
 import {constraints} from '../utils/constraints';
-import { FastField } from 'formik';
 // import {StackNavigationProp} from '@react-navigation/stack';
-// import {RootStackParamList} from '../redux/types';
+// import {RootStackParamList} from '../routes';
 // type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 
 export const Login: React.FC<Props> = () => {
   const dispatch = useDispatch();
-  const {credentials} = useSelector((state: RootState) => state.user);
+  const {error} = useSelector((state: RootState) => state.common);
   const [username, setUsername] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -46,14 +46,12 @@ export const Login: React.FC<Props> = () => {
   }
 
   useEffect(() => {
-    if (credentials.token) {
-      console.warn('Logged In');
-      setisLoading(false);
-    } else if (credentials.token === undefined) {
-      console.warn('Wrong credentials, try again.');
+    if (Object.keys(error).length > 0) {
+      console.warn(error);
+      dispatch(resetFetch());
       setisLoading(false);
     }
-  });
+  })
 
   return (
     <>
