@@ -1,7 +1,7 @@
 import {ActionCreator} from 'redux';
 import {request, failure} from './common.actions';
 import {userServices} from '../../services';
-import {SET_AUTHENTICATED, UserLoginInterface, UserActionTypes, UserRegisterInterface, USER_CREATED} from '../types';
+import {SET_AUTHENTICATED, UserLoginInterface, UserActionTypes, UserRegisterInterface, USER_CREATED, SET_UNAUTHENTICATED} from '../types';
 
 const loginUserSuccess: ActionCreator<UserActionTypes> = (
   credentials: UserLoginInterface,
@@ -11,6 +11,10 @@ const loginUserSuccess: ActionCreator<UserActionTypes> = (
 
 const registerUserSuccess: ActionCreator<UserActionTypes> = (credentials: UserRegisterInterface) => {
   return {type: USER_CREATED, payload: credentials};
+};
+
+export const logoutUser = () => {
+  return {type: SET_UNAUTHENTICATED}
 };
 
 export function loginUser({
@@ -25,6 +29,7 @@ export function loginUser({
     return userServices
       .login({username, password})
       .then(response => {
+        console.log(response);
         dispatch(loginUserSuccess(response));
       })
       .catch(error => {

@@ -1,4 +1,4 @@
-import {SET_AUTHENTICATED, USER_CREATED, UserLoginInterface, UserActionTypes} from '../types';
+import {SET_AUTHENTICATED, USER_CREATED, UserLoginInterface, UserActionTypes, SET_UNAUTHENTICATED} from '../types';
 
 interface UserState {
   credentials: UserLoginInterface;
@@ -38,6 +38,17 @@ export function userReducer(
           token: action.payload.token,
         }
       };
+    }
+    case SET_UNAUTHENTICATED: {
+      return {
+        ...state,
+        credentials: {
+          ...state.credentials,
+          _id: '',
+          email: '',
+          token: ''
+        }
+      }
     }
     default:
       return state;
