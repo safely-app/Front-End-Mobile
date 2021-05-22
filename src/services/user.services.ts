@@ -18,7 +18,7 @@ async function login({
       return res.data;
     })
     .catch(err => {
-      return err;
+      throw err;
     });
   return response;
 }
@@ -34,7 +34,7 @@ async function register({username, password, email}: {username: string, password
     return res.data;
   })
   .catch(err => {
-    return err;
+    throw err;
   });
   return response;
 }
