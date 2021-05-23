@@ -1,9 +1,6 @@
 name: Test
 
-on:
-  push:
-    branches:
-      - main
+on: push
 
 jobs:
   test:
@@ -22,6 +19,7 @@ jobs:
         npm test
   build-android:
     runs-on: ubuntu-latest
+    needs: test
     steps: 
       - uses: actions/checkout@v2
       - name: Install npm dependencies
@@ -37,13 +35,8 @@ jobs:
         with:
           name: app-release.apk
           path: android/app/build/outputs/apk/release/
-  fake_deploy:
-      name: Fake deploy with metrics
-      runs-on: ubuntu-latest
-      steps:
-        - name: Quickmetrics
-          uses: screendriver/quickmetrics-action@v1
-          with:
-            name: fake-deploy-mobile
-            api-key: ${{ secrets.QUICKMETRICS_API_KEY }}
-          
+      - name: Quickmetrics
+        uses: screendriver/quickmetrics-action@v1
+        with:
+          name: build-mobile
+          api-key: ${{ secrets.QUICKMETRICS_API_KEY }}
