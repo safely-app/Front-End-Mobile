@@ -1,6 +1,6 @@
 name: Test
 
-on: [push]
+on: [pull_request]
 
 jobs:
   test:
@@ -41,6 +41,11 @@ jobs:
         - name: Quickmetrics
           uses: screendriver/quickmetrics-action@v1
           with:
-            name: fake-deploy-mobile
+            name: pull-request-mobile
             api-key: ${{ secrets.QUICKMETRICS_API_KEY }}
-          
+        - name: Discord notification
+          env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          uses: Ilshidur/action-discord@master
+          with:
+            args: 'New pull request for mobile.'
