@@ -48,4 +48,4 @@ jobs:
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           uses: Ilshidur/action-discord@master
           with:
-            args: 'New pull request for mobile.'
+            args: 'Pull request mobile: You have something new to review !'
