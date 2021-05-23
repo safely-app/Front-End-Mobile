@@ -39,5 +39,4 @@ jobs:
         uses: screendriver/quickmetrics-action@v1
         with:
           name: build-mobile
-          api-key: ${{ secrets.QUICKMETRICS_API_KEY }}
-          
+          api-key: ${{ secrets.QUICKMETRICS_API_KEY }}   
