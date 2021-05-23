@@ -13,9 +13,12 @@ interface Props {
   email: string;
   emailError: string;
   isLoading: boolean;
+  checkEmail: (email: string) => void;
+  checkPassword: (password: string) => void;
+  checkUsername: (username: string) => void;
 }
 
-export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, setEmail, username, password, email, onRegister, emailError, passwordError, usernameError, isLoading}) => {
+export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, setEmail, username, password, email, onRegister, emailError, passwordError, usernameError, isLoading, checkEmail, checkPassword, checkUsername}) => {
   return (
     <SafeAreaView style={styles.content}>
       <Text style={styles.title}>Register</Text>
@@ -23,7 +26,7 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
         placeholder="Username"
         style={styles.input}
         value={username}
-        onChangeText={setUsername}
+        onChangeText={(text) => {setUsername(text); checkUsername(text);}}
       />
       <Text style={{color: 'red', marginLeft: 12}}>
         {usernameError ? usernameError[0] : ''}
@@ -32,7 +35,7 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
         style={styles.input}
         placeholder="Email"
         value={email}
-        onChangeText={setEmail}
+        onChangeText={(text) => {setEmail(text); checkEmail(text);}}
       />
       <Text style={{color: 'red', marginLeft: 12}}>
         {emailError ? emailError[0] : ''}
@@ -41,7 +44,7 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
         style={styles.input}
         placeholder="Password"
         value={password}
-        onChangeText={setPassword}
+        onChangeText={(text) => {setPassword(text); checkPassword(text);}}
         secureTextEntry={true}
       />
       <Text style={{color: 'red', marginLeft: 12}}>

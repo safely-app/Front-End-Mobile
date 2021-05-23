@@ -5,15 +5,17 @@ interface Props {
   setUsername: (username: string) => void;
   setPassword: (password: string) => void;
   onLogin: (username: string, password: string) => void;
-  goToRegister: () => void;
-  username: string;
-  emailError: string;
-  password: string;
-  passwordError: string;
   isLoading: boolean;
+  goToRegister: () => void;
+  emailError: string;
+  passwordError: string;
+  username: string;
+  password: string;
+  checkEmail: (email: string) => void;
+  checkPassword: (password: string) => void;
 }
 
-export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError}) => {
+export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError, checkEmail, checkPassword}) => {
 
   const display = isLoading ? "none" : undefined;
 
@@ -22,7 +24,7 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
       <Text style={styles.title}>Login</Text>
       <TextInput
           style={styles.input}
-          onChangeText={setUsername}
+          onChangeText={(text) => {setUsername(text); checkEmail(text);}}
           value={username}
           placeholder="Username"
       />
@@ -31,7 +33,7 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
       </Text>
       <TextInput
         style={styles.input}
-        onChangeText={setPassword}
+        onChangeText={(password) => {setPassword(password); checkPassword(password)}}
         value={password}
         secureTextEntry={true}
         placeholder="Password"

@@ -21,7 +21,7 @@ export const constraints = {
       },
       length: {
         minimum: 3,
-        message: 'Your password is too short'
+        message: '^Your password is too short'
       }
     }
   };

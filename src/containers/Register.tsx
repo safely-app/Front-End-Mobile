@@ -36,9 +36,42 @@ export const Register: React.FC<Props> = () => {
     setPasswordError(passwordErrorMsg);
 
 
-    if (!usernameErrorMsg || !emailErrorMsg || !passwordErrorMsg) {
+    if (!usernameErrorMsg && !emailErrorMsg && !passwordErrorMsg) {
       setisLoading(true);
       dispatch(registerUser({username: username, email: email, password: password}));
+    }
+  }
+
+  function checkEmail(email: string) {
+    const validateObj = validate({emailAddress: email}, constraints);
+    const emailErrorMsg = validateObj ? validateObj['emailAddress'] : undefined;
+
+    if (emailErrorMsg !== undefined) {
+      setEmailError(emailErrorMsg);
+    } else {
+      setEmailError('');
+    }
+  }
+
+  function checkPassword(password: string) {
+    const validateObj = validate({password: password}, constraints);
+    const passwordErrorMsg = validateObj ? validateObj['password'] : undefined;
+
+    if (passwordErrorMsg !== undefined) {
+      setPasswordError(passwordErrorMsg);
+    } else {
+      setPasswordError('');
+    }
+  }
+
+  function checkUsername(username: string) {
+    const validateObj = validate({username: username}, constraints);
+    const usernameErrorMsg = validateObj ? validateObj['username'] : undefined;
+
+    if (usernameErrorMsg !== undefined) {
+      setUsernameError(usernameErrorMsg);
+    } else {
+      setUsernameError('');
     }
   }
 
@@ -64,6 +97,9 @@ export const Register: React.FC<Props> = () => {
         emailError={emailError}
         passwordError={passwordError}
         isLoading={isLoading}
+        checkEmail={checkEmail}
+        checkPassword={checkPassword}
+        checkUsername={checkUsername}
       />
     </>
   );

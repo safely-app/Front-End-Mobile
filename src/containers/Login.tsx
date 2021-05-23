@@ -35,7 +35,7 @@ export const Login: React.FC<Props> = () => {
     setPasswordError(passwordErrorMsg);
 
 
-    if (!emailErrorMsg || !passwordErrorMsg) {
+    if (!emailErrorMsg && !passwordErrorMsg) {
       setisLoading(true);
       dispatch(loginUser({username, password}));
     }
@@ -43,6 +43,28 @@ export const Login: React.FC<Props> = () => {
 
   function goToRegister() {
     navigation.navigate('Register');
+  }
+
+  function checkEmail(email: string) {
+    const validateObj = validate({emailAddress: email}, constraints);
+    const emailErrorMsg = validateObj ? validateObj['emailAddress'] : undefined;
+
+    if (emailErrorMsg !== undefined) {
+      setEmailError(emailErrorMsg);
+    } else {
+      setEmailError('');
+    }
+  }
+
+  function checkPassword(password: string) {
+    const validateObj = validate({password: password}, constraints);
+    const passwordErrorMsg = validateObj ? validateObj['password'] : undefined;
+
+    if (passwordErrorMsg !== undefined) {
+      setPasswordError(passwordErrorMsg);
+    } else {
+      setPasswordError('');
+    }
   }
 
   useEffect(() => {
@@ -65,6 +87,8 @@ export const Login: React.FC<Props> = () => {
         goToRegister={goToRegister}
         emailError={emailError}
         passwordError={passwordError}
+        checkEmail={checkEmail}
+        checkPassword={checkPassword}
       />
     </>
   );
