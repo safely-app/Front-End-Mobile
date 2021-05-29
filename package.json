@@ -10,20 +10,30 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.15.2",
+    "@react-native-async-storage/async-storage": "^1.15.4",
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.4",
+    "@types/react-native-dotenv": "^0.2.0",
+    "@types/redux-persist": "^4.3.1",
     "axios": "^0.21.1",
+    "formik": "^2.2.6",
+    "native-base": "^2.15.2",
     "react": "17.0.1",
+    "react-devtools": "^4.12.4",
     "react-native": "0.64.0",
+    "react-native-axios": "^0.17.1",
+    "react-native-dotenv": "^2.5.5",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-reanimated": "^2.1.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.1.1",
     "react-redux": "^7.2.3",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
+    "validate.js": "^0.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

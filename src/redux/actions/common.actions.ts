@@ -1,5 +1,5 @@
 import {ActionCreator} from 'redux';
-import {FETCH_REQUEST, FETCH_FAILURE, FetchActionTypes} from '../types';
+import {FETCH_REQUEST, FETCH_FAILURE, FetchActionTypes, FETCH_RESET} from '../types';
 
 export const request: ActionCreator<FetchActionTypes> = () => {
   return {type: FETCH_REQUEST};
@@ -7,4 +7,8 @@ export const request: ActionCreator<FetchActionTypes> = () => {
 
 export const failure: ActionCreator<FetchActionTypes> = (error: any) => {
   return {type: FETCH_FAILURE, payload: error};
+};
+
+export const resetFetch = () => {
+  return {type: FETCH_RESET}
 };
