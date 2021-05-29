@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'react-native-axios';
 import {UserLoginInterface, UserRegisterInterface} from '../redux/types';
+import {API_URL} from "@env";
 
 async function login({
   username,
@@ -10,8 +11,8 @@ async function login({
   password: string;
 }): Promise<UserLoginInterface> {
   const response = await axios
-    .post('https://api.safely-app.fr/login', {
-      email: username,
+    .post(API_URL + '/login', {
+      email: username, 
       password,
     })
     .then(res => {
@@ -25,7 +26,7 @@ async function login({
 
 async function register({username, password, email}: {username: string, password: string, email: string}): Promise<UserRegisterInterface> {
   const response = await axios
-  .post('https://api.safely-app.fr/register', {
+  .post(API_URL + '/register', {
     username: username,
     email: email,
     password: password,
