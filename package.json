@@ -76,7 +76,8 @@
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
     },
-    "modulePaths": ["<rootDir>/types", "<rootDir>/src"],
+    "modulePaths": ["<rootDir>"],
+    "moduleDirectories": ["node_modules", "src", "types"],
     "transformIgnorePatterns": [],
     "moduleFileExtensions": [
       "ts",
