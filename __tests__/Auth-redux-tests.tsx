@@ -15,7 +15,7 @@ it('should login the user successfully', () => {
         const actions = store.getActions();
         const expectedActions = [
             { type: FETCH_REQUEST },
-            { type: SET_AUTHENTICATED, payload: {_id: actions[1].payload._id, email: "hgv@test.fr", token: actions[1].payload.token}}
+            { type: SET_AUTHENTICATED, payload: {_id: actions[1].payload._id, email: "testsafelymobile@gmail.com", token: actions[1].payload.token}}
         ]
         expect(actions).toEqual(expectedActions);
     })
