@@ -29,6 +29,7 @@
     "react-native-reanimated": "^2.1.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.2.0",
+    "react-native-vector-icons": "^7.1.0",
     "react-redux": "^7.2.3",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
@@ -76,8 +77,14 @@
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
     },
-    "modulePaths": ["<rootDir>"],
-    "moduleDirectories": ["node_modules", "src", "types"],
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src",
+      "types"
+    ],
     "transformIgnorePatterns": [],
     "moduleFileExtensions": [
       "ts",
