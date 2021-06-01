@@ -8,6 +8,7 @@ import {constraints} from '../utils/constraints';
 import { FastField } from 'formik';
 import {validate} from 'validate.js';
 import { Linking, Platform } from 'react-native';
+import {userServices} from '../services';
 // import {RootStackParamList} from '../redux/types';
 // type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -30,10 +31,19 @@ export const ForgotPWD: React.FC<Props> = () => {
 
     setEmailError(emailErrorMsg);
 
-
     if (!emailErrorMsg) {
-      // ForgotPWD
-      navigation.goBack();
+      setisLoading(true);
+      userServices.forgotPassword(email)
+      .then(res => {
+        console.log(res);
+        setisLoading(false);
+        navigation.goBack();
+      })
+      .catch(err => {
+        setisLoading(false);
+        console.warn('Email doesn\'t exist');
+        console.log(err);
+      })
     }
   }
 

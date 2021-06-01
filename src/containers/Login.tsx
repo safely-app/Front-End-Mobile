@@ -81,7 +81,7 @@ export const Login: React.FC<Props> = () => {
           let userId: string;
           let token: string;
           let returnValue = extractTokenAndUserId(event.url);
-          
+
           userId = returnValue.userId;
           token = returnValue.token;
           navigation.navigate('ChangePWD', {id: userId, token: token});
@@ -92,8 +92,10 @@ export const Login: React.FC<Props> = () => {
         if (url && url.length > 0) {
           let userId: string;
           let token: string;
+          console.log('URL');
+          console.log(url);
           let returnValue = extractTokenAndUserId(url);
-          
+
           userId = returnValue.userId;
           token = returnValue.token;
           navigation.navigate('ChangePWD', {id: userId, token: token});

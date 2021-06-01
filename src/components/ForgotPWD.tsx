@@ -33,6 +33,11 @@ export const ForgotPWDComponent: React.FC<Props> = ({checkEmail, onSubmit, setEm
             >
                 <Text>Submit</Text>
             </TouchableOpacity>
+            <ActivityIndicator
+              size="large"
+              color="#0000ff"
+              animating={isLoading}
+            />
         </SafeAreaView>
     )
 }

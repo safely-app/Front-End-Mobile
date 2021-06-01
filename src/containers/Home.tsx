@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {logoutUser} from '../redux/actions/user.actions';
+import {logoutUser, getUser} from '../redux/actions/user.actions';
 import {RootState} from '../redux/reducers';
 import {HomeComponent} from '../components/index';
 import {useNavigation} from '@react-navigation/native';
@@ -16,8 +16,9 @@ interface Props {
 
 
 export const Home: React.FC<Props> = () => {
- 
+
   const dispatch = useDispatch();
+  const {credentials} = useSelector((state: RootState) => state.user);
 
 
     const logout = async () => {
@@ -29,10 +30,15 @@ export const Home: React.FC<Props> = () => {
         }
     }
 
+    useEffect(() => {
+      if (credentials.username.length <= 0)
+        dispatch(getUser(credentials._id, credentials.token));
+    }, []);
   return (
     <>
       <HomeComponent
         logout={logout}
+        username={credentials.username}
       />
     </>
   );

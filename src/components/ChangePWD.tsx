@@ -33,6 +33,11 @@ export const ChangePWDComponent: React.FC<Props> = ({password, setPassword, chec
             >
                 <Text>Submit</Text>
             </TouchableOpacity>
+            <ActivityIndicator
+              size="large"
+              color="#0000ff"
+              animating={isLoading}
+            />
         </SafeAreaView>
     )
 }
