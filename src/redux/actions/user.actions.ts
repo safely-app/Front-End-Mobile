@@ -1,7 +1,7 @@
 import {ActionCreator} from 'redux';
 import {request, failure} from './common.actions';
 import {userServices} from '../../services';
-import {SET_AUTHENTICATED, UserLoginInterface, UserActionTypes, UserRegisterInterface, USER_CREATED, SET_UNAUTHENTICATED} from '../types';
+import {SET_AUTHENTICATED, UserLoginInterface, UserActionTypes, UserRegisterInterface, USER_CREATED, SET_UNAUTHENTICATED, UserGetInformation, GET_USER_INFOS} from '../types';
 
 const loginUserSuccess: ActionCreator<UserActionTypes> = (
   credentials: UserLoginInterface,
@@ -15,6 +15,10 @@ const registerUserSuccess: ActionCreator<UserActionTypes> = (credentials: UserRe
 
 export const logoutUser = () => {
   return {type: SET_UNAUTHENTICATED}
+};
+
+export const getUserAction: ActionCreator<UserActionTypes> = (credentials: UserGetInformation) => {
+  return {type: GET_USER_INFOS, payload: credentials}
 };
 
 export function loginUser({
@@ -50,4 +54,18 @@ export function registerUser({username, email, password}: {username: string, ema
         dispatch(failure('Register failed'));
       });
   };
+}
+
+export function getUser(userId: string, token: string) {
+  return dispatch => {
+    dispatch(request());
+    return userServices
+    .getUser(token, userId)
+    .then(response => {
+      dispatch(getUserAction(response));
+    })
+    .catch(error => {
+      dispatch(failure('Cannot get user info'));
+    })
+  }
 }

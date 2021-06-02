@@ -13,9 +13,10 @@ interface Props {
   password: string;
   checkEmail: (email: string) => void;
   checkPassword: (password: string) => void;
+  goToForgetPWD: () => void;
 }
 
-export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError, checkEmail, checkPassword}) => {
+export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError, checkEmail, checkPassword, goToForgetPWD}) => {
 
   const display = isLoading ? "none" : undefined;
 
@@ -27,6 +28,7 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
           onChangeText={(text) => {setUsername(text); checkEmail(text);}}
           value={username}
           placeholder="Username"
+          placeholderTextColor="gray"
       />
       <Text style={{color: 'red', marginLeft: 12}}>
         {emailError ? emailError[0] : ''}
@@ -37,8 +39,12 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
         value={password}
         secureTextEntry={true}
         placeholder="Password"
+        placeholderTextColor="gray"
       />
-      <Text style={{color: 'red', marginLeft: 12}}>
+      <Text style={{color: 'blue', marginLeft: 12}} onPress={() => {goToForgetPWD()}}>
+        Forgot password ?
+      </Text>
+      <Text style={{color: 'red', margin: 12}}>
         {passwordError ? passwordError[0] : ''}
       </Text>
       <TouchableOpacity
@@ -69,7 +75,7 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     borderRadius: 10,
-    borderWidth: 2
+    color: 'black'
   },
   button: {
     height: 40,

@@ -1,7 +1,7 @@
-import {SET_AUTHENTICATED, USER_CREATED, UserLoginInterface, UserActionTypes, SET_UNAUTHENTICATED} from '../types';
+import {SET_AUTHENTICATED, USER_CREATED, UserLoginInterface, UserActionTypes, SET_UNAUTHENTICATED, GET_USER_INFOS, UserInterface} from '../types';
 
 interface UserState {
-  credentials: UserLoginInterface;
+  credentials: UserInterface;
 }
 
 const initialState: UserState = {
@@ -9,6 +9,7 @@ const initialState: UserState = {
     _id: null,
     email: null,
     token: null,
+    username: null,
   },
 };
 
@@ -46,7 +47,20 @@ export function userReducer(
           ...state.credentials,
           _id: '',
           email: '',
-          token: ''
+          token: '',
+          username: ''
+        }
+      }
+    }
+    case GET_USER_INFOS: {
+      console.log('reducer');
+      console.log(action.payload);
+      return {
+        ...state,
+        credentials: {
+          ...state.credentials,
+          email: action.payload.email,
+          username: action.payload.username,
         }
       }
     }

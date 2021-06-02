@@ -7,6 +7,8 @@ import {LoginComponent} from '../components/index';
 import {useNavigation} from '@react-navigation/native';
 import {validate} from 'validate.js';
 import {constraints} from '../utils/constraints';
+import {Linking, Platform} from 'react-native';
+import {extractTokenAndUserId} from '../utils/utils';
 // import {StackNavigationProp} from '@react-navigation/stack';
 // import {RootStackParamList} from '../routes';
 // type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -45,6 +47,10 @@ export const Login: React.FC<Props> = () => {
     navigation.navigate('Register');
   }
 
+  function goToForgetPWD() {
+    navigation.navigate('ForgotPWD');
+  }
+
   function checkEmail(email: string) {
     const validateObj = validate({emailAddress: email}, constraints);
     const emailErrorMsg = validateObj ? validateObj['emailAddress'] : undefined;
@@ -68,6 +74,35 @@ export const Login: React.FC<Props> = () => {
   }
 
   useEffect(() => {
+    if (Platform.OS === "android") {
+      // Detect deep-linking for when the app is already launched
+      Linking.addEventListener('url', (event) => {
+        if (event.url && event.url.length > 0) {
+          let userId: string;
+          let token: string;
+          let returnValue = extractTokenAndUserId(event.url);
+
+          userId = returnValue.userId;
+          token = returnValue.token;
+          navigation.navigate('ChangePWD', {id: userId, token: token});
+        }
+      });
+      // Detect deep-linking for when the app not yet launched
+      Linking.getInitialURL().then((url) => {
+        if (url && url.length > 0) {
+          let userId: string;
+          let token: string;
+          let returnValue = extractTokenAndUserId(url);
+
+          userId = returnValue.userId;
+          token = returnValue.token;
+          navigation.navigate('ChangePWD', {id: userId, token: token});
+        }
+      });
+    }
+  }, [])
+
+  useEffect(() => {
     if (Object.keys(error).length > 0) {
       console.warn(error);
       dispatch(resetFetch());
@@ -89,6 +124,7 @@ export const Login: React.FC<Props> = () => {
         passwordError={passwordError}
         checkEmail={checkEmail}
         checkPassword={checkPassword}
+        goToForgetPWD={goToForgetPWD}
       />
     </>
   );
