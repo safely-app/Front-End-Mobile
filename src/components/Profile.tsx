@@ -28,6 +28,7 @@ export const ProfileComponent: React.FC<Props> = ({email, setEmail, checkEmail, 
               onChangeText={(text) => {setEmail(text); checkEmail(text);}}
               value={email}
               placeholder="Email"
+              placeholderTextColor="gray"
             />
             <Text style={{color: 'red', marginLeft: 12}}>
               {emailError ? emailError[0] : ''}
@@ -38,6 +39,7 @@ export const ProfileComponent: React.FC<Props> = ({email, setEmail, checkEmail, 
               value={password}
               secureTextEntry={true}
               placeholder="Password"
+              placeholderTextColor="gray"
             />
             <Text style={{color: 'red', margin: 12}}>
               {passwordError ? passwordError : ''}

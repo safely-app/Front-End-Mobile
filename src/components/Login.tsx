@@ -28,6 +28,7 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
           onChangeText={(text) => {setUsername(text); checkEmail(text);}}
           value={username}
           placeholder="Username"
+          placeholderTextColor="gray"
       />
       <Text style={{color: 'red', marginLeft: 12}}>
         {emailError ? emailError[0] : ''}
@@ -38,6 +39,7 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
         value={password}
         secureTextEntry={true}
         placeholder="Password"
+        placeholderTextColor="gray"
       />
       <Text style={{color: 'blue', marginLeft: 12}} onPress={() => {goToForgetPWD()}}>
         Forgot password ?
@@ -73,6 +75,7 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     borderRadius: 10,
+    color: 'black'
   },
   button: {
     height: 40,

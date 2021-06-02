@@ -23,6 +23,7 @@ export const ForgotPWDComponent: React.FC<Props> = ({checkEmail, onSubmit, setEm
                 onChangeText={(text) => {setEmail(text); checkEmail(text)}}
                 value={email}
                 placeholder="Email"
+                placeholderTextColor="gray"
             />
             <Text style={{color: 'red', marginLeft: 12}}>
                 {emailError ? emailError[0] : ''}

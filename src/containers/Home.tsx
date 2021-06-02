@@ -31,7 +31,8 @@ export const Home: React.FC<Props> = () => {
     }
 
     useEffect(() => {
-      if (credentials.username.length <= 0)
+      console.log(credentials);
+      if (!credentials.username || (credentials.username && credentials.username.length <= 0))
         dispatch(getUser(credentials._id, credentials.token));
     }, []);
   return (

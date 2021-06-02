@@ -23,6 +23,7 @@ export const ChangePWDComponent: React.FC<Props> = ({password, setPassword, chec
                 value={password}
                 placeholder="Password"
                 secureTextEntry={true}
+                placeholderTextColor="gray"
             />
             <Text style={{color: 'red', marginLeft: 12}}>
                 {passwordError ? passwordError[0] : ''}

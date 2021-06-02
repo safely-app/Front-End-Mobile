@@ -92,8 +92,6 @@ export const Login: React.FC<Props> = () => {
         if (url && url.length > 0) {
           let userId: string;
           let token: string;
-          console.log('URL');
-          console.log(url);
           let returnValue = extractTokenAndUserId(url);
 
           userId = returnValue.userId;
