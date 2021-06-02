@@ -13,6 +13,12 @@ jobs:
       uses: actions/checkout@v2
     - uses: actions/setup-node@master
 
+    - name: Create env file
+      run: |
+        touch .env
+        echo API_URL=${{ secrets.API_URL }} >> .env
+        cat .env
+
     - name: Install node modules
       run: |
         npm install
@@ -31,7 +37,7 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease
+          API_URL=${{ secrets.API_URL }} ./gradlew assembleRelease
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
