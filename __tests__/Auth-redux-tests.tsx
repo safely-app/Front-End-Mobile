@@ -8,7 +8,7 @@ const mockStore = configureStore(middlewares);
 
 it('should login the user successfully', () => {
     const store = mockStore({});
-    const credentials = {username: "testsafelymobile@gmail.com", password: "12345"};
+    const credentials = {username: "testsafelymobile@gmail.com", password: "1234"};
 
     return store.dispatch<any>(loginUser(credentials))
     .then(() => {
