@@ -20,6 +20,7 @@ export const ChangePWD: React.FC<Props> = () => {
     const route = useRoute();
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [confirmPassword, setconfirmPassword] = useState('');
     const [isLoading, setisLoading] = useState(false);
     const navigation = useNavigation();
 
@@ -29,7 +30,7 @@ export const ChangePWD: React.FC<Props> = () => {
 
         setPasswordError(passwordErrorMsg);
 
-        if (!passwordErrorMsg) {
+        if (!passwordErrorMsg && (confirmPassword === password)) {
           const userId = route.params.id;
           const token = route.params.token;
 
@@ -56,7 +57,7 @@ export const ChangePWD: React.FC<Props> = () => {
         } else {
           setPasswordError('');
         }
-      }
+    }
 
   return (
     <>
@@ -67,6 +68,8 @@ export const ChangePWD: React.FC<Props> = () => {
         isLoading={isLoading}
         checkPassword={checkPassword}
         onSubmit={onSubmit}
+        confirmPassword={confirmPassword}
+        setconfirmPassword={setconfirmPassword}
       />
     </>
   );

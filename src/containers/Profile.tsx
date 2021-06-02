@@ -6,9 +6,10 @@ import {useNavigation} from '@react-navigation/native';
 import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 import {userServices} from '../services';
-import {resetFetch, getUser} from '../redux/actions';
+import {resetFetch, getUser, logoutUser} from '../redux/actions';
 // import {RootStackParamList} from '../redux/types';
 // type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Props {
   // navigation: ProfileScreenNavigationProp,
@@ -24,6 +25,7 @@ export const Profile: React.FC<Props> = () => {
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [confirmPassword, setconfirmPassword] = useState('');
   const [isLoading, setisLoading] = useState(false);
 
   function onSubmit(email: string, password: string) {
@@ -33,6 +35,14 @@ export const Profile: React.FC<Props> = () => {
 
     setEmailError(emailErrorMsg);
     setPasswordError(passwordErrorMsg);
+
+    if (password.length > 0 && confirmPassword !== password) {
+      return;
+    }
+
+    if (password.length <= 0 && confirmPassword.length > 0) {
+      return;
+    }
 
     if (!emailErrorMsg && !passwordErrorMsg) {
       setisLoading(true);
@@ -79,6 +89,17 @@ export const Profile: React.FC<Props> = () => {
     }
   })
 
+  function onDelete() {
+    userServices.deleteUser(credentials.token, credentials._id)
+    .then((res) => {
+      dispatch(logoutUser());
+      AsyncStorage.removeItem('persist:root');
+    })
+    .catch(err => {
+      console.warn('Delete failed');
+    })
+  }
+
   return (
     <>
       <ProfileComponent
@@ -92,6 +113,9 @@ export const Profile: React.FC<Props> = () => {
         passwordError={passwordError}
         checkPassword={checkPassword}
         setPassword={setPassword}
+        onDelete={onDelete}
+        confirmPassword={confirmPassword}
+        setconfirmPassword={setconfirmPassword}
       />
     </>
   );

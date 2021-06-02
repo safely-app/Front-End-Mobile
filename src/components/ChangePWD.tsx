@@ -8,9 +8,11 @@ interface Props {
     isLoading: boolean;
     checkPassword: (password: string) => void;
     onSubmit: (password: string) => void;
+    confirmPassword: string;
+    setconfirmPassword: (password: string) => void;
 }
 
-export const ChangePWDComponent: React.FC<Props> = ({password, setPassword, checkPassword, passwordError, isLoading, onSubmit}) => {
+export const ChangePWDComponent: React.FC<Props> = ({password, setPassword, checkPassword, passwordError, isLoading, onSubmit, confirmPassword, setconfirmPassword}) => {
 
     const display = isLoading ? "none" : undefined;
 
@@ -28,6 +30,14 @@ export const ChangePWDComponent: React.FC<Props> = ({password, setPassword, chec
             <Text style={{color: 'red', marginLeft: 12}}>
                 {passwordError ? passwordError[0] : ''}
             </Text>
+            <TextInput 
+                style={styles.input}
+                onChangeText={(text) => {setconfirmPassword(text);}}
+                value={confirmPassword}
+                placeholder="Confirm password"
+                secureTextEntry={true}
+                placeholderTextColor="gray"
+            />
             <TouchableOpacity
                 style={[styles.button, {display}]}
                 onPress={() => {onSubmit(password)}}
@@ -50,6 +60,7 @@ const styles = StyleSheet.create({
       margin: 12,
       borderWidth: 1,
       borderRadius: 10,
+      color: 'black'
     },
     button: {
       height: 40,

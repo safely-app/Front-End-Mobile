@@ -77,11 +77,18 @@ async function getUser(token: string, userId: string): Promise<UserGetInformatio
   return response.data;
 }
 
+async function deleteUser(token: string, userId: string): Promise<void> {
+  const response = await axios.delete(API_URL + `/user/${userId}`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
+
+  return response;
+}
+
 export const userServices = {
   login,
   register,
   forgotPassword,
   changePassword,
   updateUser,
-  getUser
+  getUser,
+  deleteUser
 };

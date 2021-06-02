@@ -12,9 +12,12 @@ interface Props {
     checkPassword: (password: string) => void;
     setPassword: (password: string) => void;
     password: string;
+    onDelete: () => void;
+    confirmPassword: string;
+    setconfirmPassword: (password: string) => void;
 }
 
-export const ProfileComponent: React.FC<Props> = ({email, setEmail, checkEmail, isLoading, onSubmit, emailError, passwordError, checkPassword, setPassword, password}) => {
+export const ProfileComponent: React.FC<Props> = ({email, setEmail, checkEmail, isLoading, onSubmit, emailError, passwordError, checkPassword, setPassword, password, onDelete, confirmPassword, setconfirmPassword}) => {
 
   const display = isLoading ? "none" : undefined;
 
@@ -41,14 +44,28 @@ export const ProfileComponent: React.FC<Props> = ({email, setEmail, checkEmail, 
               placeholder="Password"
               placeholderTextColor="gray"
             />
-            <Text style={{color: 'red', margin: 12}}>
+            <Text style={{color: 'red', margin: 12, marginBottom: 0, marginTop: 0}}>
               {passwordError ? passwordError : ''}
             </Text>
+            <TextInput 
+                style={[styles.input, {}]}
+                onChangeText={(text) => {setconfirmPassword(text);}}
+                value={confirmPassword}
+                placeholder="Confirm password"
+                secureTextEntry={true}
+                placeholderTextColor="gray"
+            />
             <TouchableOpacity
               style={[styles.button, {display}]}
               onPress={() => {onSubmit(email, password)}}
             >
               <Text>Submit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, {display, backgroundColor: 'red', borderWidth: 0}]}
+              onPress={() => {onDelete()}}
+            >
+              <Text>Delete your account</Text>
             </TouchableOpacity>
             <ActivityIndicator
               size="large"
@@ -67,6 +84,7 @@ const styles = StyleSheet.create({
       margin: 12,
       borderWidth: 1,
       borderRadius: 10,
+      color: 'black'
     },
     button: {
       height: 40,
