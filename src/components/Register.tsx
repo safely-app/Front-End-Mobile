@@ -24,16 +24,18 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
       <Text style={styles.title}>Register</Text>
       <TextInput 
         placeholder="Username"
+        placeholderTextColor="gray"
         style={styles.input}
         value={username}
         onChangeText={(text) => {setUsername(text); checkUsername(text);}}
-      />
+        />
       <Text style={{color: 'red', marginLeft: 12}}>
         {usernameError ? usernameError[0] : ''}
       </Text>
       <TextInput 
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor="gray"
         value={email}
         onChangeText={(text) => {setEmail(text); checkEmail(text);}}
       />
@@ -43,6 +45,7 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
       <TextInput 
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor="gray"
         value={password}
         onChangeText={(text) => {setPassword(text); checkPassword(text);}}
         secureTextEntry={true}
@@ -72,7 +75,8 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     borderRadius: 10,
-    borderWidth: 2
+    borderWidth: 2,
+    color: 'black'
   },
   button: {
     height: 40,
