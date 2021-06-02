@@ -20,6 +20,7 @@ export const Register: React.FC<Props> = () => {
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setconfirmPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [email, setEmail] = useState('');
@@ -35,8 +36,11 @@ export const Register: React.FC<Props> = () => {
     setEmailError(emailErrorMsg);
     setPasswordError(passwordErrorMsg);
 
+    if (password.length <= 0 && confirmPassword.length > 0) {
+      return;
+    }
 
-    if (!usernameErrorMsg && !emailErrorMsg && !passwordErrorMsg) {
+    if (!usernameErrorMsg && !emailErrorMsg && !passwordErrorMsg && (confirmPassword === password)) {
       setisLoading(true);
       dispatch(registerUser({username: username, email: email, password: password}));
     }
@@ -100,6 +104,8 @@ export const Register: React.FC<Props> = () => {
         checkEmail={checkEmail}
         checkPassword={checkPassword}
         checkUsername={checkUsername}
+        confirmPassword={confirmPassword}
+        setconfirmPassword={setconfirmPassword}
       />
     </>
   );

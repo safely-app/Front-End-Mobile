@@ -16,9 +16,11 @@ interface Props {
   checkEmail: (email: string) => void;
   checkPassword: (password: string) => void;
   checkUsername: (username: string) => void;
+  confirmPassword: string;
+  setconfirmPassword: (password: string) => void;
 }
 
-export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, setEmail, username, password, email, onRegister, emailError, passwordError, usernameError, isLoading, checkEmail, checkPassword, checkUsername}) => {
+export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, setEmail, username, password, email, onRegister, emailError, passwordError, usernameError, isLoading, checkEmail, checkPassword, checkUsername, confirmPassword, setconfirmPassword}) => {
   return (
     <SafeAreaView style={styles.content}>
       <Text style={styles.title}>Register</Text>
@@ -53,6 +55,14 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
       <Text style={{color: 'red', marginLeft: 12}}>
         {passwordError ? passwordError[0] : ''}
       </Text>
+      <TextInput 
+        style={[styles.input, {}]}
+        onChangeText={(text) => {setconfirmPassword(text);}}
+        value={confirmPassword}
+        placeholder="Confirm password"
+        secureTextEntry={true}
+        placeholderTextColor="gray"
+      />
       <TouchableOpacity
         style={styles.button}
         onPress={() => {onRegister(username, password, email)}}
