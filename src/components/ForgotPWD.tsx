@@ -1,6 +1,5 @@
-import { ErrorMessage } from 'formik';
 import React from 'react';
-import {SafeAreaView, StyleSheet, TextInput, View, TouchableOpacity, Text, ActivityIndicator} from 'react-native';
+import {SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text, ActivityIndicator} from 'react-native';
 
 interface Props {
     checkEmail: (email: string) => void;

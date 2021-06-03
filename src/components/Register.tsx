@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, TouchableOpacity, TextInput, Text, View, ActivityIndicator} from 'react-native';
+import {SafeAreaView, StyleSheet, TouchableOpacity, TextInput, Text, ActivityIndicator} from 'react-native';
 
 interface Props {
   setUsername: (username: string) => void;

@@ -1,6 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'react-native-axios';
-import {UserLoginInterface, UserRegisterInterface, UserGetInformation, UserInterface} from '../redux/types';
+import {UserInterface} from '../redux/types';
 import {API_URL} from "@env";
 
 async function login({

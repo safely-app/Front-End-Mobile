@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, TextInput, View, TouchableOpacity, Text, ActivityIndicator, Button} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, Button} from 'react-native';
 
 interface Props {
     logout: () => void;

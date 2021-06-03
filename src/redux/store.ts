@@ -1,9 +1,9 @@
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import {rootReducer, RootState} from './reducers';
+import {rootReducer} from './reducers';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER} from 'redux-persist';
+import { persistStore, persistReducer} from 'redux-persist';
 
 const persistConfig = {
     key: 'root',

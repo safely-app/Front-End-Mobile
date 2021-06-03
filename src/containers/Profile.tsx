@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../redux/reducers';
 import {ProfileComponent} from '../components/index';
-import {useNavigation} from '@react-navigation/native';
 import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 import {userServices} from '../services';
@@ -59,8 +58,6 @@ export const Profile: React.FC<Props> = () => {
   }
 
   function checkPassword(password: string) {
-    const passwordErrorMsg = undefined;
-
     if (password.length < 3) {
       setPasswordError("Your password is too short");
     } else {
@@ -80,8 +77,6 @@ export const Profile: React.FC<Props> = () => {
   }
 
   useEffect(() => {
-    // console.log(credentials);
-    // setEmail(credentials.email);
     if (Object.keys(error).length > 0) {
       dispatch(resetFetch());
       setisLoading(false);
