@@ -41,7 +41,6 @@ export const ForgotPWD: React.FC<Props> = () => {
       })
       .catch(err => {
         setisLoading(false);
-        console.warn('Email doesn\'t exist');
         console.log(err);
       })
     }

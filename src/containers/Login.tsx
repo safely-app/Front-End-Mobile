@@ -104,7 +104,6 @@ export const Login: React.FC<Props> = () => {
 
   useEffect(() => {
     if (Object.keys(error).length > 0) {
-      console.warn(error);
       dispatch(resetFetch());
       setisLoading(false);
     }

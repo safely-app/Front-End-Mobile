@@ -83,7 +83,6 @@ export const Profile: React.FC<Props> = () => {
     // console.log(credentials);
     // setEmail(credentials.email);
     if (Object.keys(error).length > 0) {
-      console.warn(error);
       dispatch(resetFetch());
       setisLoading(false);
     }
@@ -96,7 +95,7 @@ export const Profile: React.FC<Props> = () => {
       AsyncStorage.removeItem('persist:root');
     })
     .catch(err => {
-      console.warn('Delete failed');
+      console.log(err);
     })
   }
 
