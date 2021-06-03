@@ -1,4 +1,4 @@
-import {SET_AUTHENTICATED, USER_CREATED, UserLoginInterface, UserActionTypes, SET_UNAUTHENTICATED, GET_USER, UserInterface} from '../types';
+import {SET_AUTHENTICATED, USER_CREATED, UserActionTypes, SET_UNAUTHENTICATED, GET_USER, UserInterface} from '../types';
 
 interface UserState {
   credentials: UserInterface;

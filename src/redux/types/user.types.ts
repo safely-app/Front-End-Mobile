@@ -27,4 +27,8 @@ interface UserGetInfosAction {
   payload: UserInterface;
 }
 
-export type UserActionTypes = UserLoginAction | UserRegisterAction | UserGetInfosAction;
+interface UserLogout {
+  type: typeof SET_UNAUTHENTICATED;
+}
+
+export type UserActionTypes = UserLoginAction | UserRegisterAction | UserGetInfosAction | UserLogout;
