@@ -1,15 +1,16 @@
 import {ActionCreator} from 'redux';
 import {request, failure} from './common.actions';
 import {userServices} from '../../services';
-import {SET_AUTHENTICATED, UserLoginInterface, UserActionTypes, UserRegisterInterface, USER_CREATED, SET_UNAUTHENTICATED, UserGetInformation, GET_USER_INFOS} from '../types';
+import {SET_AUTHENTICATED, UserActionTypes, USER_CREATED, SET_UNAUTHENTICATED, GET_USER, UserInterface} from '../types';
+import { Dispatch } from 'redux';
 
 const loginUserSuccess: ActionCreator<UserActionTypes> = (
-  credentials: UserLoginInterface,
+  credentials: UserInterface,
 ) => {
   return {type: SET_AUTHENTICATED, payload: credentials};
 };
 
-const registerUserSuccess: ActionCreator<UserActionTypes> = (credentials: UserRegisterInterface) => {
+const registerUserSuccess: ActionCreator<UserActionTypes> = (credentials: UserInterface) => {
   return {type: USER_CREATED, payload: credentials};
 };
 
@@ -17,8 +18,8 @@ export const logoutUser = () => {
   return {type: SET_UNAUTHENTICATED}
 };
 
-export const getUserAction: ActionCreator<UserActionTypes> = (credentials: UserGetInformation) => {
-  return {type: GET_USER_INFOS, payload: credentials}
+export const getUserAction: ActionCreator<UserActionTypes> = (credentials: UserInterface) => {
+  return {type: GET_USER, payload: credentials}
 };
 
 export function loginUser({
@@ -28,12 +29,11 @@ export function loginUser({
   username: string;
   password: string;
 }) {
-  return dispatch => {
+  return (dispatch: Dispatch) => {
     dispatch(request());
     return userServices
       .login({username, password})
       .then(response => {
-        console.log(response);
         dispatch(loginUserSuccess(response));
       })
       .catch(error => {
@@ -43,7 +43,7 @@ export function loginUser({
 }
 
 export function registerUser({username, email, password}: {username: string, email: string, password: string}) {
-  return dispatch => {
+  return (dispatch: Dispatch) => {
     dispatch(request());
     return userServices
       .register({username, password, email})
@@ -57,7 +57,7 @@ export function registerUser({username, email, password}: {username: string, ema
 }
 
 export function getUser(userId: string, token: string) {
-  return dispatch => {
+  return (dispatch: Dispatch) => {
     dispatch(request());
     return userServices
     .getUser(token, userId)
