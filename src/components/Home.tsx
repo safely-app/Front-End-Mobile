@@ -1,5 +1,6 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text, Button} from 'react-native';
+import {SafeAreaView, Text, Button} from 'react-native';
+import {styles} from '../styles'
 
 interface Props {
     logout: () => void;
@@ -23,33 +24,3 @@ export const HomeComponent: React.FC<Props> = ({logout, username}) => {
         </SafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      width: '65%',
-      margin: 12,
-      borderWidth: 1,
-      borderRadius: 10,
-    },
-    button: {
-      height: 40,
-      width: '35%',
-      margin: 12,
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 10,
-      borderColor: 'black',
-      borderWidth: 2
-    },
-    content: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center'
-    },
-    title: {
-      margin: 12,
-      fontSize: 30,
-      fontWeight: 'bold'
-    }
-  });
