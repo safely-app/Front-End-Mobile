@@ -12,14 +12,13 @@ interface Props {
   // navigation: ProfileScreenNavigationProp,
 }
 
-
 export const ChangePWD: React.FC<Props> = () => {
 
     const route = useRoute();
-    const [password, setPassword] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-    const [confirmPassword, setconfirmPassword] = useState('');
-    const [isLoading, setisLoading] = useState(false);
+    const [password, setPassword] = useState<string>('');
+    const [passwordError, setPasswordError] = useState<string>('');
+    const [confirmPassword, setconfirmPassword] = useState<string>('');
+    const [isLoading, setisLoading] = useState<boolean>(false);
     const navigation = useNavigation();
 
     function onSubmit(password: string) {
@@ -40,13 +39,12 @@ export const ChangePWD: React.FC<Props> = () => {
           })
           .catch(err => {
             setisLoading(false);
-            console.log('error');
             console.log(err);
           });
         }
       }
 
-    function checkPassword(email: string) {
+    function checkPassword(password: string) {
         const validateObj = validate({password: password}, constraints);
         const passwordErrorMsg = validateObj ? validateObj['password'] : undefined;
 

@@ -15,8 +15,8 @@ interface Props {
 export const ForgotPWD: React.FC<Props> = () => {
 
   const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [isLoading, setisLoading] = useState(false);
+  const [emailError, setEmailError] = useState<string>('');
+  const [isLoading, setisLoading] = useState<boolean>(false);
   const navigation = useNavigation();
 
 

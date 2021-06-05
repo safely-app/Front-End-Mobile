@@ -17,14 +17,14 @@ interface Props {
 export const Register: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const {error} = useSelector((state: RootState) => state.common);
-  const [username, setUsername] = useState('');
-  const [usernameError, setUsernameError] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setconfirmPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [email, setEmail] = useState('');
-  const [isLoading, setisLoading] = useState(false);
+  const [username, setUsername] = useState<string>('');
+  const [usernameError, setUsernameError] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setconfirmPassword] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [isLoading, setisLoading] = useState<boolean>(false);
 
   function onRegister(username: string, password: string, email: string) {
     const validateObj = validate({username: username, emailAddress: email, password: password}, constraints);
