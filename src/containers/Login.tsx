@@ -27,7 +27,6 @@ export const Login: React.FC<Props> = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setisLoading] = useState(false);
   const navigation = useNavigation();
-  const [triggerDeepLink, setTriggerDeepLink] = useState(false);
 
   function onLogin(username: string, password: string) {
     const validateObj = validate({emailAddress: username, password: password}, constraints);
