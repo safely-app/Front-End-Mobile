@@ -12,6 +12,7 @@ import {extractTokenAndUserId} from '../utils/utils';
 // import {StackNavigationProp} from '@react-navigation/stack';
 // import {RootStackParamList} from '../routes';
 // type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
+import {AppState} from '../utils/isAppLaunched';
 
 interface Props {
   // navigation: ProfileScreenNavigationProp,
@@ -26,7 +27,7 @@ export const Login: React.FC<Props> = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setisLoading] = useState(false);
   const navigation = useNavigation();
-
+  const [triggerDeepLink, setTriggerDeepLink] = useState(false);
 
   function onLogin(username: string, password: string) {
     const validateObj = validate({emailAddress: username, password: password}, constraints);
@@ -75,7 +76,7 @@ export const Login: React.FC<Props> = () => {
 
   useEffect(() => {
     if (Platform.OS === "android") {
-      // Detect deep-linking for when the app is already launched
+      // Detect deep-linking when the app is already launched
       Linking.addEventListener('url', (event) => {
         if (event.url && event.url.length > 0) {
           let userId: string;
@@ -87,19 +88,23 @@ export const Login: React.FC<Props> = () => {
           navigation.navigate('ChangePWD', {id: userId, token: token});
         }
       });
-      // Detect deep-linking for when the app not yet launched
-      Linking.getInitialURL().then((url) => {
-        if (url && url.length > 0) {
-          let userId: string;
-          let token: string;
-          let returnValue = extractTokenAndUserId(url);
+      if (!AppState.isAppLaunched) {
+        // Detect deep-linking when the app not yet launched
+        Linking.getInitialURL().then((url) => {
+          if (url) {
+            let userId: string;
+            let token: string;
+            let returnValue = extractTokenAndUserId(url);
 
-          userId = returnValue.userId;
-          token = returnValue.token;
-          navigation.navigate('ChangePWD', {id: userId, token: token});
-        }
-      });
+            userId = returnValue.userId;
+            token = returnValue.token;
+            navigation.navigate('ChangePWD', {id: userId, token: token});
+          }
+        });
+      }
     }
+    AppState.isAppLaunched = true;
+    Object.freeze(AppState);
   }, [])
 
   useEffect(() => {
