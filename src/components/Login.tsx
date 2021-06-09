@@ -1,6 +1,7 @@
 import React from 'react';
-import {SafeAreaView, TextInput, TouchableOpacity, Text, ActivityIndicator} from 'react-native';
-import {styles} from '../styles'
+import {SafeAreaView, TextInput, TouchableOpacity, Text as OldText, ActivityIndicator} from 'react-native';
+import {colorPlaceholder, stylesLogin} from '../styles'
+import { Text } from '../components';
 
 interface Props {
   setUsername: (username: string) => void;
@@ -22,43 +23,67 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
   const display = isLoading ? "none" : undefined;
 
   return (
-    <SafeAreaView style={styles.content}>
-      <Text style={styles.title}>Login</Text>
+    <SafeAreaView style={stylesLogin.loginContent}>
+      <Text style={{marginBottom: 25}} type="h1" color="blue" size="xxl">Safely</Text>
       <TextInput
-          style={styles.input}
+          style={stylesLogin.textInput}
           onChangeText={(text) => {setUsername(text); checkEmail(text);}}
           value={username}
           placeholder="Username"
-          placeholderTextColor="gray"
+          placeholderTextColor={colorPlaceholder}
       />
-      <Text style={{color: 'red', marginLeft: 12}}>
-        {emailError ? emailError[0] : ''}
+      <Text
+        style={{marginTop: 5, marginBottom: 5}}
+        type="body"
+        color="red"
+        size="s"
+      >
+        {emailError ? emailError[0] : ""}
       </Text>
       <TextInput
-        style={styles.input}
+        style={stylesLogin.textInput}
         onChangeText={(password) => {setPassword(password); checkPassword(password)}}
         value={password}
         secureTextEntry={true}
         placeholder="Password"
-        placeholderTextColor="gray"
+        placeholderTextColor={colorPlaceholder}
       />
-      <Text style={{color: 'blue', marginLeft: 12}} onPress={() => {goToForgetPWD()}}>
+      <Text
+        style={{}}
+        type="body"
+        color="blue"
+        size="s"
+        onPress={() => {goToForgetPWD()}}
+      >
         Forgot password ?
       </Text>
-      <Text style={{color: 'red', margin: 12}}>
+      <Text
+        style={{marginTop: 5, marginBottom: 5}}
+        type="body"
+        color="red"
+        size="s"
+      >
         {passwordError ? passwordError[0] : ''}
       </Text>
       <TouchableOpacity
-        style={[styles.button, {display}]}
+        style={[stylesLogin.button, {display, marginBottom: 17}]}
         onPress={() => {onLogin(username, password)}}
       >
-        <Text>Login</Text>
+        <OldText style={{color: 'white', fontFamily: "WorkSans-Bold", fontSize: 15}}>Login</OldText>
       </TouchableOpacity>
+
+      <SafeAreaView style={{flexDirection: 'row', alignItems: 'center', marginLeft: 27}}>
+        <SafeAreaView style={[stylesLogin.horizontalLine, {marginRight: 30}]} />
+        <OldText style={{fontSize: 11}}>Or</OldText>
+        <SafeAreaView style={[stylesLogin.horizontalLine, {marginLeft: 30}]} />
+      </SafeAreaView>
+
+
       <TouchableOpacity
-        style={[styles.button, {display}]}
+        style={[stylesLogin.button, {display, marginTop: 17}]}
         onPress={() => {goToRegister()}}
       >
-        <Text>Register</Text>
+        <OldText style={{color: 'white', fontFamily: "WorkSans-Bold", fontSize: 15}}>Register</OldText>
       </TouchableOpacity>
       <ActivityIndicator
         size="large"
