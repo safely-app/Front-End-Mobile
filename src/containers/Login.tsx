@@ -9,6 +9,7 @@ import {validate} from 'validate.js';
 import {constraints} from '../utils/constraints';
 import {Linking, Platform} from 'react-native';
 import {extractTokenAndUserId} from '../utils/utils';
+import Toast from 'react-native-toast-message';
 // import {StackNavigationProp} from '@react-navigation/stack';
 // import {RootStackParamList} from '../routes';
 // type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -106,6 +107,11 @@ export const Login: React.FC<Props> = () => {
     if (Object.keys(error).length > 0) {
       dispatch(resetFetch());
       setisLoading(false);
+      Toast.show({
+        type: 'error',
+        text1: "🚨 Login Failed 🚨",
+        text2: "Try again please."
+      });
     }
   })
 
