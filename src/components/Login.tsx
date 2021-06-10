@@ -1,7 +1,6 @@
 import React from 'react';
-import {SafeAreaView, TextInput, TouchableOpacity, Text as OldText, ActivityIndicator} from 'react-native';
-import {colorPlaceholder, stylesLogin} from '../styles'
-import { Text } from '../components';
+import {SafeAreaView, ActivityIndicator} from 'react-native';
+import { Text, Button, HLine, TextInput } from '../components';
 
 interface Props {
   setUsername: (username: string) => void;
@@ -20,36 +19,51 @@ interface Props {
 
 export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError, checkEmail, checkPassword, goToForgetPWD}) => {
 
-  const display = isLoading ? "none" : undefined;
+  const display = isLoading ? {opacity: 0, height: 0} : undefined;
+  const hideObj = {opacity: 0, height: 0}
 
   return (
-    <SafeAreaView style={stylesLogin.loginContent}>
+    <SafeAreaView
+      style={{flex: 1, flexDirection: "column", justifyContent: "flex-end", marginBottom: 80, marginLeft: 30}}
+    >
       <Text style={{marginBottom: 25}} type="h1" color="blue" size="xxl">Safely</Text>
-      <TextInput
-          style={stylesLogin.textInput}
-          onChangeText={(text) => {setUsername(text); checkEmail(text);}}
-          value={username}
-          placeholder="Username"
-          placeholderTextColor={colorPlaceholder}
+      <TextInput 
+        style={{ fontFamily: 'WorkSans-Regular', paddingLeft: 10, marginBottom: 5 }}
+        placeholder="Username"
+        width="80%"
+        type="roundedTextInput"
+        bgColor="lightBlue"
+        value={username}
+        onChangeText={(text) => {setUsername(text); checkEmail(text)}}
       />
       <Text
-        style={{marginTop: 5, marginBottom: 5}}
+        style={{height: !emailError ? 0 : 20}}
         type="body"
         color="red"
         size="s"
       >
         {emailError ? emailError[0] : ""}
       </Text>
-      <TextInput
-        style={stylesLogin.textInput}
-        onChangeText={(password) => {setPassword(password); checkPassword(password)}}
+      <TextInput 
+        style={{ fontFamily: 'WorkSans-Regular', paddingLeft: 10, marginTop: 5, marginBottom: 5 }}
+        placeholder="Password"
+        width="80%"
+        type="roundedTextInput"
+        bgColor="lightBlue"
         value={password}
         secureTextEntry={true}
-        placeholder="Password"
-        placeholderTextColor={colorPlaceholder}
+        onChangeText={(text) => {setPassword(text); checkPassword(text)}}
       />
       <Text
-        style={{}}
+        style={{height: !passwordError ? 0 : 20}}
+        type="body"
+        color="red"
+        size="s"
+      >
+        {passwordError ? passwordError[0] : ''}
+      </Text>
+      <Text
+        style={{marginTop: 10, marginBottom: 10}}
         type="body"
         color="blue"
         size="s"
@@ -57,38 +71,40 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
       >
         Forgot password ?
       </Text>
-      <Text
-        style={{marginTop: 5, marginBottom: 5}}
-        type="body"
-        color="red"
-        size="s"
-      >
-        {passwordError ? passwordError[0] : ''}
-      </Text>
-      <TouchableOpacity
-        style={[stylesLogin.button, {display, marginBottom: 17}]}
+
+      <Button
+        style={{alignItems: "center", justifyContent: "center", ...display}}
+        width="80%"
+        type="roundedButton"
+        bgColor="blue"
         onPress={() => {onLogin(username, password)}}
       >
-        <OldText style={{color: 'white', fontFamily: "WorkSans-Bold", fontSize: 15}}>Login</OldText>
-      </TouchableOpacity>
+        <Text style={{}} type="body" color="white" size="m">Login</Text>
+      </Button>
 
-      <SafeAreaView style={{flexDirection: 'row', alignItems: 'center', marginLeft: 27}}>
-        <SafeAreaView style={[stylesLogin.horizontalLine, {marginRight: 30}]} />
-        <OldText style={{fontSize: 11}}>Or</OldText>
-        <SafeAreaView style={[stylesLogin.horizontalLine, {marginLeft: 30}]} />
+      <SafeAreaView 
+        style={{flexDirection: 'row', alignItems: "center", margin: 12, marginLeft: 57, ...display}}
+      >
+        <HLine style={{marginRight: 10}} width="25%" lineColor="blue" borderWidth={0.8} />
+        <Text style={{}} type="body" color="blue" size="s">Or</Text>
+        <HLine style={{marginLeft: 10}} width="25%" lineColor="blue" borderWidth={0.8} />
       </SafeAreaView>
 
-
-      <TouchableOpacity
-        style={[stylesLogin.button, {display, marginTop: 17}]}
+      <Button
+        style={{alignItems: "center", justifyContent: "center", ...display}}
+        width="80%"
+        type="roundedButton"
+        bgColor="blue"
         onPress={() => {goToRegister()}}
       >
-        <OldText style={{color: 'white', fontFamily: "WorkSans-Bold", fontSize: 15}}>Register</OldText>
-      </TouchableOpacity>
+        <Text style={{}} type="body" color="white" size="m">Register</Text>
+      </Button>
+
       <ActivityIndicator
-        size="large"
-        color="#0000ff"
-        animating={isLoading}
+          style={{marginRight: 50}}
+          size="large"
+          color="#0000ff"
+          animating={isLoading}
       />
     </SafeAreaView>
   );
