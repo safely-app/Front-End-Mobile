@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text as RNText, View } from 'react-native';
+import { Text as RNText } from 'react-native';
 import { theme } from '../../styles';
 
 interface Props extends React.ComponentProps<typeof RNText> {
