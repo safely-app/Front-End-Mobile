@@ -8,6 +8,7 @@ const paletteLight: typeof colors = {
   orange: "EF4F4F",
   yellow: "#FFF3AA",
   steelBlue: "#4179B5",
+  lightBlue: "#D6E0EC",
   red: "#EF4F4F"
 }
 
@@ -38,35 +39,24 @@ export const theme = {
     body: {
       fontFamily: "WorkSans-Regular",
     }
+  },
+  typeButton: {
+    roundedButton: {
+      height: 40,
+      borderRadius: 20,
+      // alignItems: "center",
+      // justifyContent: 'center'
+    }
+  },
+  typeTextInput: {
+    roundedTextInput: {
+      height: 40,
+      borderRadius: 7
+    }
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export const colorPlaceholder: string = "#16304A";
-
+// THIS WILL BE DELETED SOON
 export const styles = StyleSheet.create({
     input: {
       height: 40,
@@ -97,45 +87,4 @@ export const styles = StyleSheet.create({
       fontFamily: 'WorkSans-Bold'
     }
 });
-
-export const stylesLogin = StyleSheet.create({
-  safelyTitle: {
-    // margin: 30,
-    marginBottom: 25,
-    fontSize: 80,
-    fontFamily: 'WorkSans-Bold',
-    color: "#16304A"
-  },
-  textInput: {
-    height: 35,
-    width: '80%',
-    // marginLeft: 30,
-    borderRadius: 7,
-    color: "#16304A",
-    backgroundColor: "#D6E0EC",
-    paddingLeft: 10
-  },
-  loginContent: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    // alignItems: 'center',
-    marginBottom: 70,
-    marginLeft: 30
-  },
-  button: {
-    height: 40,
-    width: '80%',
-    // margin: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-    backgroundColor: "#16304A",
-    color: "white"
-  },
-  horizontalLine: {
-    borderBottomColor: "#16304A",
-    borderBottomWidth: 0.8,
-    width: '25%',
-  }
-});
+// THIS WILL BE DELETED SOON

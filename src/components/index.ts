@@ -5,3 +5,6 @@ export * from './Profile';
 export * from './ForgotPWD';
 export * from './ChangePWD';
 export * from './generic/Text';
+export * from './generic/Button';
+export * from './generic/HorizontalLine';
+export * from './generic/TextInput';

@@ -1,0 +1,25 @@
+import React from 'react';
+import { TextInput as RNTextInput } from 'react-native';
+import { theme } from '../../styles';
+
+interface Props extends React.ComponentProps<typeof RNTextInput> {
+    style: {[key: string]: string | number};
+    width: string;
+    type: keyof typeof theme.typeTextInput;
+    bgColor: keyof typeof theme.colors;
+}
+
+export const TextInput: React.FC<Props> = ({style, width, type, bgColor, ...rest}) => {
+    return (
+        <RNTextInput
+            style={{
+                width: width,
+                backgroundColor: theme.colors[bgColor],
+                ...theme.typeTextInput[type],
+                ...style
+            }}
+            {...rest}
+        />
+
+    )
+}
