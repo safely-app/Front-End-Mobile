@@ -1,13 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {loginUser} from '../redux/actions/user.actions';
-import {RootState} from '../redux/reducers';
+import React, {useState} from 'react';
 import {ForgotPWDComponent} from '../components/index';
 import {useNavigation} from '@react-navigation/native';
 import {constraints} from '../utils/constraints';
-import { FastField } from 'formik';
 import {validate} from 'validate.js';
-import { Linking, Platform } from 'react-native';
 import {userServices} from '../services';
 // import {RootStackParamList} from '../redux/types';
 // type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -20,8 +15,8 @@ interface Props {
 export const ForgotPWD: React.FC<Props> = () => {
 
   const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [isLoading, setisLoading] = useState(false);
+  const [emailError, setEmailError] = useState<string>('');
+  const [isLoading, setisLoading] = useState<boolean>(false);
   const navigation = useNavigation();
 
 
@@ -35,13 +30,11 @@ export const ForgotPWD: React.FC<Props> = () => {
       setisLoading(true);
       userServices.forgotPassword(email)
       .then(res => {
-        console.log(res);
         setisLoading(false);
         navigation.goBack();
       })
       .catch(err => {
         setisLoading(false);
-        console.warn('Email doesn\'t exist');
         console.log(err);
       })
     }

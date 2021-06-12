@@ -2,17 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../redux/reducers';
 import {ProfileComponent} from '../components/index';
-import {useNavigation} from '@react-navigation/native';
 import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 import {userServices} from '../services';
 import {resetFetch, getUser, logoutUser} from '../redux/actions';
-// import {RootStackParamList} from '../redux/types';
-// type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Props {
-  // navigation: ProfileScreenNavigationProp,
 }
 
 
@@ -21,12 +17,12 @@ export const Profile: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const {error} = useSelector((state: RootState) => state.common);
   const {credentials} = useSelector((state: RootState) => state.user);
-  const [email, setEmail] = useState(credentials.email);
-  const [emailError, setEmailError] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPassword, setconfirmPassword] = useState('');
-  const [isLoading, setisLoading] = useState(false);
+  const [email, setEmail] = useState<string>(credentials.email);
+  const [emailError, setEmailError] = useState<string | undefined>(undefined);
+  const [password, setPassword] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string | undefined>(undefined);
+  const [confirmPassword, setconfirmPassword] = useState<string>('');
+  const [isLoading, setisLoading] = useState<boolean>(false);
 
   function onSubmit(email: string, password: string) {
     const validateObj = validate({emailAddress: email}, constraints);
@@ -48,7 +44,6 @@ export const Profile: React.FC<Props> = () => {
       setisLoading(true);
       userServices.updateUser(credentials._id, credentials.token, email, password)
       .then(res => {
-        // setisLoading(false);
         dispatch(getUser(credentials._id, credentials.token));
       })
       .catch(err => {
@@ -59,8 +54,6 @@ export const Profile: React.FC<Props> = () => {
   }
 
   function checkPassword(password: string) {
-    const passwordErrorMsg = undefined;
-
     if (password.length < 3) {
       setPasswordError("Your password is too short");
     } else {
@@ -80,10 +73,7 @@ export const Profile: React.FC<Props> = () => {
   }
 
   useEffect(() => {
-    // console.log(credentials);
-    // setEmail(credentials.email);
     if (Object.keys(error).length > 0) {
-      console.warn(error);
       dispatch(resetFetch());
       setisLoading(false);
     }
@@ -96,7 +86,7 @@ export const Profile: React.FC<Props> = () => {
       AsyncStorage.removeItem('persist:root');
     })
     .catch(err => {
-      console.warn('Delete failed');
+      console.log(err);
     })
   }
 

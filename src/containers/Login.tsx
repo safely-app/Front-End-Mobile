@@ -20,11 +20,11 @@ interface Props {
 export const Login: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const {error} = useSelector((state: RootState) => state.common);
-  const [username, setUsername] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setisLoading] = useState(false);
+  const [username, setUsername] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isLoading, setisLoading] = useState<boolean>(false);
   const navigation = useNavigation();
 
 
@@ -104,7 +104,6 @@ export const Login: React.FC<Props> = () => {
 
   useEffect(() => {
     if (Object.keys(error).length > 0) {
-      console.warn(error);
       dispatch(resetFetch());
       setisLoading(false);
     }

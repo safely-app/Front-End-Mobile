@@ -1,5 +1,6 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, TouchableOpacity, TextInput, Text, View, ActivityIndicator} from 'react-native';
+import {SafeAreaView, TouchableOpacity, TextInput, Text, ActivityIndicator} from 'react-native';
+import {styles} from '../styles'
 
 interface Props {
   setUsername: (username: string) => void;
@@ -77,35 +78,3 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    width: '65%',
-    margin: 12,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderWidth: 2,
-    color: 'black'
-  },
-  button: {
-    height: 40,
-    width: '35%',
-    margin: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 10,
-    borderColor: 'black',
-    borderWidth: 2
-  },
-  content: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center'
-  },
-  title: {
-    margin: 12,
-    fontSize: 30,
-    fontWeight: 'bold'
-  }
-});
