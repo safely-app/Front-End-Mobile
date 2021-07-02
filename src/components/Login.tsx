@@ -1,6 +1,6 @@
 import React from 'react';
-import {SafeAreaView, TextInput, TouchableOpacity, Text, ActivityIndicator} from 'react-native';
-import {styles} from '../styles'
+import {SafeAreaView, ActivityIndicator} from 'react-native';
+import { Text, Button, HLine, TextInput } from '../components';
 
 interface Props {
   setUsername: (username: string) => void;
@@ -19,51 +19,92 @@ interface Props {
 
 export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError, checkEmail, checkPassword, goToForgetPWD}) => {
 
-  const display = isLoading ? "none" : undefined;
+  const display = isLoading ? {opacity: 0, height: 0} : undefined;
+  const hideObj = {opacity: 0, height: 0}
 
   return (
-    <SafeAreaView style={styles.content}>
-      <Text style={styles.title}>Login</Text>
-      <TextInput
-          style={styles.input}
-          onChangeText={(text) => {setUsername(text); checkEmail(text);}}
-          value={username}
-          placeholder="Username"
-          placeholderTextColor="gray"
+    <SafeAreaView
+      style={{flex: 1, flexDirection: "column", justifyContent: "flex-end", marginBottom: 80, marginLeft: 30}}
+    >
+      <Text style={{marginBottom: 25}} type="h1" color="blue" size="xxl">Safely</Text>
+      <TextInput 
+        style={{ fontFamily: 'WorkSans-Regular', paddingLeft: 10, marginBottom: 5 }}
+        placeholder="Username"
+        width="80%"
+        type="roundedTextInput"
+        bgColor="lightBlue"
+        value={username}
+        onChangeText={(text) => {setUsername(text); checkEmail(text)}}
       />
-      <Text style={{color: 'red', marginLeft: 12}}>
-        {emailError ? emailError[0] : ''}
+      <Text
+        style={{height: !emailError ? 0 : 20}}
+        type="body"
+        color="red"
+        size="s"
+      >
+        {emailError ? emailError[0] : ""}
       </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(password) => {setPassword(password); checkPassword(password)}}
+      <TextInput 
+        style={{ fontFamily: 'WorkSans-Regular', paddingLeft: 10, marginTop: 5, marginBottom: 5 }}
+        placeholder="Password"
+        width="80%"
+        type="roundedTextInput"
+        bgColor="lightBlue"
         value={password}
         secureTextEntry={true}
-        placeholder="Password"
-        placeholderTextColor="gray"
+        onChangeText={(text) => {setPassword(text); checkPassword(text)}}
       />
-      <Text style={{color: 'blue', marginLeft: 12}} onPress={() => {goToForgetPWD()}}>
-        Forgot password ?
-      </Text>
-      <Text style={{color: 'red', margin: 12}}>
+      <Text
+        style={{height: !passwordError ? 0 : 20}}
+        type="body"
+        color="red"
+        size="s"
+      >
         {passwordError ? passwordError[0] : ''}
       </Text>
-      <TouchableOpacity
-        style={[styles.button, {display}]}
+      <Text
+        style={{marginTop: 10, marginBottom: 10}}
+        type="body"
+        color="blue"
+        size="s"
+        onPress={() => {goToForgetPWD()}}
+      >
+        Forgot password ?
+      </Text>
+
+      <Button
+        style={{alignItems: "center", justifyContent: "center", ...display}}
+        width="80%"
+        type="roundedButton"
+        bgColor="blue"
         onPress={() => {onLogin(username, password)}}
       >
-        <Text>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.button, {display}]}
+        <Text style={{}} type="body" color="white" size="m">Login</Text>
+      </Button>
+
+      <SafeAreaView 
+        style={{flexDirection: 'row', alignItems: "center", margin: 12, marginLeft: 57, ...display}}
+      >
+        <HLine style={{marginRight: 10}} width="25%" lineColor="blue" borderWidth={0.8} />
+        <Text style={{}} type="body" color="blue" size="s">Or</Text>
+        <HLine style={{marginLeft: 10}} width="25%" lineColor="blue" borderWidth={0.8} />
+      </SafeAreaView>
+
+      <Button
+        style={{alignItems: "center", justifyContent: "center", ...display}}
+        width="80%"
+        type="roundedButton"
+        bgColor="blue"
         onPress={() => {goToRegister()}}
       >
-        <Text>Register</Text>
-      </TouchableOpacity>
+        <Text style={{}} type="body" color="white" size="m">Register</Text>
+      </Button>
+
       <ActivityIndicator
-        size="large"
-        color="#0000ff"
-        animating={isLoading}
+          style={{marginRight: 50}}
+          size="large"
+          color="#0000ff"
+          animating={isLoading}
       />
     </SafeAreaView>
   );
