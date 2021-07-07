@@ -45,7 +45,7 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "@testing-library/jest-native": "^4.0.1",
     "@testing-library/react-native": "^7.2.0",
-    "@types/jest": "^26.0.20",
+    "@types/jest": "^26.0.24",
     "@types/react-native": "^0.64.0",
     "@types/react-redux": "^7.1.16",
     "@types/react-test-renderer": "^16.9.2",
@@ -81,17 +81,10 @@
     "setupFiles": [
       "./jestSetupFile.js"
     ],
-    "preset": "ts-jest",
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-native/extend-expect"
-    ],
+    "preset": "react-native",
     "transform": {
-      "node_modules/variables/.+\\.(j|t)sx?$": "ts-jest"
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
     },
-    "transformIgnorePatterns": [
-      "node_modules/(?!react-native|react-navigation)/"
-    ],
-    
     "modulePaths": [
       "<rootDir>"
     ],
@@ -100,10 +93,14 @@
       "src",
       "types"
     ],
+    "transformIgnorePatterns": [],
     "moduleFileExtensions": [
-      "tsx",
       "ts",
-      "js"
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
     ]
   }
 }
