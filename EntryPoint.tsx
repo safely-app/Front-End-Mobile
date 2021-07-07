@@ -9,7 +9,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {RootStackParamList} from './src/routes';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {RootState} from './src/redux/reducers';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -27,19 +27,19 @@ const EntryPoint: React.FC = () => {
   function HomeTabs() {
     return (
       <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
+        // screenOptions={({ route }) => ({
+        //   tabBarIcon: ({ focused, color, size }) => {
+        //     let iconName;
 
-            if (route.name === "Home") {
-              iconName = 'home-outline'
-            }
-            if (route.name === "Profile") {
-              iconName = 'person-circle-outline'
-            }
-            return <Ionicons name={iconName} size={size} color={color}/>;
-          }
-        })}
+        //     if (route.name === "Home") {
+        //       iconName = 'home-outline'
+        //     }
+        //     if (route.name === "Profile") {
+        //       iconName = 'person-circle-outline'
+        //     }
+        //     return <Ionicons name={iconName} size={size} color={color}/>;
+        //   }
+        // })}
       >
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Profile" component={Profile} />
