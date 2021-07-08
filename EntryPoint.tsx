@@ -14,7 +14,8 @@ import Toast from 'react-native-toast-message';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator(
+);
 
 const options: StackNavigationOptions = {
   headerShown: false
@@ -41,8 +42,8 @@ const EntryPoint: React.FC = () => {
         //   }
         // })}
       >
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen name="Home" component={Home} options={{tabBarTestID: "HomePage"}} />
+        <Tab.Screen name="Profile" component={Profile} options={{tabBarTestID: "ProfilePage"}} />
       </Tab.Navigator>
     );
   }
