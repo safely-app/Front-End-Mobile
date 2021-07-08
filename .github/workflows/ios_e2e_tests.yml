@@ -1,0 +1,60 @@
+name: iOS
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macos-10.15
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_12.4.app
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+        
+    - name: Create env file
+      run: |
+        touch .env
+        echo API_URL=${{ secrets.API_URL }} >> .env
+        cat .env
+
+    - name: Node
+      uses: actions/setup-node@v1
+
+    - name: Cache node modules
+      uses: actions/cache@v1
+      id: cache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install detox-cli
+      run: npm install -g detox-cli
+
+    - name: Rebuild detox
+      if: steps.cache.outputs.cache-hit == 'true'
+      run: detox clean-framework-cache && detox build-framework-cache
+
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm install
+
+    - name: Cache Pods
+      uses: actions/cache@v1
+      id: podcache
+      with:
+        path: ios/Pods
+        key: pods-${{ hashFiles('**/Podfile.lock') }}
+
+    - name: Update Pods
+      run: |
+        gem install cocoapods
+        gem update cocoapods xcodeproj
+        cd ios && pod install && cd ..
+    - run: brew tap wix/brew
+    - run: brew install applesimutils
+    - run: detox build --configuration ios
+    - run: detox test --configuration ios
