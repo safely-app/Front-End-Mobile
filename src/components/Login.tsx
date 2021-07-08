@@ -24,7 +24,7 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
 
   return (
     <SafeAreaView
-      style={{flex: 1, flexDirection: "column", justifyContent: "flex-end", marginBottom: 80, marginLeft: 30}}
+      style={{flex: 1, flexDirection: "column", justifyContent: "flex-end", marginBottom: 200, marginLeft: 30}}
     >
       <Text style={{marginBottom: 25}} type="h1" color="blue" size="xxl" testID="title">Safely</Text>
       <TextInput 
