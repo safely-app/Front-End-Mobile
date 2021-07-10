@@ -24,9 +24,9 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
 
   return (
     <SafeAreaView
-      style={{flex: 1, flexDirection: "column", justifyContent: "flex-end", marginBottom: 80, marginLeft: 30}}
+      style={{flex: 1, flexDirection: "column", justifyContent: "flex-end", marginBottom: 200, marginLeft: 30}}
     >
-      <Text style={{marginBottom: 25}} type="h1" color="blue" size="xxl">Safely</Text>
+      <Text style={{marginBottom: 25}} type="h1" color="blue" size="xxl" testID="title">Safely</Text>
       <TextInput 
         style={{ fontFamily: 'WorkSans-Regular', paddingLeft: 10, marginBottom: 5 }}
         placeholder="Username"
@@ -35,6 +35,7 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
         bgColor="lightBlue"
         value={username}
         onChangeText={(text) => {setUsername(text); checkEmail(text)}}
+        testID="inputUsername"
       />
       <Text
         style={{height: !emailError ? 0 : 20}}
@@ -53,6 +54,7 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
         value={password}
         secureTextEntry={true}
         onChangeText={(text) => {setPassword(text); checkPassword(text)}}
+        testID="inputPassword"
       />
       <Text
         style={{height: !passwordError ? 0 : 20}}
@@ -78,6 +80,7 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
         type="roundedButton"
         bgColor="blue"
         onPress={() => {onLogin(username, password)}}
+        testID="buttonLogin"
       >
         <Text style={{}} type="body" color="white" size="m">Login</Text>
       </Button>
@@ -96,6 +99,7 @@ export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLog
         type="roundedButton"
         bgColor="blue"
         onPress={() => {goToRegister()}}
+        testID="buttonRegister"
       >
         <Text style={{}} type="body" color="white" size="m">Register</Text>
       </Button>

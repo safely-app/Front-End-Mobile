@@ -33,6 +33,7 @@ export const ProfileComponent: React.FC<Props> = ({email, setEmail, checkEmail, 
               value={email}
               placeholder="Email"
               placeholderTextColor="gray"
+              testID="inputEmail"
             />
             <Text style={{color: 'red', marginLeft: 12}}>
               {emailError ? emailError[0] : ''}
@@ -44,6 +45,7 @@ export const ProfileComponent: React.FC<Props> = ({email, setEmail, checkEmail, 
               secureTextEntry={true}
               placeholder="Password"
               placeholderTextColor="gray"
+              testID="inputPassword"
             />
             <Text style={{color: 'red', margin: 12, marginBottom: 0, marginTop: 0}}>
               {passwordError ? passwordError : ''}
@@ -55,16 +57,19 @@ export const ProfileComponent: React.FC<Props> = ({email, setEmail, checkEmail, 
                 placeholder="Confirm password"
                 secureTextEntry={true}
                 placeholderTextColor="gray"
+                testID="inputConfirmPassword"
             />
             <TouchableOpacity
               style={[styles.button, {display}]}
               onPress={() => {onSubmit(email, password)}}
+              testID="buttonSubmit"
             >
               <Text>Submit</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.button, {display, backgroundColor: 'red', borderWidth: 0}]}
               onPress={() => {onDelete()}}
+              testID="buttonDeleteAccount"
             >
               <Text>Delete your account</Text>
             </TouchableOpacity>

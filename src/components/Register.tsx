@@ -31,6 +31,7 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
         style={styles.input}
         value={username}
         onChangeText={(text) => {setUsername(text); checkUsername(text);}}
+        testID="inputUsername"
         />
       <Text style={{color: 'red', marginLeft: 12}}>
         {usernameError ? usernameError[0] : ''}
@@ -41,6 +42,7 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
         placeholderTextColor="gray"
         value={email}
         onChangeText={(text) => {setEmail(text); checkEmail(text);}}
+        testID="inputEmail"
       />
       <Text style={{color: 'red', marginLeft: 12}}>
         {emailError ? emailError[0] : ''}
@@ -52,6 +54,7 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
         value={password}
         onChangeText={(text) => {setPassword(text); checkPassword(text);}}
         secureTextEntry={true}
+        testID="inputPassword"
       />
       <Text style={{color: 'red', marginLeft: 12}}>
         {passwordError ? passwordError[0] : ''}
@@ -63,10 +66,12 @@ export const RegisterComponent: React.FC<Props> = ({setUsername, setPassword, se
         placeholder="Confirm password"
         secureTextEntry={true}
         placeholderTextColor="gray"
+        testID="inputConfirmPassword"
       />
       <TouchableOpacity
         style={styles.button}
         onPress={() => {onRegister(username, password, email)}}
+        testID="buttonRegister"
       >
         <Text>Register</Text>
       </TouchableOpacity>

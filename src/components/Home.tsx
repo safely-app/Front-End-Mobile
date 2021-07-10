@@ -11,7 +11,7 @@ export const HomeComponent: React.FC<Props> = ({logout, username}) => {
 
     return (
         <SafeAreaView style={styles.content}>
-            <Text style={styles.title}>
+            <Text style={styles.title} testID="welcomeTitle">
                 {`Welcome back ${username}`}
             </Text>
             <Text style={styles.title}>
@@ -20,6 +20,7 @@ export const HomeComponent: React.FC<Props> = ({logout, username}) => {
             <Button
                 title="Log Out"
                 onPress={() => {logout()}}
+                testID="buttonLogout"
             />
         </SafeAreaView>
     )
