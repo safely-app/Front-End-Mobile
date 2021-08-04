@@ -60,6 +60,7 @@ jobs:
         script: detox test --configuration android.emu.release --take-screenshots all
     
     - name: Uploading images taken from the E2E Tests
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: artifacts
