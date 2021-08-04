@@ -57,4 +57,10 @@ jobs:
         profile: pixel
         arch: x86
         avd-name: Pixel_5_API_30
-        script: detox test --configuration android.emu.release
+        script: detox test --configuration android.emu.release --take-screenshots all
+    
+    - name: Uploading images taken from the E2E Tests
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: artifacts/ # or path/to/artifact
