@@ -1,8 +1,7 @@
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {loginUser} from '../src/redux/actions';
-import {SET_AUTHENTICATED, FETCH_REQUEST, UserActionTypes} from '../src/redux/types';
-
+import {SET_AUTHENTICATED, FETCH_REQUEST, FETCH_FAILURE, USER_CREATED} from '../src/redux/types';
+import { mockLoginUser } from '../__mocks__/mockRedux/mockActions/authActions';
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
@@ -10,7 +9,7 @@ it('should login the user successfully', () => {
     const store = mockStore({});
     const credentials = {username: "testsafelymobile@gmail.com", password: "1234"};
 
-    return store.dispatch<any>(loginUser(credentials))
+    return store.dispatch(mockLoginUser(credentials.username, credentials.password))
     .then(() => {
         const actions = store.getActions();
         const expectedActions = [

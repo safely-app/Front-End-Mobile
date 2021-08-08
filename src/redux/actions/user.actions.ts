@@ -4,7 +4,7 @@ import {userServices} from '../../services';
 import {SET_AUTHENTICATED, UserActionTypes, USER_CREATED, SET_UNAUTHENTICATED, GET_USER, UserInterface} from '../types';
 import { Dispatch } from 'redux';
 
-const loginUserSuccess: ActionCreator<UserActionTypes> = (
+export const loginUserSuccess: ActionCreator<UserActionTypes> = (
   credentials: UserInterface,
 ) => {
   return {type: SET_AUTHENTICATED, payload: credentials};
