@@ -1,7 +1,7 @@
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {SET_AUTHENTICATED, FETCH_REQUEST, FETCH_FAILURE, USER_CREATED} from '../src/redux/types';
-import { mockLoginUser } from '../__mocks__/mockRedux/mockActions/authActions';
+import { mockLoginUser, mockRegisterUser } from '../__mocks__/mockRedux/mockActions/authActions';
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
@@ -30,6 +30,22 @@ it('shouldn\'t login the user', () => {
         const expectedActions = [
             { type: FETCH_REQUEST },
             { type: FETCH_FAILURE, payload: "Login failure"}
+        ]
+        expect(actions).toEqual(expectedActions);
+    })
+})
+
+it('should register a user', () => {
+    const store = mockStore({});
+    const credentials = {username: "barbie", email: "barbie@ken.fr", password: "1234"};
+
+
+    return store.dispatch(mockRegisterUser(credentials))
+    .then(() => {
+        const actions = store.getActions();
+        const expectedActions = [
+            { type: FETCH_REQUEST },
+            { type: USER_CREATED, payload: {_id: actions[1].payload._id, username: "barbie", email: "barbie@ken.fr", token: actions[1].payload.token}}
         ]
         expect(actions).toEqual(expectedActions);
     })
