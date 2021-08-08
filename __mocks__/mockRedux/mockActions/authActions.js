@@ -15,11 +15,6 @@ export function mockLoginUser(username, password) {
                 token: '32454'
             }
         };
-        const mockedFailedRes = {
-            data: {
-                error: 'Incorrect email or password'
-            }
-        }
 
         if (username === "testsafelymobile@gmail.com" && password === "1234") {
             axios.post = jest.fn().mockResolvedValue(mockedSuccessRes);
