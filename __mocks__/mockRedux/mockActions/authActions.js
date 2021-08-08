@@ -10,9 +10,9 @@ export function mockLoginUser(username, password) {
         dispatch(request());
         const mockedSuccessRes = {
             data: {
-                _id: '60eeee559ce94d77061eef206c6',
+                _id: '52342353654',
                 email: 'testsafelymobile@gmail.com',
-                token: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGU1NTljZTk0ZDc3MDYxZWVmMjA2YzYiLCJpYXQiOjE2MjgzNDU4OTAsImV4cCI6MTYyODM1MzA5MH0.bs1wG73YQG3NvPpL5PKqoe6JPVilglCcYBntYH8UKUioqfXM6yu-1zzIcMcOatNPFc1EI1nA05zdknEcsbmvdQ'
+                token: '32454'
             }
         };
         const mockedFailedRes = {
