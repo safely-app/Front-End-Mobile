@@ -10,7 +10,7 @@ export const loginUserSuccess: ActionCreator<UserActionTypes> = (
   return {type: SET_AUTHENTICATED, payload: credentials};
 };
 
-const registerUserSuccess: ActionCreator<UserActionTypes> = (credentials: UserInterface) => {
+export const registerUserSuccess: ActionCreator<UserActionTypes> = (credentials: UserInterface) => {
   return {type: USER_CREATED, payload: credentials};
 };
 
