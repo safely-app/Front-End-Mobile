@@ -19,3 +19,18 @@ it('should login the user successfully', () => {
         expect(actions).toEqual(expectedActions);
     })
 })
+
+it('shouldn\'t login the user', () => {
+    const store = mockStore({});
+    const credentials = {username: "testsafelymobile@gmail.com", password: "12345"};
+
+    return store.dispatch(mockLoginUser(credentials.username, credentials.password))
+    .then(() => {
+        const actions = store.getActions();
+        const expectedActions = [
+            { type: FETCH_REQUEST },
+            { type: FETCH_FAILURE, payload: "Login failure"}
+        ]
+        expect(actions).toEqual(expectedActions);
+    })
+})
