@@ -27,7 +27,7 @@ export function mockLoginUser(username, password) {
             .then(response => {
                 dispatch(loginUserSuccess(response));
             })
-            .catch(error => {
+            .catch(() => {
                 dispatch(failure('Login failure'));
             })
     }
@@ -52,7 +52,7 @@ export function mockRegisterUser(username, email, password) {
             .then(response => {
                 dispatch(registerUserSuccess(response));
             })
-            .catch(error => {
+            .catch(() => {
                 dispatch(failure('Login failure'));
             })
     }
@@ -79,7 +79,7 @@ export function mockGetUser(userId, token) {
             .then(response => {
                 dispatch(getUserAction(response));
             })
-            .catch(error => {
+            .catch(() => {
                 dispatch(failure('Login failure'));
             })
     }
