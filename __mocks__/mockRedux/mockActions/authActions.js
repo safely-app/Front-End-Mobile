@@ -1,7 +1,7 @@
 import {request, failure} from '../../../src/redux/actions/index';
 import axios from 'react-native-axios';
 import { userServices } from '../../../src/services';
-import { loginUserSuccess, registerUserSuccess } from '../../../src/redux';
+import { loginUserSuccess, registerUserSuccess, getUserAction } from '../../../src/redux';
 
 jest.mock('react-native-axios');
 
@@ -51,6 +51,33 @@ export function mockRegisterUser(username, email, password) {
             .register({username, password, email})
             .then(response => {
                 dispatch(registerUserSuccess(response));
+            })
+            .catch(error => {
+                dispatch(failure('Login failure'));
+            })
+    }
+}
+
+export function mockGetUser(userId, token) {
+    return (dispatch) => {
+        dispatch(request());
+        const mockedSuccessRes = {
+            data: {
+                _id: '52342353654',
+                username: 'barbie',
+                email: 'barbie@ken.fr',
+                role: 'user',
+                createdAt: '1993-01-02T07:32:50.292Z',
+                updatedAt: '1993-01-02T07:32:50.292Z'
+            }
+        };
+
+        axios.get = jest.fn().mockResolvedValue(mockedSuccessRes);
+
+        return userServices
+            .getUser(token, userId)
+            .then(response => {
+                dispatch(getUserAction(response));
             })
             .catch(error => {
                 dispatch(failure('Login failure'));
