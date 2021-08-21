@@ -18,7 +18,7 @@ interface Props {
     setconfirmPassword: (password: string) => void;
 }
 
-export const ProfileComponent = ({email, setEmail, checkEmail, isLoading, onSubmit, emailError, passwordError, checkPassword, setPassword, password, onDelete, confirmPassword, setconfirmPassword}: Props) => {
+export const ProfileComponent = ({email, setEmail, checkEmail, isLoading, onSubmit, emailError, passwordError, checkPassword, setPassword, password, onDelete, confirmPassword, setconfirmPassword}: Props): JSX.Element => {
 
   const display = isLoading ? "none" : undefined;
 

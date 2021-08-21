@@ -7,7 +7,7 @@ interface Props {
     username: string;
 }
 
-export const HomeComponent = ({logout, username}: Props) => {
+export const HomeComponent = ({logout, username}: Props): JSX.Element => {
 
     return (
         <SafeAreaView style={styles.content}>

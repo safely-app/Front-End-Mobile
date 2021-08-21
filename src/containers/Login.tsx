@@ -13,7 +13,7 @@ import Toast from 'react-native-toast-message';
 import {AppState} from '../utils/isAppLaunched';
 
 
-export const Login = ({}: {}) => {
+export const Login = ({}: {}): JSX.Element => {
   const dispatch = useDispatch();
   const {error} = useSelector((state: RootState) => state.common);
   const [username, setUsername] = useState<string>('');

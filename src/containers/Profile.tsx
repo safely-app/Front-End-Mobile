@@ -8,7 +8,7 @@ import {userServices} from '../services';
 import {resetFetch, getUser, logoutUser} from '../redux/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const Profile = ({}: {}) => {
+export const Profile = ({}: {}): JSX.Element => {
 
   const dispatch = useDispatch();
   const {error} = useSelector((state: RootState) => state.common);

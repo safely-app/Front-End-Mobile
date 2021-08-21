@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import { failure } from '../redux';
 
-export const Home = ({}: {}) => {
+export const Home = ({}: {}): JSX.Element => {
 
   const dispatch = useDispatch();
   const {credentials} = useSelector((state: RootState) => state.user);

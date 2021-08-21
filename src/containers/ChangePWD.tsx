@@ -5,7 +5,7 @@ import {constraints} from '../utils/constraints';
 import {validate} from 'validate.js';
 import {userServices} from '../services';
 
-export const ChangePWD = ({}: {}) => {
+export const ChangePWD = ({}: {}): JSX.Element => {
 
     const route = useRoute();
     const [password, setPassword] = useState<string>('');

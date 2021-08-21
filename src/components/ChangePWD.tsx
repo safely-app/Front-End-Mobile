@@ -13,7 +13,7 @@ interface Props {
     setconfirmPassword: (password: string) => void;
 }
 
-export const ChangePWDComponent = ({password, setPassword, checkPassword, passwordError, isLoading, onSubmit, confirmPassword, setconfirmPassword}: Props) => {
+export const ChangePWDComponent = ({password, setPassword, checkPassword, passwordError, isLoading, onSubmit, confirmPassword, setconfirmPassword}: Props): JSX.Element => {
 
     const display = isLoading ? "none" : undefined;
 

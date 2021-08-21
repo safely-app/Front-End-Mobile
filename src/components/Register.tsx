@@ -21,7 +21,7 @@ interface Props {
   setconfirmPassword: (password: string) => void;
 }
 
-export const RegisterComponent  = ({setUsername, setPassword, setEmail, username, password, email, onRegister, emailError, passwordError, usernameError, isLoading, checkEmail, checkPassword, checkUsername, confirmPassword, setconfirmPassword}: Props) => {
+export const RegisterComponent  = ({setUsername, setPassword, setEmail, username, password, email, onRegister, emailError, passwordError, usernameError, isLoading, checkEmail, checkPassword, checkUsername, confirmPassword, setconfirmPassword}: Props): JSX.Element => {
   return (
     <SafeAreaView style={styles.content}>
       <Text style={styles.title}>Register</Text>

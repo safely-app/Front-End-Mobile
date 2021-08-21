@@ -17,7 +17,7 @@ interface Props {
   goToForgetPWD: () => void;
 }
 
-export const LoginComponent = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError, checkEmail, checkPassword, goToForgetPWD}: Props) => {
+export const LoginComponent = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError, checkEmail, checkPassword, goToForgetPWD}: Props): JSX.Element => {
 
   const display = isLoading ? {opacity: 0, height: 0} : undefined;
 
