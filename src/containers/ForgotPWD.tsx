@@ -5,7 +5,7 @@ import {constraints} from '../utils/constraints';
 import {validate} from 'validate.js';
 import {userServices} from '../services';
 
-export const ForgotPWD = ({}: {}): JSX.Element => {
+export const ForgotPWD = (): JSX.Element => {
 
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string>('');

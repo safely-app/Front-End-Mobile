@@ -8,7 +8,7 @@ import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 
 
-export const Register = ({}: {}): JSX.Element => {
+export const Register = (): JSX.Element => {
   const dispatch = useDispatch();
   const {error} = useSelector((state: RootState) => state.common);
   const [username, setUsername] = useState<string>('');
