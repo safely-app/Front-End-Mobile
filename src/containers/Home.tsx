@@ -1,19 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {logoutUser, getUser} from '../redux/actions/user.actions';
 import {RootState} from '../redux/reducers';
 import {HomeComponent} from '../components/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-// import {RootStackParamList} from '../redux/types';
-// type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
+import { failure } from '../redux';
 
-interface Props {
-  // navigation: ProfileScreenNavigationProp,
-}
-
-
-export const Home: React.FC<Props> = () => {
+export const Home = ({}: {}) => {
 
   const dispatch = useDispatch();
   const {credentials} = useSelector((state: RootState) => state.user);
@@ -24,7 +18,7 @@ export const Home: React.FC<Props> = () => {
             dispatch(logoutUser());
             await AsyncStorage.removeItem('persist:root');
         } catch {
-
+            dispatch(failure());
         }
     }
 

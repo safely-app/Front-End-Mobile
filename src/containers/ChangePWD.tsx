@@ -5,14 +5,7 @@ import {constraints} from '../utils/constraints';
 import {validate} from 'validate.js';
 import {userServices} from '../services';
 
-// import {RootStackParamList} from '../redux/types';
-// type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
-
-interface Props {
-  // navigation: ProfileScreenNavigationProp,
-}
-
-export const ChangePWD: React.FC<Props> = () => {
+export const ChangePWD = ({}: {}) => {
 
     const route = useRoute();
     const [password, setPassword] = useState<string>('');
@@ -33,7 +26,7 @@ export const ChangePWD: React.FC<Props> = () => {
 
           setisLoading(true);
           userServices.changePassword(userId, token, password)
-          .then((res) => {
+          .then(() => {
             setisLoading(false);
             navigation.goBack();
           })

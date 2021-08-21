@@ -4,17 +4,11 @@ import {registerUser} from '../redux/actions/user.actions';
 import {RootState} from '../redux/reducers';
 import {RegisterComponent} from '../components/index';
 import {resetFetch} from '../redux/actions/common.actions';
-// import {StackNavigationProp} from '@react-navigation/stack';
-// import {useNavigation} from '@react-navigation/native';
-// import {RootStackParamList} from '../routes';
 import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 
-interface Props {
 
-}
-
-export const Register: React.FC<Props> = () => {
+export const Register = ({}: {}) => {
   const dispatch = useDispatch();
   const {error} = useSelector((state: RootState) => state.common);
   const [username, setUsername] = useState<string>('');
