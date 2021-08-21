@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-var colors: {[key: string]: string};
+let colors: {[key: string]: string};
 
 const paletteLight: typeof colors = {
   white: "#FFFFFF",
@@ -12,9 +12,9 @@ const paletteLight: typeof colors = {
   red: "#EF4F4F"
 }
 
-const paletteDark: typeof colors = {
-  // To be defined
-}
+// const paletteDark: typeof colors = {
+//   // To be defined
+// }
 
 // In the future when the paletteDark will be defined, a variable to know if
 // the app will be in dark mode or not, and then we can either set the variable palette

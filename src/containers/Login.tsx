@@ -10,16 +10,10 @@ import {constraints} from '../utils/constraints';
 import {Linking, Platform} from 'react-native';
 import {extractTokenAndUserId} from '../utils/utils';
 import Toast from 'react-native-toast-message';
-// import {StackNavigationProp} from '@react-navigation/stack';
-// import {RootStackParamList} from '../routes';
-// type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 import {AppState} from '../utils/isAppLaunched';
 
-interface Props {
-  // navigation: ProfileScreenNavigationProp,
-}
 
-export const Login: React.FC<Props> = () => {
+export const Login = (): JSX.Element => {
   const dispatch = useDispatch();
   const {error} = useSelector((state: RootState) => state.common);
   const [username, setUsername] = useState<string>('');
@@ -79,12 +73,10 @@ export const Login: React.FC<Props> = () => {
       // Detect deep-linking when the app is already launched
       Linking.addEventListener('url', (event) => {
         if (event.url && event.url.length > 0) {
-          let userId: string;
-          let token: string;
-          let returnValue = extractTokenAndUserId(event.url);
+          const returnValue = extractTokenAndUserId(event.url);
+          const userId: string = returnValue.userId;
+          const token: string = returnValue.token;
 
-          userId = returnValue.userId;
-          token = returnValue.token;
           navigation.navigate('ChangePWD', {id: userId, token: token});
         }
       });
@@ -92,12 +84,10 @@ export const Login: React.FC<Props> = () => {
         // Detect deep-linking when the app not yet launched
         Linking.getInitialURL().then((url) => {
           if (url) {
-            let userId: string;
-            let token: string;
-            let returnValue = extractTokenAndUserId(url);
+            const returnValue = extractTokenAndUserId(url);
+            const userId: string = returnValue.userId;
+            const token: string = returnValue.token;
 
-            userId = returnValue.userId;
-            token = returnValue.token;
             navigation.navigate('ChangePWD', {id: userId, token: token});
           }
         });

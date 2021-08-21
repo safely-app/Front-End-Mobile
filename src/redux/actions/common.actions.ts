@@ -9,6 +9,6 @@ export const failure: ActionCreator<FetchActionTypes> = (error: any) => {
   return {type: FETCH_FAILURE, payload: error};
 };
 
-export const resetFetch = () => {
+export const resetFetch: ActionCreator<FetchActionTypes> = () => {
   return {type: FETCH_RESET}
 };

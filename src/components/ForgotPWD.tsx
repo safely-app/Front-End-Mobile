@@ -11,7 +11,7 @@ interface Props {
     isLoading: boolean;
 }
 
-export const ForgotPWDComponent: React.FC<Props> = ({checkEmail, onSubmit, setEmail, email, emailError, isLoading}) => {
+export const ForgotPWDComponent = ({checkEmail, onSubmit, setEmail, email, emailError, isLoading}: Props): JSX.Element => {
 
     const display = isLoading ? "none" : undefined;
 

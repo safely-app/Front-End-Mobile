@@ -8,11 +8,7 @@ import {userServices} from '../services';
 import {resetFetch, getUser, logoutUser} from '../redux/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface Props {
-}
-
-
-export const Profile: React.FC<Props> = () => {
+export const Profile = (): JSX.Element => {
 
   const dispatch = useDispatch();
   const {error} = useSelector((state: RootState) => state.common);
@@ -43,7 +39,7 @@ export const Profile: React.FC<Props> = () => {
     if (!emailErrorMsg && !passwordErrorMsg) {
       setisLoading(true);
       userServices.updateUser(credentials._id, credentials.token, email, password)
-      .then(res => {
+      .then(() => {
         dispatch(getUser(credentials._id, credentials.token));
       })
       .catch(err => {
