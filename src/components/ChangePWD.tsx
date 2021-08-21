@@ -13,7 +13,7 @@ interface Props {
     setconfirmPassword: (password: string) => void;
 }
 
-export const ChangePWDComponent: React.FC<Props> = ({password, setPassword, checkPassword, passwordError, isLoading, onSubmit, confirmPassword, setconfirmPassword}) => {
+export const ChangePWDComponent = ({password, setPassword, checkPassword, passwordError, isLoading, onSubmit, confirmPassword, setconfirmPassword}: Props) => {
 
     const display = isLoading ? "none" : undefined;
 

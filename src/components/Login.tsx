@@ -17,10 +17,9 @@ interface Props {
   goToForgetPWD: () => void;
 }
 
-export const LoginComponent: React.FC<Props> = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError, checkEmail, checkPassword, goToForgetPWD}) => {
+export const LoginComponent = ({setUsername, setPassword, onLogin, username, password, isLoading, goToRegister, emailError, passwordError, checkEmail, checkPassword, goToForgetPWD}: Props) => {
 
   const display = isLoading ? {opacity: 0, height: 0} : undefined;
-  const hideObj = {opacity: 0, height: 0}
 
   return (
     <SafeAreaView
