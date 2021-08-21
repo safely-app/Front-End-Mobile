@@ -42,7 +42,7 @@ async function changePassword(userId: string, token: string, password: string): 
 }
 
 async function updateUser(userId: string, token: string, email: string, password: string) {
-  var bodyObj = {
+  let bodyObj = {
     "email": email,
     "password": password
   };
