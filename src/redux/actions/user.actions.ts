@@ -14,7 +14,7 @@ const registerUserSuccess: ActionCreator<UserActionTypes> = (credentials: UserIn
   return {type: USER_CREATED, payload: credentials};
 };
 
-export const logoutUser = () => {
+export const logoutUser: ActionCreator<UserActionTypes> = () => {
   return {type: SET_UNAUTHENTICATED}
 };
 
@@ -36,7 +36,7 @@ export function loginUser({
       .then(response => {
         dispatch(loginUserSuccess(response));
       })
-      .catch(error => {
+      .catch(() => {
         dispatch(failure('Login failed'));
       });
   };
@@ -50,7 +50,7 @@ export function registerUser({username, email, password}: {username: string, ema
       .then(response => {
         dispatch(registerUserSuccess(response));
       })
-      .catch(error => {
+      .catch(() => {
         dispatch(failure('Register failed'));
       });
   };
@@ -64,7 +64,7 @@ export function getUser(userId: string, token: string) {
     .then(response => {
       dispatch(getUserAction(response));
     })
-    .catch(error => {
+    .catch(() => {
       dispatch(failure('Cannot get user info'));
     })
   }

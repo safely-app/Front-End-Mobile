@@ -11,4 +11,8 @@ interface FetchFailureAction {
   payload: any;
 }
 
-export type FetchActionTypes = FetchRequestAction | FetchFailureAction;
+interface FetchResetAction {
+  type: typeof FETCH_RESET;
+}
+
+export type FetchActionTypes = FetchRequestAction | FetchFailureAction | FetchResetAction;
