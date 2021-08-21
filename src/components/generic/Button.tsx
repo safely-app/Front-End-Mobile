@@ -10,7 +10,7 @@ interface Props extends React.ComponentProps<typeof TouchableOpacity> {
     bgColor: keyof typeof theme.colors;
 }
 
-export const Button: React.FC<Props> = ({style, width, type, bgColor, ...rest}) => {
+export const Button = ({style, width, type, bgColor, ...rest}: Props): JSX.Element => {
     return (
         <TouchableOpacity
             style={{

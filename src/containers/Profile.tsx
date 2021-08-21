@@ -77,7 +77,7 @@ export const Profile = (): JSX.Element => {
 
   function onDelete() {
     userServices.deleteUser(credentials.token, credentials._id)
-    .then((res) => {
+    .then(() => {
       dispatch(logoutUser());
       AsyncStorage.removeItem('persist:root');
     })

@@ -9,7 +9,7 @@ interface Props extends React.ComponentProps<typeof SafeAreaView> {
     borderWidth: number;
 }
 
-export const HLine: React.FC<Props> = ({style, width, lineColor, borderWidth, ...rest}) => {
+export const HLine = ({style, width, lineColor, borderWidth, ...rest}: Props): JSX.Element => {
     return (
         <SafeAreaView
             style={{

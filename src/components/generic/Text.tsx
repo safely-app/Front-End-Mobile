@@ -9,7 +9,7 @@ interface Props extends React.ComponentProps<typeof RNText> {
     size: keyof typeof theme.sizeText;
 }
 
-export const Text: React.FC<Props> = ({style, type, color, size, ...rest}) => {
+export const Text = ({style, type, color, size, ...rest}: Props): JSX.Element => {
     return (
         <RNText
             style={{

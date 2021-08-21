@@ -9,7 +9,7 @@ interface Props extends React.ComponentProps<typeof RNTextInput> {
     bgColor: keyof typeof theme.colors;
 }
 
-export const TextInput: React.FC<Props> = ({style, width, type, bgColor, ...rest}) => {
+export const TextInput = ({style, width, type, bgColor, ...rest}: Props): JSX.Element => {
     return (
         <RNTextInput
             style={{
