@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {registerUser} from '../redux/actions/user.actions';
 import {RootState} from '../redux/reducers';
 import {RegisterComponent} from '../components/index';
-import {resetFetch} from '../redux/actions/common.actions';
+import {resetFetch} from '../redux';
 import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 

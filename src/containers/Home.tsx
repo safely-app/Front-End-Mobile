@@ -18,7 +18,7 @@ export const Home = (): JSX.Element => {
             dispatch(logoutUser());
             await AsyncStorage.removeItem('persist:root');
         } catch {
-            dispatch(failure());
+            dispatch(failure("Logout failed"));
         }
     }
 

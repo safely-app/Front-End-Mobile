@@ -1,5 +1,5 @@
 import {ActionCreator} from 'redux';
-import {request, failure} from './common.actions';
+import {request, failure} from '../';
 import {userServices} from '../../services';
 import {SET_AUTHENTICATED, UserActionTypes, USER_CREATED, SET_UNAUTHENTICATED, GET_USER, UserInterface} from '../types';
 import { Dispatch } from 'redux';

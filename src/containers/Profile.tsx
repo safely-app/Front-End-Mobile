@@ -5,7 +5,8 @@ import {ProfileComponent} from '../components/index';
 import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 import {userServices} from '../services';
-import {resetFetch, getUser, logoutUser} from '../redux/actions';
+import {getUser, logoutUser} from '../redux/actions';
+import {resetFetch} from '../redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Profile = (): JSX.Element => {

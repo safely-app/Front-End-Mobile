@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {loginUser} from '../redux/actions/user.actions';
-import {resetFetch} from '../redux/actions/common.actions';
+import {resetFetch} from '../redux';
 import {RootState} from '../redux/reducers';
 import {LoginComponent} from '../components/index';
 import {useNavigation} from '@react-navigation/native';
