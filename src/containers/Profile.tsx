@@ -1,25 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {RootState} from '../redux/reducers';
+import React, {useState} from 'react';
+import { useAppSelector, useAppDispatch } from '../utils/hooks';
 import {ProfileComponent} from '../components/index';
 import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 import {userServices} from '../services';
-import {getUser, logoutUser} from '../redux/actions';
-import {resetFetch} from '../redux';
+import {getUser, logoutUser} from '../redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 export const Profile = (): JSX.Element => {
 
-  const dispatch = useDispatch();
-  const {error} = useSelector((state: RootState) => state.common);
-  const {credentials} = useSelector((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
+  const {credentials} = useAppSelector((state) => state.user);
   const [email, setEmail] = useState<string>(credentials.email);
   const [emailError, setEmailError] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string>('');
   const [passwordError, setPasswordError] = useState<string | undefined>(undefined);
   const [confirmPassword, setconfirmPassword] = useState<string>('');
   const [isLoading, setisLoading] = useState<boolean>(false);
+  const navigation = useNavigation();
 
   function onSubmit(email: string, password: string) {
     const validateObj = validate({emailAddress: email}, constraints);
@@ -41,7 +40,9 @@ export const Profile = (): JSX.Element => {
       setisLoading(true);
       userServices.updateUser(credentials._id, credentials.token, email, password)
       .then(() => {
-        dispatch(getUser(credentials._id, credentials.token));
+        setisLoading(false);
+        dispatch(getUser({userId: credentials._id, token: credentials.token}));
+        navigation.goBack();
       })
       .catch(err => {
         console.log('err');
@@ -68,13 +69,6 @@ export const Profile = (): JSX.Element => {
       setEmailError('');
     }
   }
-
-  useEffect(() => {
-    if (Object.keys(error).length > 0) {
-      dispatch(resetFetch());
-      setisLoading(false);
-    }
-  })
 
   function onDelete() {
     userServices.deleteUser(credentials.token, credentials._id)

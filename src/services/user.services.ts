@@ -1,5 +1,5 @@
 import axios from 'react-native-axios';
-import {UserInterface} from '../redux/types';
+import {User} from '../redux/types';
 import {API_URL} from "@env";
 
 async function login({
@@ -8,7 +8,7 @@ async function login({
 }: {
   username: string;
   password: string;
-}): Promise<UserInterface> {
+}): Promise<User> {
   const response = await axios
     .post(API_URL + '/login', {
       email: username,       
@@ -18,7 +18,7 @@ async function login({
   return response.data;
 }
 
-async function register({username, password, email}: {username: string, password: string, email: string}): Promise<UserInterface> {
+async function register({username, password, email}: {username: string, password: string, email: string}): Promise<User> {
   const response = await axios
   .post(API_URL + '/register', {
     username: username,
@@ -60,7 +60,7 @@ async function updateUser(userId: string, token: string, email: string, password
   return response;
 }
 
-async function getUser(token: string, userId: string): Promise<UserInterface> {
+async function getUser(token: string, userId: string): Promise<User> {
   const response = await axios.get(API_URL + `/user/${userId}`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
 
   return response.data;
