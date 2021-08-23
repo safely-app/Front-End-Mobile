@@ -39,7 +39,6 @@ jobs:
       run: detox clean-framework-cache && detox build-framework-cache
 
     - name: Install Dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
 
     - name: Cache Pods
