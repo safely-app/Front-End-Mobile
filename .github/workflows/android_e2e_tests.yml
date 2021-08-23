@@ -1,0 +1,67 @@
+name: Android E2E Tests
+
+on: [push]
+
+jobs:
+  build:
+    name: Android E2E Tests
+    runs-on: macos-11
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_12.4.app
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+        
+    - name: Create env file
+      run: |
+        touch .env
+        echo API_URL=${{ secrets.API_URL }} >> .env
+        cat .env
+
+    - name: Cache node modules
+      uses: actions/cache@v1
+      id: cache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+    
+    - name: Install JDK
+      uses: joschi/setup-jdk@v2
+      with:
+        java-version: '11'
+        architecture: 'x64'
+
+    - name: Install detox-cli
+      run: npm install -g detox-cli
+
+    - name: Rebuild detox
+      if: steps.cache.outputs.cache-hit == 'true'
+      run: detox clean-framework-cache && detox build-framework-cache
+
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm install
+
+    - name: Detox Build
+      run: detox build --configuration android.emu.release
+
+    - name: Run Detox Test(s)
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        target: google_apis
+        profile: pixel
+        arch: x86
+        avd-name: Pixel_5_API_30
+        script: detox test --configuration android.emu.release --take-screenshots all
+    
+    - name: Uploading images taken from the E2E Tests
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: artifacts/ # or path/to/artifact

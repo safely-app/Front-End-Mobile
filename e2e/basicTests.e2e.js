@@ -1,6 +1,6 @@
 describe('SafelyMobileApp', () => {
   beforeAll(async () => {
-    await device.launchApp();
+    await device.launchApp({ newInstance: true });
   });
 
   beforeEach(async () => {
@@ -14,6 +14,7 @@ describe('SafelyMobileApp', () => {
   it('should login successfully', async () => {
     await element(by.id('inputUsername')).typeText('ios@test.fr');
     await element(by.id('inputPassword')).typeText('1234');
+    await device.pressBack();
     await element(by.text('Login')).tap();
     await expect(element(by.id('welcomeTitle'))).toBeVisible();
   });
@@ -26,12 +27,14 @@ describe('SafelyMobileApp', () => {
     await element(by.id('inputPassword')).typeText('12345');
     await element(by.id('inputConfirmPassword')).clearText();
     await element(by.id('inputConfirmPassword')).typeText('12345');
+    await device.pressBack();
     await element(by.id('buttonSubmit')).tap();
     await element(by.id('HomePage')).tap();
     await element(by.id('buttonLogout')).tap();
     await expect(element(by.id('title'))).toBeVisible();
     await element(by.id('inputUsername')).typeText('ios2@test.fr');
     await element(by.id('inputPassword')).typeText('12345');
+    await device.pressBack();
     await element(by.text('Login')).tap();
     await expect(element(by.id('welcomeTitle'))).toBeVisible();
   });
@@ -44,12 +47,14 @@ describe('SafelyMobileApp', () => {
     await element(by.id('inputPassword')).typeText('1234');
     await element(by.id('inputConfirmPassword')).clearText();
     await element(by.id('inputConfirmPassword')).typeText('1234');
+    await device.pressBack();
     await element(by.id('buttonSubmit')).tap();
     await element(by.id('HomePage')).tap();
     await element(by.id('buttonLogout')).tap();
     await expect(element(by.id('title'))).toBeVisible();
     await element(by.id('inputUsername')).typeText('ios@test.fr');
     await element(by.id('inputPassword')).typeText('1234');
+    await device.pressBack();
     await element(by.text('Login')).tap();
     await expect(element(by.id('welcomeTitle'))).toBeVisible();
   });
@@ -69,8 +74,10 @@ describe('SafelyMobileApp', () => {
     await element(by.id('inputEmail')).typeText('barbie@ken.fr');
     await element(by.id('inputPassword')).clearText();
     await element(by.id('inputPassword')).typeText('1234');
+    await device.pressBack();
     await element(by.id('inputConfirmPassword')).clearText();
     await element(by.id('inputConfirmPassword')).typeText('1234');
+    await device.pressBack();
     await element(by.id('buttonRegister')).tap();
 
     await expect(element(by.id('welcomeTitle'))).toBeVisible();
@@ -80,6 +87,7 @@ describe('SafelyMobileApp', () => {
 
     await element(by.id('inputUsername')).typeText('barbie@ken.fr');
     await element(by.id('inputPassword')).typeText('1234');
+    await device.pressBack();
     await element(by.text('Login')).tap();
     await expect(element(by.id('title'))).toBeVisible();
   })
