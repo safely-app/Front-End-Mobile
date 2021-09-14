@@ -50,7 +50,7 @@ const EntryPoint: React.FC = () => {
 
   return (
     <PersistGate persistor={persistor}>
-        <StatusBar barStyle="dark-content" hidden />
+        <StatusBar barStyle="dark-content" />
         <NavigationContainer>
             <RootStack.Navigator initialRouteName="Login">
                 {credentials.token ? (            

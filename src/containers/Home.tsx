@@ -10,7 +10,29 @@ import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { safeplaceServices } from '../services';
 import { SafeplaceInterface } from '../../types/safeplace';
+import RNLocation, { Subscription } from 'react-native-location';
+import { useNavigation } from '@react-navigation/core';
+import { LatLng } from 'react-native-maps';
 
+RNLocation.configure({
+  distanceFilter: 1, // Meters
+  desiredAccuracy: {
+    ios: "best",
+    android: "balancedPowerAccuracy"
+  },
+  // Android only
+  androidProvider: "auto",
+  interval: 5000, // Milliseconds
+  fastestInterval: 10000, // Milliseconds
+  maxWaitTime: 5000, // Milliseconds
+  // iOS Only
+  activityType: "other",
+  allowsBackgroundLocationUpdates: false,
+  headingFilter: 1, // Degrees
+  headingOrientation: "portrait",
+  pausesLocationUpdatesAutomatically: false,
+  showsBackgroundLocationIndicator: false,
+})
 export const Home = (): JSX.Element => {
 
   const dispatch = useDispatch();
@@ -18,9 +40,12 @@ export const Home = (): JSX.Element => {
   const [longitude, setLongitude] = useState<number>(0);
   const [latitude, setLatitude] = useState<number>(0);
   const [altitude, setAltitude] = useState<number>(0);
+  const [permissions, setPermissions] = useState<boolean>(false);
   const [safeplaces, setSafeplaces] = useState<SafeplaceInterface[]>([]);
+  const [origin, setOrigin] = useState<LatLng>({latitude: 0, longitude: 0});
+  const [destination, setDestination] = useState<LatLng>({latitude: 0, longitude: 0});
 
-    const logout = async () => {
+  const logout = async () => {
         try {
             dispatch(logoutUser());
             await AsyncStorage.removeItem('persist:root');
@@ -46,42 +71,31 @@ export const Home = (): JSX.Element => {
       })
     }, []);
 
+    let unsubscribe: Subscription;
     useEffect(() => {
-      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
-        title: "Safely App location permissions",
-        message: "Safely needs access to your locations for the map to be working properly",
-        buttonNegative: "No",
-        buttonPositive: "Yes",
-        buttonNeutral: "Later"
-      })
-      .then((res) => {
-        PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
-        .then((res) => {
-          Geolocation.getCurrentPosition(
-            (position) => {
-              console.log(position);
-              if (position.coords.altitude) {
-                setAltitude(position.coords.altitude);
+      RNLocation.requestPermission({
+        ios: "whenInUse",
+        android: {
+          detail: "fine"
+        }
+      }).then(granted => {
+          if (granted) {
+            setPermissions(true);
+            unsubscribe = RNLocation.subscribeToLocationUpdates(locations => {
+              if (locations[0].altitude) {
+                setAltitude(locations[0].altitude);
               }
-              setLongitude(position.coords.longitude);
-              setLatitude(position.coords.latitude);
-            },
-            (error) => {
-              // See error code charts below.
-              console.log(error.code, error.message);
-            },
-            { enableHighAccuracy: true, timeout: 2000, maximumAge: 3600000 }
-          );
+              setLongitude(locations[0].longitude);
+              setLatitude(locations[0].latitude);
+            })
+          }
         })
-        .catch((err) => {
-          console.log(err);
-        });
-      })
-      .catch((err) => {
-        console.log("error");
-        console.log(err);
-      })
-    })
+
+        return () => {
+          if(unsubscribe)
+            unsubscribe();
+        }
+    }, [])
 
   return (
     <>
@@ -92,6 +106,11 @@ export const Home = (): JSX.Element => {
         longitude={longitude}
         altitude={altitude}
         safeplaces={safeplaces}
+        permissions={permissions}
+        origin={origin}
+        destination={destination}
+        setOrigin={setOrigin}
+        setDestination={setDestination}
       />
     </>
   );
