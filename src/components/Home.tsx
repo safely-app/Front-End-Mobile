@@ -14,6 +14,8 @@ interface Props {
     destination: LatLng;
     setOrigin: (obj: LatLng) => void;
     setDestination: (obj: LatLng) => void;
+    isMapLoaded: boolean;
+    setIsMapLoaded: (bool: boolean) => boolean;
 }
 
 const mapStyle = StyleSheet.create({
@@ -48,7 +50,7 @@ const mapStyle = StyleSheet.create({
       },
    });
 
-export const HomeComponent = ({latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
+export const HomeComponent = ({isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
 
     const mapView = React.createRef();
 
@@ -66,29 +68,34 @@ export const HomeComponent = ({latitude, longitude, safeplaces, permissions, ori
                         latitudeDelta: 0.015,
                         longitudeDelta: 0.0121,
                     }}
+                    onMapReady={() => {setIsMapLoaded(true)}}
                 >
-                    <Marker
-                        coordinate={{latitude: latitude, longitude: longitude}}
-                        key={"Person"}
-                    >
-                        <FontAwesomeIcon icon={faLocationArrow} />
-                    </Marker>
+                    {isMapLoaded && (
+                        <Marker
+                            coordinate={{latitude: latitude, longitude: longitude}}
+                            key={"Person"}
+                        >
+                            <FontAwesomeIcon icon={faLocationArrow} />
+                        </Marker>
+                    )}
                 </MapView>
             </View>
-            <View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0}}>
-                <TouchableOpacity style={{position: 'absolute', left: windowWidth*0.85, bottom: windowWidth*0.2}}>
-                        <FontAwesomeIcon icon={faDirections} color={"white"} size={windowWidth*0.075} style={{zIndex: 9999, left: windowWidth*0.018, bottom: windowWidth*0.02}} />
-                        <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={windowWidth*0.11} style={{bottom: 45}} />
-                </TouchableOpacity>
-                <TouchableOpacity style={{position: 'absolute', left: windowWidth*0.85, bottom: windowWidth*0.05}}>
-                        <FontAwesomeIcon icon={faMapPin} color={"white"} size={windowWidth*0.075} style={{zIndex: 9999, left: windowWidth*0.018, bottom: windowWidth*0.02}} />
-                        <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={windowWidth*0.11} style={{bottom: 45}} />
-                </TouchableOpacity>
-                <TouchableOpacity style={{position: 'absolute', left: windowWidth*0.85, bottom: windowWidth*-0.1}}>
-                        <FontAwesomeIcon icon={faStore} color={"white"} size={windowWidth*0.075} style={{zIndex: 9999, left: windowWidth*0.018, bottom: windowWidth*0.02}} />
-                        <FontAwesomeIcon icon={faCircle} color={"#EF4F4F"} size={windowWidth*0.11} style={{bottom: 45}} />
-                </TouchableOpacity>
-            </View>
+            {isMapLoaded && (
+                <View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0}}>
+                    <TouchableOpacity style={{position: 'absolute', left: windowWidth*0.85, bottom: windowWidth*0.2}}>
+                            <FontAwesomeIcon icon={faDirections} color={"white"} size={windowWidth*0.075} style={{zIndex: 9999, left: windowWidth*0.018, bottom: windowWidth*0.02}} />
+                            <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={windowWidth*0.11} style={{bottom: 45}} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{position: 'absolute', left: windowWidth*0.85, bottom: windowWidth*0.05}}>
+                            <FontAwesomeIcon icon={faMapPin} color={"white"} size={windowWidth*0.075} style={{zIndex: 9999, left: windowWidth*0.018, bottom: windowWidth*0.02}} />
+                            <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={windowWidth*0.11} style={{bottom: 45}} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{position: 'absolute', left: windowWidth*0.85, bottom: windowWidth*-0.1}}>
+                            <FontAwesomeIcon icon={faStore} color={"white"} size={windowWidth*0.075} style={{zIndex: 9999, left: windowWidth*0.018, bottom: windowWidth*0.02}} />
+                            <FontAwesomeIcon icon={faCircle} color={"#EF4F4F"} size={windowWidth*0.11} style={{bottom: 45}} />
+                    </TouchableOpacity>
+                </View>
+            )}
         </>
         // <SafeAreaView>
         //     <View style={mapStyle.placesInput}>
