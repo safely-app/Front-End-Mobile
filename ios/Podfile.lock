@@ -1,6 +1,29 @@
 PODS:
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
+  - EXConstants (11.0.2):
+    - ExpoModulesCore
+    - UMCore
+  - EXFileSystem (11.1.3):
+    - ExpoModulesCore
+    - UMCore
+  - EXImageLoader (2.2.0):
+    - ExpoModulesCore
+    - React-Core
+    - UMCore
+  - EXLocation (12.1.2):
+    - ExpoModulesCore
+    - UMCore
+    - UMTaskManagerInterface
+  - ExpoModulesCore (0.2.0):
+    - ExpoModulesCore/Core (= 0.2.0)
+    - ExpoModulesCore/Interfaces (= 0.2.0)
+    - UMCore
+  - ExpoModulesCore/Core (0.2.0):
+    - UMCore
+  - ExpoModulesCore/Interfaces (0.2.0):
+    - ExpoModulesCore/Core
+    - UMCore
   - FBLazyVector (0.64.0)
   - FBReactNativeSpec (0.64.0):
     - RCT-Folly (= 2020.01.13.00)
@@ -224,14 +247,10 @@ PODS:
     - React-jsi (= 0.64.0)
     - React-perflogger (= 0.64.0)
   - React-jsinspector (0.64.0)
-  - react-native-geolocation-service (5.3.0-beta.2):
-    - React
   - react-native-google-maps (0.28.0):
     - Google-Maps-iOS-Utils (= 2.1.0)
     - GoogleMaps (= 3.5.0)
     - React-Core
-  - react-native-location (2.5.0):
-    - React
   - react-native-maps (0.28.0):
     - React-Core
   - react-native-safe-area-context (3.3.0):
@@ -342,10 +361,23 @@ PODS:
     - React
   - RNVectorIcons (7.1.0):
     - React
+  - UMAppLoader (2.2.0)
+  - UMCore (7.1.2)
+  - UMReactNativeAdapter (6.3.9):
+    - ExpoModulesCore
+    - React-Core
+    - UMCore
+  - UMTaskManagerInterface (6.2.0):
+    - UMCore
   - Yoga (1.14.0)
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXFileSystem (from `../node_modules/expo-file-system/ios`)
+  - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
+  - EXLocation (from `../node_modules/expo-location/ios`)
+  - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -362,9 +394,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
-  - react-native-location (from `../node_modules/react-native-location`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -386,6 +416,10 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
+  - "UMCore (from `../node_modules/@unimodules/core/ios`)"
+  - "UMReactNativeAdapter (from `../node_modules/@unimodules/react-native-adapter/ios`)"
+  - UMTaskManagerInterface (from `../node_modules/unimodules-task-manager-interface/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -397,6 +431,16 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EXConstants:
+    :path: "../node_modules/expo-constants/ios"
+  EXFileSystem:
+    :path: "../node_modules/expo-file-system/ios"
+  EXImageLoader:
+    :path: "../node_modules/expo-image-loader/ios"
+  EXLocation:
+    :path: "../node_modules/expo-location/ios"
+  ExpoModulesCore:
+    :path: "../node_modules/expo-modules-core/ios"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -425,12 +469,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
-  react-native-geolocation-service:
-    :path: "../node_modules/react-native-geolocation-service"
   react-native-google-maps:
     :path: "../node_modules/react-native-maps"
-  react-native-location:
-    :path: "../node_modules/react-native-location"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-safe-area-context:
@@ -473,14 +513,27 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  UMAppLoader:
+    :path: "../node_modules/unimodules-app-loader/ios"
+  UMCore:
+    :path: "../node_modules/@unimodules/core/ios"
+  UMReactNativeAdapter:
+    :path: "../node_modules/@unimodules/react-native-adapter/ios"
+  UMTaskManagerInterface:
+    :path: "../node_modules/unimodules-task-manager-interface/ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
+  EXConstants: 4cb52b6d8f636c767104a44bf7db3873e9c01a6f
+  EXFileSystem: 0a04aba8da751b9ac954065911bcf166503f8267
+  EXImageLoader: d3531a3fe530b22925c19977cb53bb43e3821fe6
+  EXLocation: bc7fe9071f65bb5ef6acc13d29a49d57d52c9e64
+  ExpoModulesCore: 2734852616127a6c1fc23012197890a6f3763dc7
   FBLazyVector: 49cbe4b43e445b06bf29199b6ad2057649e4c8f5
-  FBReactNativeSpec: bbd31cf5ce44ddc9f0ee963f6d60489bb1342998
+  FBReactNativeSpec: 9e3eb3b39406e110e948b078111d152f5a6cbcea
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
@@ -495,9 +548,7 @@ SPEC CHECKSUMS:
   React-jsi: 74341196d9547cbcbcfa4b3bbbf03af56431d5a1
   React-jsiexecutor: 06a9c77b56902ae7ffcdd7a4905f664adc5d237b
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
-  react-native-geolocation-service: 94c7d2ffdbbf4dd431241e0c8e37d491ebd41430
   react-native-google-maps: 46dea4aa4acb7300beff508f64d9f8c84e9fb106
-  react-native-location: 5a40ec1cc6abf2f6d94df979f98ec76c3a415681
   react-native-maps: 2d405b4e8cee0282e4c02bac434d81450dfea877
   react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af
@@ -519,8 +570,12 @@ SPEC CHECKSUMS:
   RNScreens: eb0dfb2d6b21d2d7f980ad46b14eb306d2f1062e
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
+  UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
+  UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
+  UMReactNativeAdapter: d03cefd0e4e4179ab8c490408589f1c8a6c8b785
+  UMTaskManagerInterface: 2be431101b73604e64fbfffcf759336f9d8fccbb
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
 
-PODFILE CHECKSUM: cba19b3ffdd1d91e28412644fa4ca985f6c50960
+PODFILE CHECKSUM: af8afa6b31b01d79865a776dcbf59c466a9ceb8e
 
 COCOAPODS: 1.10.1
