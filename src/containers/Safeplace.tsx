@@ -39,6 +39,11 @@ export const Safeplace = (): JSX.Element => {
         .then((res) => {
             console.log(res.data);
             setModalComment(false);
+            safeplaceServices.getCommentSafeplace()
+            .then((res) => {
+                console.log(res.data);
+                setUserComments(res.data);
+            })
         })
         .catch((err) => {
             console.log(err);
