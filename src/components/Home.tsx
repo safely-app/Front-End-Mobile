@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { LegacyRef } from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import MapView, {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
+import MapViewDirections from 'react-native-maps-directions';
 
 interface Props {
     latitude: number;
@@ -106,6 +107,7 @@ export const HomeComponent = ({setOriginInput, setDestinationInput, originInput,
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={mapStyle.map}
+                    ref={mapView}
                     region={{
                         latitude: latitude,
                         longitude: longitude,
@@ -129,19 +131,29 @@ export const HomeComponent = ({setOriginInput, setDestinationInput, originInput,
                                 title={safeplace.name}               
                             />
                     )) : null }
+                    {(isMapLoaded && navigationMode && origin.latitude !== 0 && origin.longitude !== 0) && (destination.latitude !== 0 && destination.longitude !== 0) && (
+                        <MapViewDirections
+                            origin={{latitude: origin.latitude, longitude: origin.longitude}}
+                            destination={{latitude: destination.latitude, longitude: destination.longitude}}
+                            apikey={"AIzaSyBg2Odl0mQ6nXka-qOnhbV235zitMpHPEE"}
+                            precision={"high"}
+                        />
+                    )}
                 </MapView>
             </View>
             {isMapLoaded && (
                 <View style={{position: 'absolute', top: (windowHeight)*0.70, bottom: windowHeight*0, left: windowWidth*0.85, right: 0}}>
-                    <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*0.15}}>
+                    <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*0.15}} onPress={() => {setNavigationMode(!navigationMode)}}>
                             <FontAwesomeIcon icon={faDirections} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0165, bottom: (windowHeight)*0.0135}} />
                             <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*-0.11}}>
+                    <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*0.022}} onPress={() => {
+                            mapView.current.animateCamera({center: {latitude: latitude, longitude: longitude}});
+                    }}>
                             <FontAwesomeIcon icon={faMapPin} color={"white"} size={(windowWidth/windowHeight)*60} style={{zIndex: 9999, left: (windowWidth)*0.0140, bottom: (windowHeight)*0.0100}} />
                             <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*0.022}}>
+                    <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*-0.11}}>
                             <FontAwesomeIcon icon={faStore} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0185, bottom: (windowHeight)*0.0135}} />
                             <FontAwesomeIcon icon={faCircle} color={"#EF4F4F"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                     </TouchableOpacity>
