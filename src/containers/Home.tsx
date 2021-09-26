@@ -152,6 +152,7 @@ export const Home = (): JSX.Element => {
         navigationMode={navigationMode}
         setNavigationMode={setNavigationMode}
         goToSafeplace={goToSafeplace}
+        logout={logout}
       />
     </>
   );
