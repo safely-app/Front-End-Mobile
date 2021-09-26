@@ -158,7 +158,7 @@ export const HomeComponent = ({setOriginInput, setDestinationInput, originInput,
                             onFocus={() => {setOriginFocus(true)}}
                         />
 
-                        {originInput.length > 0 && (
+                        {originInput.length > 0 && !originFocus && (
                             <TextInput
                                 placeholder="Destination"
                                 style={{backgroundColor: 'white', height: (windowHeight)*0.065, width: (windowWidth)*0.6, top: (windowHeight)*0.04, shadowColor: "#000", elevation: 15}}
