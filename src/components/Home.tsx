@@ -31,6 +31,7 @@ interface Props {
     setCoordsFromPlace: (address: string, type: string) => void;
     navigationMode: boolean;
     setNavigationMode: (bool: boolean) => void;
+    goToSafeplace: (id: string) => void;
 }
 
 const mapStyle = StyleSheet.create({
@@ -94,7 +95,7 @@ const mapStyle = StyleSheet.create({
     }
    });
 
-export const HomeComponent = ({setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
+export const HomeComponent = ({goToSafeplace, setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
 
     const mapView = React.createRef();
 
@@ -128,7 +129,8 @@ export const HomeComponent = ({setOriginInput, setDestinationInput, originInput,
                             <Marker
                                 coordinate={{latitude: parseFloat(safeplace.coordinate[0]), longitude: parseFloat(safeplace.coordinate[1])}}
                                 key={safeplace._id}
-                                title={safeplace.name}               
+                                title={safeplace.name}
+                                onPress={() => {goToSafeplace(safeplace._id)}}
                             />
                     )) : null }
                     {(isMapLoaded && navigationMode && origin.latitude !== 0 && origin.longitude !== 0) && (destination.latitude !== 0 && destination.longitude !== 0) && (

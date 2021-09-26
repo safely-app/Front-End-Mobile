@@ -4,4 +4,5 @@ export type RootStackParamList = {
     HomeTabs: undefined;
     ForgotPWD: undefined;
     ChangePWD: {id: string, token: string};
+    Safeplace: {id: string};
 };

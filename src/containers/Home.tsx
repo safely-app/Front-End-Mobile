@@ -12,6 +12,7 @@ import { LatLng } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import {googleServices} from '../services';
+import { useNavigation } from '@react-navigation/native';
 
 export const Home = (): JSX.Element => {
 
@@ -31,6 +32,7 @@ export const Home = (): JSX.Element => {
   const [destinationFocus, setDestinationFocus] = useState<boolean>(false);
   const [destinationInput, setDestinationInput] = useState<string>("");
   const [navigationMode, setNavigationMode] = useState<boolean>(false);
+  const navigation = useNavigation();
 
   const logout = async () => {
     try {
@@ -118,6 +120,10 @@ export const Home = (): JSX.Element => {
     })
   }
 
+  const goToSafeplace = (id: string) => {
+    navigation.navigate('Safeplace', {id: id});
+  }
+
   return (
     <>
       <HomeComponent
@@ -145,6 +151,7 @@ export const Home = (): JSX.Element => {
         setCoordsFromPlace={setCoordsFromPlace}
         navigationMode={navigationMode}
         setNavigationMode={setNavigationMode}
+        goToSafeplace={goToSafeplace}
       />
     </>
   );
