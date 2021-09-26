@@ -148,30 +148,72 @@ export const HomeComponent = ({setOriginInput, setDestinationInput, originInput,
                 </View>
             )}
             {isMapLoaded && (
-                    <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}} accessible={false}>
-                        <View style={{alignItems: 'center', position: 'absolute', top: (windowHeight)*0.05, bottom: originFocus || destinationFocus? 0 : (windowHeight)*0.700, left: originFocus || destinationFocus? 0 : (windowWidth)*0.18, right: originFocus || destinationFocus? 0 : (windowWidth)*0.18, backgroundColor: 'green'}}>
-                            <TextInput
-                                placeholder="Origin"
-                                style={{backgroundColor: 'white', height: (windowHeight)*0.065, width: (windowWidth)*0.6, top: (windowHeight)*0.02}}
-                                value={originInput}
-                                onChangeText={(text) => {setOriginInput(text); getOriginPlaces(text, latitude, longitude, "origin");}}
-                                onFocus={() => {setOriginFocus(true)}}
-                                onBlur={() => {setOriginFocus(false)}}
-                                clearButtonMode={'always'}
-                            />
+                <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); originFocus ? setOriginFocus(false) : null; destinationFocus ? setDestinationFocus(false) : null}} accessible={false}>
+                    <View style={{alignItems: 'center', position: 'absolute', top: (windowHeight)*0.05, bottom: originFocus || destinationFocus ? 0 : (windowHeight)*0.700, left: originFocus || destinationFocus ? 0 : (windowWidth)*0.18, right: originFocus || destinationFocus ? 0 : (windowWidth)*0.18}}>
+                        <TextInput
+                            placeholder="Origin"
+                            style={{backgroundColor: 'white', height: (windowHeight)*0.065, width: (windowWidth)*0.6, top: (windowHeight)*0.02, shadowColor: "#000", elevation: 15}}
+                            value={originInput}
+                            onChangeText={(text) => {setOriginInput(text); getOriginPlaces(text, latitude, longitude, "origin");}}
+                            onFocus={() => {setOriginFocus(true)}}
+                        />
 
-                            {originInput.length > 0 && (
-                                <TextInput
-                                    placeholder="Destination"
-                                    style={{backgroundColor: 'white', height: (windowHeight)*0.065, width: (windowWidth)*0.6, top: (windowHeight)*0.04}}
-                                    value={destinationInput}
-                                    onChangeText={(text) => {setDestinationInput(text); getOriginPlaces(text, latitude, longitude, "destination")}}
-                                    onFocus={() => {setDestinationFocus(true)}}
-                                    onBlur={() => {setDestinationFocus(false)}}
-                                />
-                            )}
-                        </View>
-                    </TouchableWithoutFeedback>
+                        {originInput.length > 0 && (
+                            <TextInput
+                                placeholder="Destination"
+                                style={{backgroundColor: 'white', height: (windowHeight)*0.065, width: (windowWidth)*0.6, top: (windowHeight)*0.04, shadowColor: "#000", elevation: 15}}
+                                value={destinationInput}
+                                onChangeText={(text) => {setDestinationInput(text); getOriginPlaces(text, latitude, longitude, "destination")}}
+                                onFocus={() => {setDestinationFocus(true)}}
+                            />
+                        )}
+
+                        {originFocus && (
+                            <ScrollView style={(originPlaces.length > 0 && originFocus) ? {position: 'absolute', top: (windowHeight)*0.085, bottom: 0, left: (windowWidth)*0.20, right: 0, backgroundColor: 'white', width: '60%', height: '40%', borderBottomLeftRadius: 25, borderBottomRightRadius: 25} : {}} contentContainerStyle={{margin: 20}}>
+                                {(originPlaces.length > 0 && originFocus) && originPlaces.map((place, index) => (
+                                    <View key={"view" + index}>
+                                        
+                                        <TouchableOpacity
+                                            onPress={() => {setOriginInput(place.description); setOriginFocus(false); setCoordsFromPlace(place.description, "origin"); Keyboard.dismiss()}}
+                                            key={index} 
+                                            style={{zIndex: 9999, marginBottom: 10}}
+                                            >
+                                            <Text 
+                                            >
+                                                {place.description}
+                                            </Text>
+                                        </TouchableOpacity>
+                                        
+                                        <View key={"line" + index} style={{alignSelf: 'stretch', borderBottomWidth: 0.2, borderBottomColor: 'lightgray', width: '100%', marginBottom: 15}} />
+                                    
+                                    </View>
+                                ))}
+                            </ScrollView>
+                        )}
+                        {destinationFocus && (
+                            <ScrollView style={(destinationPlaces.length > 0 && destinationFocus) ? {position: 'absolute', top: (windowHeight)*0.170, bottom: 0, left: (windowWidth)*0.20, right: 0, backgroundColor: 'white', width: '60%', height: '40%', borderBottomLeftRadius: 25, borderBottomRightRadius: 25} : {}} contentContainerStyle={{margin: 20}}>
+                
+                                    {(destinationPlaces.length > 0 && destinationFocus) && destinationPlaces.map((place, index) => (
+                                        <View key={"view" + index}>
+                                            
+                                            <TouchableOpacity
+                                                onPress={() => {setDestinationInput(place.description); setDestinationFocus(false); setCoordsFromPlace(place.description, "destination")}}
+                                                key={index} 
+                                                style={{zIndex: 9999, marginBottom: 10}}
+                                            >
+                                                <Text>
+                                                    {place.description}
+                                                </Text>
+                                            </TouchableOpacity>
+            
+                                            <View key={"line" + index} style={{alignSelf: 'stretch', borderBottomWidth: 0.2, borderBottomColor: 'lightgray', width: '100%', marginBottom: 15}} />
+                                        
+                                        </View>
+                                    ))}
+                            </ScrollView>
+                        )}
+                    </View>
+                </TouchableWithoutFeedback>
             )}
         </>
         // <SafeAreaView>
