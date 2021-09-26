@@ -27,6 +27,7 @@ export const SafeplaceComponent = ({userComments, comment, setComment, grade, se
 
     return (
         <SafeAreaView>
+            <ScrollView>
             <Text style={{margin: 15}} type="h1" color="black" size="xl" testID="safeplaceTitle">{safeplace.name}</Text>
             <View style={{alignSelf: 'stretch', borderBottomWidth: 0.6, borderBottomColor: 'lightgray', width: '100%', marginBottom: 15}} />
             <View style={{display: 'flex', flexDirection: 'row'}}>
@@ -67,7 +68,7 @@ export const SafeplaceComponent = ({userComments, comment, setComment, grade, se
                     <FontAwesomeIcon icon={faPlusSquare} color={"#1E90FF"} size={(windowHeight/windowWidth)*20} style={{}} />            
                 </TouchableOpacity>
             </View>
-            <Text style={{margin: 15}} type="h1" color="black" size="xl" testID="safeplaceTitleComments">Commentaire</Text>
+            <Text style={{margin: 15}} type="h1" color="black" size="xl" testID="safeplaceTitleComments">Commentaires</Text>
             <Modal
                 visible={modalComment}
                 animationType={"slide"}
@@ -112,9 +113,9 @@ export const SafeplaceComponent = ({userComments, comment, setComment, grade, se
                     </View>
                 </TouchableOpacity>
             </Modal>
-            <ScrollView>
                 {userComments && userComments.length > 0 && userComments.map((comment, index) => {
-                    return (
+                    if (comment.safeplaceId === safeplace._id) {
+                        return (
                             <View style={{display: 'flex', flexDirection: 'column', margin: 15}}>
                                 <View style={{display: 'flex', flexDirection: 'row'}}>
                                     <FontAwesomeIcon icon={faUser} color={"#1E90FF"} size={(windowHeight/windowWidth)*15} style={{}} />
@@ -126,10 +127,11 @@ export const SafeplaceComponent = ({userComments, comment, setComment, grade, se
                                         />
                                     </View>
                                 </View>
-                                <Text key={index}>{comment.comment}</Text>
+                                <Text key={index} style={{margin: 15}}>{comment.comment}</Text>
                                 <View style={{alignSelf: 'stretch', borderBottomWidth: 0.6, borderBottomColor: 'lightgray', width: '100%', marginBottom: 15, marginTop: 15}} />
                             </View>
-                    )
+                        )
+                    }
                 })}
             </ScrollView>
         </SafeAreaView>
