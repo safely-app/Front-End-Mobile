@@ -27,7 +27,7 @@ async function register({username, password, email}: {username: string, password
     email: email,
     password: password,
   });
-
+       
   return response.data;
 }
 

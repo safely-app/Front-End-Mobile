@@ -1,6 +1,6 @@
 import React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
-import MapView, {LatLng, Marker, PROVIDER_GOOGLE, UrlTile} from 'react-native-maps';
+import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import MapView, {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
@@ -15,7 +15,21 @@ interface Props {
     setOrigin: (obj: LatLng) => void;
     setDestination: (obj: LatLng) => void;
     isMapLoaded: boolean;
-    setIsMapLoaded: (bool: boolean) => boolean;
+    setIsMapLoaded: (bool: boolean) => void;
+    setOriginInput: (origin: string) => void;
+    setDestinationInput: (destination: string) => void;
+    originInput: string;
+    originPlaces: [];
+    destinationInput: string;
+    getOriginPlaces: (text: string, latitude: number, longitude: number, input: String) => void;
+    destinationFocus: boolean;
+    originFocus: boolean;
+    setOriginFocus: (bool: boolean) => void;
+    setDestinationFocus: (bool: boolean) => void;
+    destinationPlaces: [];
+    setCoordsFromPlace: (address: string, type: string) => void;
+    navigationMode: boolean;
+    setNavigationMode: (bool: boolean) => void;
 }
 
 const mapStyle = StyleSheet.create({
@@ -25,12 +39,6 @@ const mapStyle = StyleSheet.create({
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'column',
-      },
-      debugContainer: {
-          display: 'flex',
-          justifyContent: 'space-around',
-          flexDirection: 'row',
-          marginTop: "160%"
       },
       container: {
         position: 'absolute',
@@ -48,9 +56,44 @@ const mapStyle = StyleSheet.create({
         right: 0,
         bottom: 0,
       },
+      originInput: {
+        
+    },
+    destinationInput: {
+      width: '80%',
+      marginTop: 10,
+      backgroundColor: "white",
+    //   borderRadius: 25,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 2,
+        height: 0,
+     },
+     shadowOpacity: 0.25,
+     shadowRadius: 15.84,
+     elevation: 2,
+    },
+    originPlace: {
+        backgroundColor: "white",
+        width: '80%',
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25,
+        height: '87%',
+        position: 'absolute',
+        top: 48
+    },
+    destinationPlace: {
+      backgroundColor: "white",
+      width: '80%',
+      borderBottomLeftRadius: 25,
+      borderBottomRightRadius: 25,
+      height: '70%',
+      position: 'absolute',
+      top: 100
+    }
    });
 
-export const HomeComponent = ({isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
+export const HomeComponent = ({setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
 
     const mapView = React.createRef();
 
@@ -89,20 +132,6 @@ export const HomeComponent = ({isMapLoaded, setIsMapLoaded, latitude, longitude,
                 </MapView>
             </View>
             {isMapLoaded && (
-                // <View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0}}>
-                //     <TouchableOpacity style={{position: 'absolute', left: windowWidth*0.85, bottom: windowWidth*0.2}}>
-                //             <FontAwesomeIcon icon={faDirections} color={"white"} size={windowWidth*0.075} style={{zIndex: 9999, left: windowWidth*0.018, bottom: windowWidth*0.02}} />
-                //             <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={windowWidth*0.11} style={{bottom: 45}} />
-                //     </TouchableOpacity>
-                //     <TouchableOpacity style={{position: 'absolute', left: windowWidth*0.85, bottom: windowWidth*0.05}}>
-                //             <FontAwesomeIcon icon={faMapPin} color={"white"} size={windowWidth*0.075} style={{zIndex: 9999, left: windowWidth*0.018, bottom: windowWidth*0.02}} />
-                //             <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={windowWidth*0.11} style={{bottom: 45}} />
-                //     </TouchableOpacity>
-                //     <TouchableOpacity style={{position: 'absolute', left: windowWidth*0.85, bottom: windowWidth*-0.1}}>
-                //             <FontAwesomeIcon icon={faStore} color={"white"} size={windowWidth*0.075} style={{zIndex: 9999, left: windowWidth*0.018, bottom: windowWidth*0.02}} />
-                //             <FontAwesomeIcon icon={faCircle} color={"#EF4F4F"} size={windowWidth*0.11} style={{bottom: 45}} />
-                //     </TouchableOpacity>
-                // </View>
                 <View style={{position: 'absolute', top: (windowHeight)*0.70, bottom: windowHeight*0, left: windowWidth*0.85, right: 0}}>
                     <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*0.15}}>
                             <FontAwesomeIcon icon={faDirections} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0165, bottom: (windowHeight)*0.0135}} />
@@ -117,6 +146,32 @@ export const HomeComponent = ({isMapLoaded, setIsMapLoaded, latitude, longitude,
                             <FontAwesomeIcon icon={faCircle} color={"#EF4F4F"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                     </TouchableOpacity>
                 </View>
+            )}
+            {isMapLoaded && (
+                    <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}} accessible={false}>
+                        <View style={{alignItems: 'center', position: 'absolute', top: (windowHeight)*0.05, bottom: originFocus || destinationFocus? 0 : (windowHeight)*0.700, left: originFocus || destinationFocus? 0 : (windowWidth)*0.18, right: originFocus || destinationFocus? 0 : (windowWidth)*0.18, backgroundColor: 'green'}}>
+                            <TextInput
+                                placeholder="Origin"
+                                style={{backgroundColor: 'white', height: (windowHeight)*0.065, width: (windowWidth)*0.6, top: (windowHeight)*0.02}}
+                                value={originInput}
+                                onChangeText={(text) => {setOriginInput(text); getOriginPlaces(text, latitude, longitude, "origin");}}
+                                onFocus={() => {setOriginFocus(true)}}
+                                onBlur={() => {setOriginFocus(false)}}
+                                clearButtonMode={'always'}
+                            />
+
+                            {originInput.length > 0 && (
+                                <TextInput
+                                    placeholder="Destination"
+                                    style={{backgroundColor: 'white', height: (windowHeight)*0.065, width: (windowWidth)*0.6, top: (windowHeight)*0.04}}
+                                    value={destinationInput}
+                                    onChangeText={(text) => {setDestinationInput(text); getOriginPlaces(text, latitude, longitude, "destination")}}
+                                    onFocus={() => {setDestinationFocus(true)}}
+                                    onBlur={() => {setDestinationFocus(false)}}
+                                />
+                            )}
+                        </View>
+                    </TouchableWithoutFeedback>
             )}
         </>
         // <SafeAreaView>

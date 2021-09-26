@@ -11,6 +11,7 @@ import { SafeplaceInterface } from '../../types/safeplace';
 import { LatLng } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
+import {googleServices} from '../services';
 
 export const Home = (): JSX.Element => {
 
@@ -23,6 +24,13 @@ export const Home = (): JSX.Element => {
   const [origin, setOrigin] = useState<LatLng>({latitude: 0, longitude: 0});
   const [destination, setDestination] = useState<LatLng>({latitude: 0, longitude: 0});
   const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
+  const [originInput, setOriginInput] = useState<string>('');
+  const [originPlaces, setOriginPlaces] = useState<[]>([]);
+  const [destinationPlaces, setDestinationPlaces] = useState<[]>([]);
+  const [originFocus, setOriginFocus] = useState<boolean>(false);
+  const [destinationFocus, setDestinationFocus] = useState<boolean>(false);
+  const [destinationInput, setDestinationInput] = useState<string>("");
+  const [navigationMode, setNavigationMode] = useState<boolean>(false);
 
   const logout = async () => {
     try {
@@ -81,6 +89,35 @@ export const Home = (): JSX.Element => {
     })
   }, [])
 
+  const getOriginPlaces = (text: string, latitude: number, longitude: number, input: String) => {
+    googleServices.getPlaces(text, latitude, longitude)
+    .then((res) => {
+      console.log(res.data);
+      if (input === "origin") {
+        setOriginPlaces(res.data.predictions);
+      } else {
+        setDestinationPlaces(res.data.predictions);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  const setCoordsFromPlace = (address: string, type: string)  => {
+    googleServices.getCoords(address)
+    .then((res) => {
+      if (type === "origin") {
+        setOrigin({latitude: res.data.results[0].geometry.location.lat, longitude: res.data.results[0].geometry.location.lng});
+      } else {
+        setDestination({latitude: res.data.results[0].geometry.location.lat, longitude: res.data.results[0].geometry.location.lng});
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   return (
     <>
       <HomeComponent
@@ -94,6 +131,20 @@ export const Home = (): JSX.Element => {
         setDestination={setDestination}
         isMapLoaded={isMapLoaded}
         setIsMapLoaded={setIsMapLoaded}
+        setOriginInput={setOriginInput}
+        setDestinationInput={setDestinationInput}
+        originInput={originInput}
+        originPlaces={originPlaces}
+        destinationInput={destinationInput}
+        getOriginPlaces={getOriginPlaces}
+        originFocus={originFocus}
+        destinationFocus={destinationFocus}
+        setOriginFocus={setOriginFocus}
+        setDestinationFocus={setDestinationFocus}
+        destinationPlaces={destinationPlaces}
+        setCoordsFromPlace={setCoordsFromPlace}
+        navigationMode={navigationMode}
+        setNavigationMode={setNavigationMode}
       />
     </>
   );
