@@ -110,7 +110,7 @@ export const HomeComponent = ({logout, goToSafeplace, setOriginInput, setDestina
                     provider={PROVIDER_GOOGLE}
                     style={mapStyle.map}
                     ref={mapView}
-                    region={{
+                    initialRegion={{
                         latitude: latitude,
                         longitude: longitude,
                         latitudeDelta: 0.015,
