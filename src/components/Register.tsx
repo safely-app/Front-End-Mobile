@@ -1,6 +1,7 @@
 import React from 'react';
-import {SafeAreaView, TouchableOpacity, TextInput, Text, ActivityIndicator} from 'react-native';
+import {SafeAreaView, TouchableOpacity, ActivityIndicator, Dimensions} from 'react-native';
 import {styles} from '../styles'
+import { Text, Button, HLine, TextInput } from '../components';
 
 interface Props {
   setUsername: (username: string) => void;
@@ -22,33 +23,46 @@ interface Props {
 }
 
 export const RegisterComponent  = ({setUsername, setPassword, setEmail, username, password, email, onRegister, emailError, passwordError, usernameError, isLoading, checkEmail, checkPassword, checkUsername, confirmPassword, setconfirmPassword}: Props): JSX.Element => {
+  
+  const windowHeight = Dimensions.get('window').height;
+  const windowWidth = Dimensions.get('window').width;
+  
   return (
-    <SafeAreaView style={styles.content}>
-      <Text style={styles.title}>Register</Text>
+    <SafeAreaView style={{flex: 1, flexDirection: 'column', justifyContent: 'center', margin: windowWidth*0.020}}>
+      <Text type="h1" color="blue" size="xxl" testID="titleRegister" style={{margin: windowWidth*0.020}}>Register</Text>
       <TextInput 
         placeholder="Username"
         placeholderTextColor="gray"
-        style={styles.input}
+        style={{margin: windowWidth*0.022, paddingLeft: 10}}
+        type="roundedTextInput"
+        bgColor="lightBlue"
+        width="65%"
         value={username}
         onChangeText={(text) => {setUsername(text); checkUsername(text);}}
         testID="inputUsername"
         />
-      <Text style={{color: 'red', marginLeft: 12}}>
+      <Text style={{marginLeft: windowWidth*0.022}} type="body" color="red" size="s">
         {usernameError ? usernameError[0] : ''}
       </Text>
       <TextInput 
-        style={styles.input}
+        style={{margin: windowWidth*0.022, paddingLeft: 10}}
+        bgColor="lightBlue"
+        width="65%"
+        type="roundedTextInput"
         placeholder="Email"
         placeholderTextColor="gray"
         value={email}
         onChangeText={(text) => {setEmail(text); checkEmail(text);}}
         testID="inputEmail"
       />
-      <Text style={{color: 'red', marginLeft: 12}}>
+      <Text style={{marginLeft: windowWidth*0.022}} type="body" color="red" size="s">
         {emailError ? emailError[0] : ''}
       </Text>
       <TextInput 
-        style={styles.input}
+        style={{margin: windowWidth*0.022, paddingLeft: 10}}
+        bgColor="lightBlue"
+        width="65%"
+        type="roundedTextInput"
         placeholder="Password"
         placeholderTextColor="gray"
         value={password}
@@ -56,11 +70,14 @@ export const RegisterComponent  = ({setUsername, setPassword, setEmail, username
         secureTextEntry={true}
         testID="inputPassword"
       />
-      <Text style={{color: 'red', marginLeft: 12}}>
+      <Text style={{marginLeft: windowWidth*0.022}} type="body" color="red" size="s">
         {passwordError ? passwordError[0] : ''}
       </Text>
       <TextInput 
-        style={[styles.input, {}]}
+        style={{margin: windowWidth*0.022, paddingLeft: 10}}
+        bgColor="lightBlue"
+        width="65%"
+        type="roundedTextInput"
         onChangeText={(text) => {setconfirmPassword(text);}}
         value={confirmPassword}
         placeholder="Confirm password"
@@ -68,13 +85,16 @@ export const RegisterComponent  = ({setUsername, setPassword, setEmail, username
         placeholderTextColor="gray"
         testID="inputConfirmPassword"
       />
-      <TouchableOpacity
-        style={styles.button}
+      <Button
+        style={{alignItems: 'center', justifyContent: 'center', margin: windowWidth*0.022, marginTop: windowWidth*0.045}}
+        width="65%"
+        type="roundedButton"
+        bgColor="blue"
         onPress={() => {onRegister(username, password, email)}}
         testID="buttonRegister"
       >
-        <Text>Register</Text>
-      </TouchableOpacity>
+        <Text type="body" color="white" size="m">Register</Text>
+      </Button>
       <ActivityIndicator
         size="large"
         color="#0000ff"
