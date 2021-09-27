@@ -23,7 +23,6 @@ export const Safeplace = (): JSX.Element => {
             setSafeplace(res.data);
             safeplaceServices.getCommentSafeplace()
             .then((res) => {
-                console.log(res.data);
                 setUserComments(res.data);
             })
         })
@@ -34,14 +33,11 @@ export const Safeplace = (): JSX.Element => {
     }, [])
 
     const sendComment = (comment: string, idSafeplace: string, grade: number) => {
-        console.log(credentials);
         safeplaceServices.setCommentSafeplace(comment, idSafeplace, credentials._id, grade, credentials.token)
         .then((res) => {
-            console.log(res.data);
             setModalComment(false);
             safeplaceServices.getCommentSafeplace()
             .then((res) => {
-                console.log(res.data);
                 setUserComments(res.data);
             })
         })

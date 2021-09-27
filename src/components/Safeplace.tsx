@@ -49,12 +49,12 @@ export const SafeplaceComponent = ({userComments, comment, setComment, grade, se
                     <View style={{margin: 15, display: 'flex'}}>
                         {safeplace.dayTimetable && safeplace.dayTimetable.map((hours, index) => {
                             return (
-                                <View key={"container" + index} style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                    <View key={"containerDays" + index} style={{marginBottom: 15}}>
-                                        <Text key={"days" + index}>{days[index]}</Text>
+                                <View key={index} style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                    <View  style={{marginBottom: 15}}>
+                                        <Text>{days[index]}</Text>
                                     </View>
-                                    <View key={"containerHours" + index}>
-                                        <Text key={"hours" + index}>{hours}</Text>
+                                    <View>
+                                        <Text>{hours}</Text>
                                     </View>
                                 </View>
                             )
@@ -116,7 +116,7 @@ export const SafeplaceComponent = ({userComments, comment, setComment, grade, se
                 {userComments && userComments.length > 0 && userComments.map((comment, index) => {
                     if (comment.safeplaceId === safeplace._id) {
                         return (
-                            <View style={{display: 'flex', flexDirection: 'column', margin: 15}}>
+                            <View key={"comments" + index} style={{display: 'flex', flexDirection: 'column', margin: 15}}>
                                 <View style={{display: 'flex', flexDirection: 'row'}}>
                                     <FontAwesomeIcon icon={faUser} color={"#1E90FF"} size={(windowHeight/windowWidth)*15} style={{}} />
                                     <View>

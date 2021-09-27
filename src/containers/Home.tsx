@@ -88,13 +88,28 @@ export const Home = (): JSX.Element => {
       .then((res) => {
         res.remove();
       })
+
+      // Setting all the state at null to avoid memory leak and unmounted components
+      setLongitude(0);
+      setLatitude(0);
+      setPermissions(false);
+      setSafeplaces([]);
+      setOrigin({latitude: 0, longitude: 0});
+      setDestination({latitude: 0, longitude: 0});
+      setOriginInput("");
+      setOriginPlaces([]);
+      setDestinationPlaces([]);
+      setOriginFocus(true);
+      setDestinationFocus(false);
+      setDestinationInput("");
+      setNavigationMode(false);
+      setNavigationMode(false);
     })
   }, [])
 
   const getOriginPlaces = (text: string, latitude: number, longitude: number, input: String) => {
     googleServices.getPlaces(text, latitude, longitude)
     .then((res) => {
-      console.log(res.data);
       if (input === "origin") {
         setOriginPlaces(res.data.predictions);
       } else {

@@ -10,13 +10,12 @@ async function login({
   username: string;
   password: string;
 }): Promise<UserInterface> {
-  console.log(API_URL);
   const response = await axios
     .post(API_URL + '/login', {
       email: username,       
       password,
     });
-  
+    
   return response.data;
 }
 
