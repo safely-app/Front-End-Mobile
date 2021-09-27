@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {constraints} from '../utils/constraints';
 import {validate} from 'validate.js';
 import {userServices} from '../services';
+import Toast from 'react-native-toast-message';
 
 export const ForgotPWD = (): JSX.Element => {
 
@@ -24,6 +25,10 @@ export const ForgotPWD = (): JSX.Element => {
       userServices.forgotPassword(email)
       .then(() => {
         setisLoading(false);
+        Toast.show({
+          type: 'success',
+          text1: "Your mail has been sent!",
+        });
         navigation.goBack();
       })
       .catch(err => {

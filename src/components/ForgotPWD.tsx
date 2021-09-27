@@ -1,6 +1,5 @@
 import React from 'react';
 import {SafeAreaView, TouchableOpacity, ActivityIndicator, Dimensions} from 'react-native';
-import {styles} from '../styles'
 import { Text, Button, TextInput } from '../components';
 
 interface Props {
@@ -34,7 +33,7 @@ export const ForgotPWDComponent = ({checkEmail, onSubmit, setEmail, email, email
                 placeholder="Email"
                 placeholderTextColor="gray"
             />
-            <Text style={{color: 'red', marginLeft: 12}}>
+            <Text style={{marginLeft: windowWidth*0.022}} type="body" color="red" size="s">
                 {emailError ? emailError[0] : ''}
             </Text>
             <Button

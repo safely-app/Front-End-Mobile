@@ -7,6 +7,7 @@ import validate from 'validate.js';
 import {userServices} from '../services';
 import {resetFetch, getUser, logoutUser} from '../redux/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 export const Profile = (): JSX.Element => {
 
@@ -40,6 +41,10 @@ export const Profile = (): JSX.Element => {
       setisLoading(true);
       userServices.updateUser(credentials._id, credentials.token, email, password)
       .then(() => {
+        Toast.show({
+          type: 'success',
+          text1: "Your modification has been applied",
+        });        
         dispatch(getUser(credentials._id, credentials.token));
       })
       .catch(err => {
