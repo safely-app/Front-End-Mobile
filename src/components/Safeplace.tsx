@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {SafeAreaView, TouchableOpacity, View, Dimensions, Modal, ScrollView} from 'react-native';
 import { Rating, AirbnbRating } from 'react-native-ratings';

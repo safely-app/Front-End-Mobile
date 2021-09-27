@@ -9,3 +9,4 @@ export * from './generic/Button';
 export * from './generic/HorizontalLine';
 export * from './generic/TextInput';
 export * from './Safeplace';
+export * from './SavedPlaces';

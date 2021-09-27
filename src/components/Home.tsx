@@ -116,7 +116,7 @@ export const HomeComponent = ({logout, goToSafeplace, setOriginInput, setDestina
                         latitudeDelta: 0.015,
                         longitudeDelta: 0.0121,
                     }}
-                    onMapReady={() => {setIsMapLoaded(true)}}
+                    onMapReady={() => {setIsMapLoaded(true);}}
                 >
                     {isMapLoaded && (
                         <Marker

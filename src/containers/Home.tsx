@@ -46,10 +46,6 @@ export const Home = (): JSX.Element => {
   useEffect(() => {
     if (!credentials.username || (credentials.username && credentials.username.length <= 0)) {
       dispatch(getUser(credentials._id, credentials.token));
-      // Toast.show({
-      //   type: 'success',
-      //   text1: "Success login",
-      // });
     }
     safeplaceServices.getSafeplace()
     .then((res) => {
@@ -99,7 +95,7 @@ export const Home = (): JSX.Element => {
       setOriginInput("");
       setOriginPlaces([]);
       setDestinationPlaces([]);
-      setOriginFocus(true);
+      setOriginFocus(false);
       setDestinationFocus(false);
       setDestinationInput("");
       setNavigationMode(false);

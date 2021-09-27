@@ -2,9 +2,16 @@ import axios from 'react-native-axios';
 import {SafeplaceInterface} from '../../types/safeplace';
 
 async function getPlaces(input: String, latitude: Number, longitude: Number): Promise<[]> {
-    const response = await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBg2Odl0mQ6nXka-qOnhbV235zitMpHPEE&input=${input}&location=${latitude}, ${longitude}&radius=2000`, {headers: {"Content-type": "application/json"}});
+    if (latitude !== 0 && longitude !== 0) {
+        const response = await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBg2Odl0mQ6nXka-qOnhbV235zitMpHPEE&input=${input}&location=${latitude}, ${longitude}&radius=2000`, {headers: {"Content-type": "application/json"}});
+
+        return response;
+    } else {
+        const response = await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBg2Odl0mQ6nXka-qOnhbV235zitMpHPEE&input=${input}&radius=2000`, {headers: {"Content-type": "application/json"}});
+
+        return response;
+    }
     
-    return response;
 }
 
 async function getCoords(input: String): Promise<[]> {

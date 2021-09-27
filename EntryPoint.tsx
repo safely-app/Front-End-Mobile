@@ -1,7 +1,7 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Login, Register, Home, Profile, ForgotPWD, ChangePWD, Safeplace} from './src/containers';
+import {SavedPlaces, Login, Register, Home, Profile, ForgotPWD, ChangePWD, Safeplace} from './src/containers';
 import {persistor} from './src/redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {createStackNavigator, StackNavigationOptions} from '@react-navigation/stack';
@@ -44,6 +44,7 @@ const EntryPoint: React.FC = () => {
       >
         <Tab.Screen name="Home" component={Home} options={{tabBarTestID: "HomePage"}} />
         <Tab.Screen name="Profile" component={Profile} options={{tabBarTestID: "ProfilePage"}} />
+        <Tab.Screen name="Saved Places" component={SavedPlaces} options={{tabBarTestID: "SavedPlacesPage"}} />
       </Tab.Navigator>
     );
   }
