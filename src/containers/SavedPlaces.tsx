@@ -150,6 +150,10 @@ export const SavedPlaces = (): JSX.Element => {
         })
     }
 
+    const goToMap = (coordinate: Array<string>, address: string) => {
+        navigation.navigate('Home', {latitude: coordinate[0], longitude: coordinate[1], address: address});
+    }
+
     return (
         <>
             <SavedPlacesComponent
@@ -175,6 +179,7 @@ export const SavedPlaces = (): JSX.Element => {
                 setCoordinate={setCoordinate}
                 setCoordsFromPlace={setCoordsFromPlace}
                 deletePlace={deletePlace}
+                goToMap={goToMap}
             />
         </>
     );

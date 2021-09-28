@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { useRoute, useIsFocused } from '@react-navigation/core';
 import {useSelector, useDispatch} from 'react-redux';
 import {logoutUser, getUser} from '../redux/actions/user.actions';
 import {RootState} from '../redux/reducers';
@@ -17,6 +18,8 @@ import { useNavigation } from '@react-navigation/native';
 export const Home = (): JSX.Element => {
 
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const route = useRoute();
   const {credentials} = useSelector((state: RootState) => state.user);
   const [longitude, setLongitude] = useState<number>(0);
   const [latitude, setLatitude] = useState<number>(0);
@@ -33,6 +36,7 @@ export const Home = (): JSX.Element => {
   const [destinationInput, setDestinationInput] = useState<string>("");
   const [navigationMode, setNavigationMode] = useState<boolean>(false);
   const navigation = useNavigation();
+  const [count, setCount] = useState<number>(0);
 
   const logout = async () => {
     try {
@@ -42,6 +46,23 @@ export const Home = (): JSX.Element => {
         dispatch(failure());
     }
   }
+
+  useEffect(() => {
+    if (isFocused) {
+      if (route.params !== undefined) {
+        googleServices.getReverseCoords(latitude, longitude)
+        .then((res) => {
+          setCoordsFromPlace(route.params.address, 'destination');
+          setDestinationInput(route.params.address);
+          setOriginInput(res.data.results[0].formatted_address);
+          setOrigin({latitude: latitude, longitude: longitude});
+        })
+        .catch((err) => {
+          throw err;
+        })
+      }
+    }
+  }, [isFocused])
 
   useEffect(() => {
     if (!credentials.username || (credentials.username && credentials.username.length <= 0)) {
@@ -75,7 +96,7 @@ export const Home = (): JSX.Element => {
           setLongitude(location.coords.longitude);
         })
       }
-    })();
+  })();
 
     return (() => {
       // unsubscribeLocation is called when the component is unmounted
@@ -164,6 +185,8 @@ export const Home = (): JSX.Element => {
         setNavigationMode={setNavigationMode}
         goToSafeplace={goToSafeplace}
         logout={logout}
+        count={count}
+        setCount={setCount}
       />
     </>
   );

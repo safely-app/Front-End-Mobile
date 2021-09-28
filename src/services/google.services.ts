@@ -20,7 +20,14 @@ async function getCoords(input: String): Promise<[]> {
     return response;
 }
 
+async function getReverseCoords(latitude: string, longitude: string): Promise<void> {
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyBg2Odl0mQ6nXka-qOnhbV235zitMpHPEE`, {headers: {"Content-type": "application/json"}});    
+
+    return response;
+}
+
 export const googleServices = {
     getPlaces,
-    getCoords
+    getCoords,
+    getReverseCoords
 }
