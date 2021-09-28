@@ -4,6 +4,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {constraints} from '../utils/constraints';
 import {validate} from 'validate.js';
 import {userServices} from '../services';
+import Toast from 'react-native-toast-message';
 
 export const ChangePWD = (): JSX.Element => {
 
@@ -33,6 +34,12 @@ export const ChangePWD = (): JSX.Element => {
           .catch(err => {
             setisLoading(false);
             console.log(err);
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: "🚨 Change password failed 🚨",
+            text2: "Put the same password please."
           });
         }
       }

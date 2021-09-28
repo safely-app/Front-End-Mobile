@@ -6,7 +6,7 @@ import validate from 'validate.js';
 import {userServices} from '../services';
 import {getUser, logoutUser} from '../redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 export const Profile = (): JSX.Element => {
 
@@ -18,7 +18,6 @@ export const Profile = (): JSX.Element => {
   const [passwordError, setPasswordError] = useState<string | undefined>(undefined);
   const [confirmPassword, setconfirmPassword] = useState<string>('');
   const [isLoading, setisLoading] = useState<boolean>(false);
-  const navigation = useNavigation();
 
   function onSubmit(email: string, password: string) {
     const validateObj = validate({emailAddress: email}, constraints);
@@ -40,9 +39,11 @@ export const Profile = (): JSX.Element => {
       setisLoading(true);
       userServices.updateUser(credentials._id, credentials.token, email, password)
       .then(() => {
-        setisLoading(false);
+        Toast.show({
+          type: 'success',
+          text1: "Your modification has been applied",
+        });        
         dispatch(getUser({userId: credentials._id, token: credentials.token}));
-        navigation.goBack();
       })
       .catch(err => {
         console.log('err');
