@@ -45,7 +45,6 @@ export const SavedPlaces = (): JSX.Element => {
     useEffect(() => {
         safeplaceServices.getRecurringPlaces(credentials.token)
         .then((res) => {
-            console.log(res.data);
             setRecurringPlaces(res.data);
         })
         .catch((err) => {
@@ -144,7 +143,6 @@ export const SavedPlaces = (): JSX.Element => {
     const setCoordsFromPlace = (address: string)  => {
         googleServices.getCoords(address)
         .then((res) => {
-            console.log(res.data.results[0].geometry.location);
             setCoordinate([res.data.results[0].geometry.location.lat.toString(), res.data.results[0].geometry.location.lng.toString()]);
         })
         .catch((err) => {

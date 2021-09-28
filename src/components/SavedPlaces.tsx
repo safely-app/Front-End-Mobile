@@ -58,11 +58,11 @@ export const SavedPlacesComponent = ({deletePlace, newPlace, setCoordsFromPlace,
                 </View>
                 {recurringPlaces && recurringPlaces.length > 0 && recurringPlaces.map((place, index) => {
                     return (
-                        <>
+                        <View key={"recurringPlaces" + index}>
                             <View style={{display: 'flex', justifyContent: 'space-between', flex: 1, flexDirection: 'row'}}>
-                                <View key={index} style={{display: 'flex', flexDirection: 'row', marginTop: windowWidth*0.1}}>
+                                <View style={{display: 'flex', flexDirection: 'row', marginTop: windowWidth*0.1}}>
                                     <FontAwesomeIcon style={{margin: windowWidth*0.02, marginRight: windowWidth*0.06}} icon={faMapPin} size={(windowHeight/windowWidth)*10} color="#1E90FF" />
-                                    <View key={"titleaddress" + index} style={{display: 'flex', flexDirection: 'column'}}>
+                                    <View style={{display: 'flex', flexDirection: 'column'}}>
                                         <Text type="h1" color="black" size="m">{place.name}</Text>
                                         <Text type="body" color="black" size="s" style={{width: "80%"}}>{place.address}</Text>
                                     </View>
@@ -73,8 +73,8 @@ export const SavedPlacesComponent = ({deletePlace, newPlace, setCoordsFromPlace,
                                     <FontAwesomeIcon style={{margin: windowWidth*0.02, marginRight: windowWidth*0.06, marginTop: windowWidth*0.12}} icon={faEllipsisH} size={(windowHeight/windowWidth)*10} color="#000" />
                                 </TouchableOpacity>
                             </View>
-                            <View key={"line" + index} style={{alignSelf: 'stretch', borderBottomWidth: 0.2, borderBottomColor: 'lightgray', width: '100%', marginTop: windowWidth*0.04}} />
-                        </>
+                            <View style={{alignSelf: 'stretch', borderBottomWidth: 0.2, borderBottomColor: 'lightgray', width: '100%', marginTop: windowWidth*0.04}} />
+                        </View>
                     )
                 })}
                 <Modal
@@ -127,10 +127,9 @@ export const SavedPlacesComponent = ({deletePlace, newPlace, setCoordsFromPlace,
                             {addressInputFocus && (
                                 <ScrollView style={(addressPlaces.length > 0 && addressInputFocus) ? {position: 'absolute', top: safeplaceEditing && safeplaceEditing.name && safeplaceEditing.name.length > 0 ? (windowHeight)*0.175 : (windowHeight)*0.245, bottom: 0, left: (windowWidth)*0.08, right: 0, backgroundColor: '#D6E0EC', width: windowWidth*0.64, height: windowHeight*0.25, borderBottomLeftRadius: 25, borderBottomRightRadius: 25} : {}} contentContainerStyle={{margin: 20}}>
                                     {(addressPlaces.length > 0 && addressInputFocus) && addressPlaces.map((place, index) => (
-                                        <View key={"view" + index}>
+                                        <View key={"viewAddressInput" + index}>
                                             <TouchableOpacity
                                                 onPress={() => {setAddressInput(place.description); setAddressInputFocus(false); setCoordsFromPlace(place.address);  Keyboard.dismiss()}}
-                                                key={index} 
                                                 style={{zIndex: 9999, marginBottom: 10}}
                                                 >
                                                 <Text
@@ -139,7 +138,7 @@ export const SavedPlacesComponent = ({deletePlace, newPlace, setCoordsFromPlace,
                                                 </Text>
                                             </TouchableOpacity>
                                             
-                                            <View key={"line" + index} style={{alignSelf: 'stretch', borderBottomWidth: 0.2, borderBottomColor: 'lightgray', width: '100%', marginBottom: 15}} />
+                                            <View style={{alignSelf: 'stretch', borderBottomWidth: 0.2, borderBottomColor: 'lightgray', width: '100%', marginBottom: 15}} />
                                         
                                         </View>
                                     ))}
@@ -158,7 +157,7 @@ export const SavedPlacesComponent = ({deletePlace, newPlace, setCoordsFromPlace,
                                         type="roundedTextInput"
                                         bgColor="lightBlue"
                                         style={{marginTop: 20}}
-                                        testID="inputAddressRecurringPlace"
+                                        testID="inputCityRecurringPlace"
                                     />
                                     <Button
                                         style={{alignItems: 'center', justifyContent: 'center', marginTop: 30}}

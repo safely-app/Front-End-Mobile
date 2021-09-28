@@ -1,4 +1,4 @@
-import React, { LegacyRef } from 'react';
+import React, { LegacyRef, useEffect } from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import MapView, {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { SafeplaceInterface } from '../../types/safeplace';
@@ -116,7 +116,7 @@ export const HomeComponent = ({logout, goToSafeplace, setOriginInput, setDestina
                         latitudeDelta: 0.015,
                         longitudeDelta: 0.0121,
                     }}
-                    onMapReady={() => {setIsMapLoaded(true);}}
+                    onMapLoaded={() => {setIsMapLoaded(true); mapView.current.animateCamera({center: {latitude: latitude, longitude: longitude}})}}
                 >
                     {isMapLoaded && (
                         <Marker
@@ -131,7 +131,7 @@ export const HomeComponent = ({logout, goToSafeplace, setOriginInput, setDestina
                                 coordinate={{latitude: parseFloat(safeplace.coordinate[0]), longitude: parseFloat(safeplace.coordinate[1])}}
                                 key={safeplace._id}
                                 title={safeplace.name}
-                                onPress={() => {goToSafeplace(safeplace._id)}}
+                                onPress={() => {goToSafeplace(safeplace._id); console.log('mapready')}}
                             />
                     )) : null }
                     {(isMapLoaded && navigationMode && origin.latitude !== 0 && origin.longitude !== 0) && (destination.latitude !== 0 && destination.longitude !== 0) && (
