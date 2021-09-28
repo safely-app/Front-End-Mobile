@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, ActivityIndicator} from 'react-native';
+import {SafeAreaView, ActivityIndicator, Dimensions} from 'react-native';
 import { Text, Button, HLine, TextInput } from '../components';
 
 interface Props {
@@ -21,9 +21,12 @@ export const LoginComponent = ({setUsername, setPassword, onLogin, username, pas
 
   const display = isLoading ? {opacity: 0, height: 0} : undefined;
 
+  const windowHeight = Dimensions.get('window').height;
+  const windowWidth = Dimensions.get('window').width;
+
   return (
     <SafeAreaView
-      style={{flex: 1, flexDirection: "column", justifyContent: "flex-end", marginBottom: 200, marginLeft: 30}}
+      style={{flex: 1, flexDirection: "column", justifyContent: "flex-end", marginBottom: windowHeight*0.15, marginLeft: windowWidth*0.05}}
     >
       <Text style={{marginBottom: 25}} type="h1" color="blue" size="xxl" testID="title">Safely</Text>
       <TextInput 

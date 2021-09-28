@@ -1,6 +1,6 @@
 import React from 'react';
-import {SafeAreaView, TextInput, TouchableOpacity, Text, ActivityIndicator} from 'react-native';
-import {styles} from '../styles'
+import {SafeAreaView, ActivityIndicator, Dimensions} from 'react-native';
+import { Text, Button, TextInput } from '../components';
 
 interface Props {
     password: string;
@@ -15,36 +15,48 @@ interface Props {
 
 export const ChangePWDComponent = ({password, setPassword, checkPassword, passwordError, isLoading, onSubmit, confirmPassword, setconfirmPassword}: Props): JSX.Element => {
 
-    const display = isLoading ? "none" : undefined;
+    const display = isLoading ? "none" : "flex";
+
+    const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
 
     return (
-        <SafeAreaView style={styles.content}>
-            <Text style={styles.title}>Enter your new password</Text>
+        <SafeAreaView style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
+            <Text style={{margin: windowWidth*0.025}} type="h1" color="blue" size="xl" testID="changePWDTitle">Enter your new password</Text>
             <TextInput 
-                style={styles.input}
+                style={{margin: windowWidth*0.025, paddingLeft: 10}}
+                type="roundedTextInput"
+                bgColor="lightBlue"
+                width="70%"
                 onChangeText={(text) => {setPassword(text); checkPassword(text)}}
                 value={password}
                 placeholder="Password"
                 secureTextEntry={true}
                 placeholderTextColor="gray"
             />
-            <Text style={{color: 'red', marginLeft: 12}}>
+            <Text style={{marginLeft: windowWidth*0.022}} type="body" color="red" size="s">
                 {passwordError ? passwordError[0] : ''}
             </Text>
-            <TextInput 
-                style={styles.input}
+            <TextInput
+                style={{margin: windowWidth*0.025, paddingLeft: 10}}
+                type="roundedTextInput"
+                bgColor="lightBlue"
+                width="70%"
                 onChangeText={(text) => {setconfirmPassword(text);}}
                 value={confirmPassword}
                 placeholder="Confirm password"
                 secureTextEntry={true}
                 placeholderTextColor="gray"
             />
-            <TouchableOpacity
-                style={[styles.button, {display}]}
+            <Button
+                style={{alignItems: 'center', justifyContent: 'center', margin: windowWidth*0.022, display: display}}
+                width="65%"
+                type="roundedButton"
+                bgColor="blue"
                 onPress={() => {onSubmit(password)}}
             >
-                <Text>Submit</Text>
-            </TouchableOpacity>
+                <Text type="body" color="white" size="m">Submit</Text>
+            </Button>
             <ActivityIndicator
               size="large"
               color="#0000ff"
