@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {registerUser} from '../redux/actions/user.actions';
-import {RootState} from '../redux/reducers';
+import { useAppSelector, useAppDispatch } from '../utils/hooks';
+import {registerUser, resetFetchStatus} from '../redux';
 import {RegisterComponent} from '../components/index';
-import {resetFetch} from '../redux/actions/common.actions';
 import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 
 
 export const Register = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const {error} = useSelector((state: RootState) => state.common);
+  const dispatch = useAppDispatch();
+  const {credentials} = useAppSelector((state) => state.user);
   const [username, setUsername] = useState<string>('');
   const [usernameError, setUsernameError] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -74,8 +72,8 @@ export const Register = (): JSX.Element => {
   }
 
   useEffect(() => {
-    if (Object.keys(error).length > 0) {
-      dispatch(resetFetch());
+    if (credentials.response && credentials.response.errorMsg === "Fetch failed") {
+      dispatch(resetFetchStatus());
       setisLoading(false);
     }
   })

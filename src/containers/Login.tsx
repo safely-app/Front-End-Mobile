@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {loginUser} from '../redux/actions/user.actions';
-import {resetFetch} from '../redux/actions/common.actions';
-import {RootState} from '../redux/reducers';
+import { useAppSelector, useAppDispatch } from '../utils/hooks';
+import { loginUser, resetFetchStatus } from '../redux';
 import {LoginComponent} from '../components/index';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {validate} from 'validate.js';
 import {constraints} from '../utils/constraints';
 import {Linking, Platform} from 'react-native';
@@ -12,16 +10,16 @@ import {extractTokenAndUserId} from '../utils/utils';
 import Toast from 'react-native-toast-message';
 import {AppState} from '../utils/isAppLaunched';
 
-
 export const Login = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const {error} = useSelector((state: RootState) => state.common);
+  const dispatch = useAppDispatch();
+  const {credentials} = useAppSelector((state) => state.user);
   const [username, setUsername] = useState<string>('');
   const [emailError, setEmailError] = useState<string>('');
   const [passwordError, setPasswordError] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setisLoading] = useState<boolean>(false);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   function onLogin(username: string, password: string) {
     const validateObj = validate({emailAddress: username, password: password}, constraints);
@@ -34,7 +32,7 @@ export const Login = (): JSX.Element => {
 
     if (!emailErrorMsg && !passwordErrorMsg) {
       setisLoading(true);
-      dispatch(loginUser({username, password}));
+      dispatch(loginUser({email: username, password: password}));
     }
   }
 
@@ -98,8 +96,8 @@ export const Login = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    if (Object.keys(error).length > 0) {
-      dispatch(resetFetch());
+    if (isFocused && credentials.response && credentials.response.errorMsg === "Fetch failed") {
+      dispatch(resetFetchStatus());
       setisLoading(false);
       Toast.show({
         type: 'error',

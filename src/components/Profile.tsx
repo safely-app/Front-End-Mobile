@@ -8,8 +8,8 @@ interface Props {
     checkEmail: (email: string) => void;
     isLoading: boolean;
     onSubmit: (email: string, password: string) => void;
-    emailError: string;
-    passwordError: string;
+    emailError: string | undefined;
+    passwordError: string | undefined;
     checkPassword: (password: string) => void;
     setPassword: (password: string) => void;
     password: string;
@@ -21,6 +21,8 @@ interface Props {
 export const ProfileComponent = ({email, setEmail, checkEmail, isLoading, onSubmit, emailError, passwordError, checkPassword, setPassword, password, onDelete, confirmPassword, setconfirmPassword}: Props): JSX.Element => {
 
   const display = isLoading ? "none" : undefined;
+  let passwordRef: TextInput | null;
+  let confirmPasswordRef: TextInput | null;
 
     return (
         <SafeAreaView style={styles.content}>
@@ -46,6 +48,7 @@ export const ProfileComponent = ({email, setEmail, checkEmail, isLoading, onSubm
               placeholder="Password"
               placeholderTextColor="gray"
               testID="inputPassword"
+              ref={ref => {passwordRef = ref}}
             />
             <Text style={{color: 'red', margin: 12, marginBottom: 0, marginTop: 0}}>
               {passwordError ? passwordError : ''}
@@ -58,10 +61,11 @@ export const ProfileComponent = ({email, setEmail, checkEmail, isLoading, onSubm
                 secureTextEntry={true}
                 placeholderTextColor="gray"
                 testID="inputConfirmPassword"
+                ref={ref => {confirmPasswordRef = ref}}
             />
             <TouchableOpacity
               style={[styles.button, {display}]}
-              onPress={() => {onSubmit(email, password)}}
+              onPress={() => {onSubmit(email, password); passwordRef?.clear(); confirmPasswordRef?.clear();}}
               testID="buttonSubmit"
             >
               <Text>Submit</Text>
