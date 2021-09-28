@@ -90,6 +90,7 @@ export const SavedPlaces = (): JSX.Element => {
             setModalReccuring(false);
             setSafeplaceEdit({});
             setAddressInput("");
+            setAddressPlaces([]);
             setCityInput("");
             setNameInput("");
             setCoordinate([]);
@@ -107,6 +108,7 @@ export const SavedPlaces = (): JSX.Element => {
         .then((res) => {
             setSafeplaceEdit(initialStatePlace);
             setModalReccuring(false);
+            setAddressPlaces([]);
             setAddressInput("");
             setCityInput("");
             setNameInput("");
@@ -126,6 +128,7 @@ export const SavedPlaces = (): JSX.Element => {
         .then(() => {
             setSafeplaceEdit(initialStatePlace);
             setModalReccuring(false);
+            setAddressPlaces([]);
             setAddressInput("");
             setCityInput("");
             setNameInput("");

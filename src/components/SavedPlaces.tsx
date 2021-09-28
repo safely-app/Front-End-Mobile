@@ -64,7 +64,7 @@ export const SavedPlacesComponent = ({deletePlace, newPlace, setCoordsFromPlace,
                                     <FontAwesomeIcon style={{margin: windowWidth*0.02, marginRight: windowWidth*0.06}} icon={faMapPin} size={(windowHeight/windowWidth)*10} color="#1E90FF" />
                                     <View key={"titleaddress" + index} style={{display: 'flex', flexDirection: 'column'}}>
                                         <Text type="h1" color="black" size="m">{place.name}</Text>
-                                        <Text type="body" color="black" size="s" style={{width: "90%"}}>{place.address}</Text>
+                                        <Text type="body" color="black" size="s" style={{width: "80%"}}>{place.address}</Text>
                                     </View>
                                 </View>
                                 <TouchableOpacity
@@ -94,8 +94,8 @@ export const SavedPlacesComponent = ({deletePlace, newPlace, setCoordsFromPlace,
                             setAddressInputFocus(false);
                         }}>
 
-                        <View style={{backgroundColor: 'white', width: windowWidth*0.8, height: windowHeight*0.47, alignSelf: 'center', borderRadius: windowHeight*0.03, alignItems: 'center', top: windowHeight*0}}>
-                            {/* <Text style={{marginTop: (windowWidth*0.05)}} type="h1" color="black" size="l">{safeplaceEditing && safeplaceEditing.name && safeplaceEditing.name.length > 0 ? "Modifier votre place" : "Nouvelle place"}</Text> */}
+                        <View style={{backgroundColor: 'white', width: windowWidth*0.8, height: safeplaceEditing && safeplaceEditing.name && safeplaceEditing.name.length > 0 ? windowHeight*0.57 : windowHeight*0.47, alignSelf: 'center', borderRadius: windowHeight*0.03, alignItems: 'center', top: windowHeight*0}}>
+                            <Text style={{marginTop: (windowWidth*0.05)}} type="h1" color="black" size="l">{safeplaceEditing && safeplaceEditing.name && safeplaceEditing.name.length > 0 ? "Modifier votre place" : "Nouvelle place"}</Text>
                             <TextInput
                                 placeholder="Nom"
                                 width="80%"
@@ -125,10 +125,9 @@ export const SavedPlacesComponent = ({deletePlace, newPlace, setCoordsFromPlace,
                                 testID="inputAddressRecurringPlace"
                             />
                             {addressInputFocus && (
-                                <ScrollView style={(addressPlaces.length > 0 && addressInputFocus) ? {position: 'absolute', top: (windowHeight)*0.230, bottom: 0, left: (windowWidth)*0.08, right: 0, backgroundColor: '#D6E0EC', width: windowWidth*0.64, height: windowHeight*0.25, borderBottomLeftRadius: 25, borderBottomRightRadius: 25} : {}} contentContainerStyle={{margin: 20}}>
+                                <ScrollView style={(addressPlaces.length > 0 && addressInputFocus) ? {position: 'absolute', top: safeplaceEditing && safeplaceEditing.name && safeplaceEditing.name.length > 0 ? (windowHeight)*0.175 : (windowHeight)*0.245, bottom: 0, left: (windowWidth)*0.08, right: 0, backgroundColor: '#D6E0EC', width: windowWidth*0.64, height: windowHeight*0.25, borderBottomLeftRadius: 25, borderBottomRightRadius: 25} : {}} contentContainerStyle={{margin: 20}}>
                                     {(addressPlaces.length > 0 && addressInputFocus) && addressPlaces.map((place, index) => (
                                         <View key={"view" + index}>
-                                            
                                             <TouchableOpacity
                                                 onPress={() => {setAddressInput(place.description); setAddressInputFocus(false); setCoordsFromPlace(place.address);  Keyboard.dismiss()}}
                                                 key={index} 
