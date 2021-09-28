@@ -156,6 +156,31 @@ export const Home = (): JSX.Element => {
     navigation.navigate('Safeplace', {id: id});
   }
 
+  const getNearestSafe = () => {
+    safeplaceServices.getSafeplaceNearest(latitude, longitude, credentials.token)
+    .then((res) => {
+      googleServices.getReverseCoords(res.data.nearest.latitude, res.data.nearest.longitude)
+      .then((res) => {
+        setCoordsFromPlace(res.data.results[0].formatted_address, "destination");
+        setDestinationInput(res.data.results[0].formatted_address);
+        googleServices.getReverseCoords(latitude, longitude)
+        .then((res) => {
+          setCoordsFromPlace(res.data.results[0].formatted_address, "origin");
+          setOriginInput(res.data.results[0].formatted_address);
+        })
+        .catch((err) => {
+          throw err;
+        })
+      })
+      .catch((err) => {
+        throw err;
+      })
+    })
+    .catch((err) => {
+      throw err;
+    })
+  }
+
   return (
     <>
       <HomeComponent
@@ -187,6 +212,7 @@ export const Home = (): JSX.Element => {
         logout={logout}
         count={count}
         setCount={setCount}
+        getNearestSafe={getNearestSafe}
       />
     </>
   );

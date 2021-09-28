@@ -35,6 +35,7 @@ interface Props {
     logout: () => void;
     count: number;
     setCount: (number: number) => void;
+    getNearestSafe: () => void;
 }
 
 const mapStyle = StyleSheet.create({
@@ -98,7 +99,7 @@ const mapStyle = StyleSheet.create({
     }
    });
 
-export const HomeComponent = ({count, setCount, logout, goToSafeplace, setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
+export const HomeComponent = ({getNearestSafe, count, setCount, logout, goToSafeplace, setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
 
     const mapView = React.createRef();
 
@@ -165,7 +166,7 @@ export const HomeComponent = ({count, setCount, logout, goToSafeplace, setOrigin
                                 <FontAwesomeIcon icon={faMapPin} color={"white"} size={(windowWidth/windowHeight)*60} style={{zIndex: 9999, left: (windowWidth)*0.0140, bottom: (windowHeight)*0.0100}} />
                                 <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*-0.11}} onPress={() => {logout();}}>
+                        <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*-0.11}} onPress={() => {getNearestSafe();}}>
                                 <FontAwesomeIcon icon={faStore} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0185, bottom: (windowHeight)*0.0135}} />
                                 <FontAwesomeIcon icon={faCircle} color={"#EF4F4F"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                         </TouchableOpacity>

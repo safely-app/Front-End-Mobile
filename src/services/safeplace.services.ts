@@ -17,7 +17,7 @@ async function getSafeplaceId(id: string): Promise<SafeplaceInterface[]> {
 
 async function setCommentSafeplace(comment: string, idSafeplace: string, idUser: string, grade: number, token: string): Promise<void> {
     
-    const response = await axios.post(API_URL + '/safeplace/comment/create', {userId: idUser, safeplaceId: idSafeplace, comment: comment, grade: grade.toString()});
+    const response = await axios.post(API_URL + '/safeplace/comment', {userId: idUser, safeplaceId: idSafeplace, comment: comment, grade: grade.toString()});
 
     return response;
 }
@@ -65,6 +65,18 @@ async function createRecurringPlace(userId: string, name: string, address: strin
     return response;
 }
 
+async function getSafeplaceNearest(latitude: number, longitude: number): Promise<void> {
+    const response = await axios.post(API_URL + `/safeplace/safeplace/nearest`, {
+        coord: {
+            latitude: latitude,
+            longitude: longitude
+        }
+    },
+    {headers: {"Content-type": "application/json"}});
+  
+    return response;
+}
+
 export const safeplaceServices = {
     getSafeplace,
     getSafeplaceId,
@@ -73,5 +85,6 @@ export const safeplaceServices = {
     getRecurringPlaces,
     editRecurringPlace,
     createRecurringPlace,
-    deleteRecurringPlace
+    deleteRecurringPlace,
+    getSafeplaceNearest
 }
