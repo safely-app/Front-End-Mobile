@@ -33,9 +33,14 @@ interface Props {
     setCityInput: (city: string) => void;
     editPlace: (idPlace: string, name: string, address: string, city: string, coordinate: Array<string>) => void;
     refreshRecurringPlace: () => void;
+    coordinate: [];
+    setCoordinate: (coords: []) => void;
+    setCoordsFromPlace: (address: string) => void;
+    newPlace: (name: string, address: string, city: string, coordinate: Array<string>) => void;
+    deletePlace: (idPlace: string) => void;
 }
 
-export const SavedPlacesComponent = ({refreshRecurringPlace, editPlace, cityInput, setCityInput, nameInput, setNameInput, addressInputFocus, setAddressInputFocus, addressInput, setAddressInput, addressPlaces, getOriginPlaces, safeplaceEditing, setSafeplaceEdit, modalRecurring, setModalRecurring, recurringPlaces}: Props): JSX.Element => {
+export const SavedPlacesComponent = ({deletePlace, newPlace, setCoordsFromPlace, coordinate, setCoordinate, refreshRecurringPlace, editPlace, cityInput, setCityInput, nameInput, setNameInput, addressInputFocus, setAddressInputFocus, addressInput, setAddressInput, addressPlaces, getOriginPlaces, safeplaceEditing, setSafeplaceEdit, modalRecurring, setModalRecurring, recurringPlaces}: Props): JSX.Element => {
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
@@ -59,11 +64,11 @@ export const SavedPlacesComponent = ({refreshRecurringPlace, editPlace, cityInpu
                                     <FontAwesomeIcon style={{margin: windowWidth*0.02, marginRight: windowWidth*0.06}} icon={faMapPin} size={(windowHeight/windowWidth)*10} color="#1E90FF" />
                                     <View key={"titleaddress" + index} style={{display: 'flex', flexDirection: 'column'}}>
                                         <Text type="h1" color="black" size="m">{place.name}</Text>
-                                        <Text type="body" color="black" size="s">{place.address}</Text>
+                                        <Text type="body" color="black" size="s" style={{width: "90%"}}>{place.address}</Text>
                                     </View>
                                 </View>
                                 <TouchableOpacity
-                                    onPress={() => {setModalRecurring(true); setSafeplaceEdit(place);setAddressInput(place.address);setNameInput(place.name);setCityInput(place.city)}}
+                                    onPress={() => {setModalRecurring(true); setSafeplaceEdit(place);setAddressInput(place.address);setNameInput(place.name);setCityInput(place.city);setCoordsFromPlace(place.address)}}
                                 >
                                     <FontAwesomeIcon style={{margin: windowWidth*0.02, marginRight: windowWidth*0.06, marginTop: windowWidth*0.12}} icon={faEllipsisH} size={(windowHeight/windowWidth)*10} color="#000" />
                                 </TouchableOpacity>
@@ -79,10 +84,18 @@ export const SavedPlacesComponent = ({refreshRecurringPlace, editPlace, cityInpu
                 >
                     <TouchableOpacity
                         style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', flex: 1,justifyContent:'center' }}
-                        onPress={() => {setModalRecurring(!modalRecurring)}}>
+                        onPress={() => {
+                            setModalRecurring(!modalRecurring)
+                            setSafeplaceEdit(null);
+                            setAddressInput("");
+                            setCityInput("");
+                            setNameInput("");
+                            setCoordinate([]);
+                            setAddressInputFocus(false);
+                        }}>
 
-                        <View style={{backgroundColor: 'white', width: windowWidth*0.8, height: windowHeight*0.45, alignSelf: 'center', borderRadius: windowHeight*0.03, alignItems: 'center', top: windowHeight*0}}>
-                            <Text style={{marginTop: (windowWidth*0.05)}} type="h1" color="black" size="l">{safeplaceEditing && safeplaceEditing.name.length > 0 ? "Modifier votre place" : "Nouvelle place"}</Text>
+                        <View style={{backgroundColor: 'white', width: windowWidth*0.8, height: windowHeight*0.47, alignSelf: 'center', borderRadius: windowHeight*0.03, alignItems: 'center', top: windowHeight*0}}>
+                            {/* <Text style={{marginTop: (windowWidth*0.05)}} type="h1" color="black" size="l">{safeplaceEditing && safeplaceEditing.name && safeplaceEditing.name.length > 0 ? "Modifier votre place" : "Nouvelle place"}</Text> */}
                             <TextInput
                                 placeholder="Nom"
                                 width="80%"
@@ -93,8 +106,7 @@ export const SavedPlacesComponent = ({refreshRecurringPlace, editPlace, cityInpu
                                 }}
                                 type="roundedTextInput"
                                 bgColor="lightBlue"
-                                style={{textAlignVertical: 'top', marginTop: 20}}
-                                multiline={true}
+                                style={{marginTop: 20}}
                                 testID="inputNameRecurringPlace"
                             />
                             <TextInput
@@ -108,9 +120,8 @@ export const SavedPlacesComponent = ({refreshRecurringPlace, editPlace, cityInpu
                                 }}
                                 type="roundedTextInput"
                                 bgColor="lightBlue"
-                                style={{textAlignVertical: 'top', marginTop: 20}}
+                                style={{marginTop: 20}}
                                 onFocus={() => {setAddressInputFocus(true)}}
-                                multiline={true}
                                 testID="inputAddressRecurringPlace"
                             />
                             {addressInputFocus && (
@@ -119,7 +130,7 @@ export const SavedPlacesComponent = ({refreshRecurringPlace, editPlace, cityInpu
                                         <View key={"view" + index}>
                                             
                                             <TouchableOpacity
-                                                onPress={() => {setAddressInput(place.description); setAddressInputFocus(false);  Keyboard.dismiss()}}
+                                                onPress={() => {setAddressInput(place.description); setAddressInputFocus(false); setCoordsFromPlace(place.address);  Keyboard.dismiss()}}
                                                 key={index} 
                                                 style={{zIndex: 9999, marginBottom: 10}}
                                                 >
@@ -147,8 +158,7 @@ export const SavedPlacesComponent = ({refreshRecurringPlace, editPlace, cityInpu
                                         }}
                                         type="roundedTextInput"
                                         bgColor="lightBlue"
-                                        style={{textAlignVertical: 'top', marginTop: 20}}
-                                        multiline={true}
+                                        style={{marginTop: 20}}
                                         testID="inputAddressRecurringPlace"
                                     />
                                     <Button
@@ -158,15 +168,29 @@ export const SavedPlacesComponent = ({refreshRecurringPlace, editPlace, cityInpu
                                         bgColor="blue"
                                         testID="buttonSendRecurringPlace"
                                         onPress={() => {
-                                            if (safeplaceEditing && safeplaceEditing.name.length > 0) {
-                                                editPlace(safeplaceEditing._id, nameInput, addressInput, cityInput, safeplaceEditing.coordinate);
-                                                setModalRecurring(false);
-                                                refreshRecurringPlace();
+                                            if (safeplaceEditing && safeplaceEditing.name && safeplaceEditing.name.length > 0) {
+                                                editPlace(safeplaceEditing._id, nameInput, addressInput, cityInput, coordinate);
+                                            } else {
+                                                newPlace(nameInput, addressInput, cityInput, coordinate);
                                             }
                                         }}
                                     >
                                         <Text type="body" color="white" size="m">Finir</Text>
                                     </Button>
+                                    {safeplaceEditing && safeplaceEditing.name && safeplaceEditing.name.length > 0 ? (
+                                        <Button
+                                            style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}
+                                            width="80%"
+                                            type="roundedButton"
+                                            bgColor="red"
+                                            testID="buttonRemoveRecurringPlace"
+                                            onPress={() => {
+                                                deletePlace(safeplaceEditing._id);
+                                            }}
+                                        >
+                                            <Text type="body" color="white" size="m">Supprimer</Text>
+                                        </Button>
+                                    ) : null}
                                 </>
                             )}
                         </View>

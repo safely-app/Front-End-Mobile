@@ -40,6 +40,7 @@ export const SavedPlaces = (): JSX.Element => {
     const [addressInputFocus, setAddressInputFocus] = useState<boolean>(false);
     const [nameInput, setNameInput] = useState<string>("");
     const [cityInput, setCityInput] = useState<string>("");
+    const [coordinate, setCoordinate] = useState<[]>([]);
 
     useEffect(() => {
         safeplaceServices.getRecurringPlaces(credentials.token)
@@ -74,6 +75,7 @@ export const SavedPlaces = (): JSX.Element => {
     const getOriginPlaces = (text: string, latitude: number, longitude: number) => {
         googleServices.getPlaces(text, latitude, longitude)
         .then((res) => {
+            // console.log(res.data.predictions);
             setAddressPlaces(res.data.predictions);
         })
         .catch((err) => {
@@ -85,11 +87,17 @@ export const SavedPlaces = (): JSX.Element => {
     const newPlace = (name: string, address: string, city: string, coordinate: Array<string>) => {
         safeplaceServices.createRecurringPlace(credentials._id, name, address, city, coordinate, credentials.token)
         .then((res) => {
+            setModalReccuring(false);
+            setSafeplaceEdit({});
             setAddressInput("");
             setCityInput("");
             setNameInput("");
+            setCoordinate([]);
+            setAddressInputFocus(false);
+            refreshRecurringPlaces();
         })
         .catch((err) => {
+            console.log(err);
             throw err;
         })
     }
@@ -98,13 +106,46 @@ export const SavedPlaces = (): JSX.Element => {
         safeplaceServices.editRecurringPlace(idPlace, name, address, city, coordinate, credentials.token)
         .then((res) => {
             setSafeplaceEdit(initialStatePlace);
+            setModalReccuring(false);
             setAddressInput("");
             setCityInput("");
             setNameInput("");
+            setCoordinate([]);
+            setAddressInputFocus(false);
+            refreshRecurringPlaces();
+            // resetState();
         })
         .catch((err) => {
             console.log(err);
             throw err;
+        })
+    }
+
+    const deletePlace = (idPlace: string) => {
+        safeplaceServices.deleteRecurringPlace(idPlace)
+        .then(() => {
+            setSafeplaceEdit(initialStatePlace);
+            setModalReccuring(false);
+            setAddressInput("");
+            setCityInput("");
+            setNameInput("");
+            setCoordinate([]);
+            setAddressInputFocus(false);
+            refreshRecurringPlaces();
+        })
+        .catch((err) => {
+            throw err;
+        })
+    }
+
+    const setCoordsFromPlace = (address: string)  => {
+        googleServices.getCoords(address)
+        .then((res) => {
+            console.log(res.data.results[0].geometry.location);
+            setCoordinate([res.data.results[0].geometry.location.lat.toString(), res.data.results[0].geometry.location.lng.toString()]);
+        })
+        .catch((err) => {
+          console.log(err);
         })
     }
 
@@ -127,7 +168,12 @@ export const SavedPlaces = (): JSX.Element => {
                 cityInput={cityInput}
                 setCityInput={setCityInput}
                 editPlace={editPlace}
+                newPlace={newPlace}
                 refreshRecurringPlace={refreshRecurringPlaces}
+                coordinate={coordinate}
+                setCoordinate={setCoordinate}
+                setCoordsFromPlace={setCoordsFromPlace}
+                deletePlace={deletePlace}
             />
         </>
     );

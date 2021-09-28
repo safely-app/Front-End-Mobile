@@ -34,6 +34,12 @@ async function getRecurringPlaces(token: string): Promise<void> {
     return response;
 }
 
+async function deleteRecurringPlace(idPlace: string): Promise<void> {
+    const response = await axios.delete(API_URL + `/safeplace/recurring/${idPlace}`, {headers: {"Content-type": "application/json"}});
+  
+    return response;
+}
+
 async function editRecurringPlace(idPlace: string, name: string, address: string, city: string, coordinate: Array<string>, token: string): Promise<void> {
     const response = await axios.put(API_URL + `/safeplace/recurring/${idPlace}`,{
         name: name,
@@ -43,12 +49,18 @@ async function editRecurringPlace(idPlace: string, name: string, address: string
     },
     {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
     
-    console.log(response.data);
     return response;
 }
 
-async function createRecurringPlace(userId: string, name: string, address: string, city: string, coordinate: Array<string>, token: string): Promise<UserInterface> {
-    const response = await axios.get(API_URL + `/safeplace/recurring`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
+async function createRecurringPlace(userId: string, name: string, address: string, city: string, coordinate: Array<string>, token: string): Promise<void> {
+    const response = await axios.post(API_URL + `/safeplace/recurring`, {
+        userId: userId,
+        name: name,
+        address: address,
+        city: city,
+        coordinate: coordinate
+    },
+    {headers: {"Content-type": "application/json"}});
   
     return response;
 }
@@ -60,5 +72,6 @@ export const safeplaceServices = {
     getCommentSafeplace,
     getRecurringPlaces,
     editRecurringPlace,
-    createRecurringPlace
+    createRecurringPlace,
+    deleteRecurringPlace
 }
