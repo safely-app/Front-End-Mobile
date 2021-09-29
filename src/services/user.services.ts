@@ -1,7 +1,6 @@
 import axios from 'react-native-axios';
 import {UserInterface} from '../redux/types';
-import {API_URL} from "@env";
-import {SafeplaceInterface} from '../../types/safeplace';
+import {API_URL} from '@env';
 
 async function login({
   username,
@@ -10,11 +9,13 @@ async function login({
   username: string;
   password: string;
 }): Promise<UserInterface> {
+  console.log(API_URL);
   const response = await axios
     .post(API_URL + '/login', {
       email: username,       
       password,
     });
+
     
   return response.data;
 }

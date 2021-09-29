@@ -1,5 +1,4 @@
 import axios from 'react-native-axios';
-import {SafeplaceInterface} from '../../types/safeplace';
 
 async function getPlaces(input: String, latitude: Number, longitude: Number): Promise<[]> {
     if (latitude !== 0 && longitude !== 0) {

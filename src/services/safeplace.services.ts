@@ -1,7 +1,6 @@
 import axios from 'react-native-axios';
-import {API_URL} from "@env";
 import {SafeplaceInterface} from '../../types/safeplace';
-import { faComment } from '@fortawesome/free-solid-svg-icons';
+import {API_URL} from '@env';
 
 async function getSafeplace(): Promise<SafeplaceInterface[]> {
     const response = await axios.get(API_URL + `/safeplace/safeplace`, {headers: {"Content-type": "application/json"}});

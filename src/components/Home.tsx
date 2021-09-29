@@ -5,6 +5,7 @@ import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
 import MapViewDirections from 'react-native-maps-directions';
+import {GOOGLE_API_KEY} from '@env';
 
 interface Props {
     latitude: number;
@@ -148,7 +149,7 @@ export const HomeComponent = ({getNearestSafe, count, setCount, logout, goToSafe
                             <MapViewDirections
                                 origin={{latitude: origin.latitude, longitude: origin.longitude}}
                                 destination={{latitude: destination.latitude, longitude: destination.longitude}}
-                                apikey={"AIzaSyBg2Odl0mQ6nXka-qOnhbV235zitMpHPEE"}
+                                apikey={GOOGLE_API_KEY}
                                 precision={"high"}
                             />
                         )}

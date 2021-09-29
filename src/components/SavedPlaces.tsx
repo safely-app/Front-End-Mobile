@@ -67,7 +67,7 @@ export const SavedPlacesComponent = ({goToMap, deletePlace, newPlace, setCoordsF
                         >
                             <View key={"recurringPlaces" + index}>
                                 <View style={{display: 'flex', justifyContent: 'space-between', flex: 1, flexDirection: 'row'}}>
-                                    <View style={{display: 'flex', flexDirection: 'row', marginTop: windowWidth*0.1}}>
+                                    <View style={{display: 'flex', flexDirection: 'row', marginTop: windowWidth*0.1, width: '80%'}}>
                                         <FontAwesomeIcon style={{margin: windowWidth*0.02, marginRight: windowWidth*0.06}} icon={faMapPin} size={(windowHeight/windowWidth)*10} color="#1E90FF" />
                                         <View style={{display: 'flex', flexDirection: 'column'}}>
                                             <Text type="h1" color="black" size="m">{place.name}</Text>
@@ -76,6 +76,7 @@ export const SavedPlacesComponent = ({goToMap, deletePlace, newPlace, setCoordsF
                                     </View>
                                     <TouchableOpacity
                                         onPress={() => {setModalRecurring(true); setSafeplaceEdit(place);setAddressInput(place.address);setNameInput(place.name);setCityInput(place.city);setCoordsFromPlace(place.address)}}
+                                        style={{display: 'flex'}}
                                     >
                                         <FontAwesomeIcon style={{margin: windowWidth*0.02, marginRight: windowWidth*0.06, marginTop: windowWidth*0.12}} icon={faEllipsisH} size={(windowHeight/windowWidth)*10} color="#000" />
                                     </TouchableOpacity>
