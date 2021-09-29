@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { useRoute, useIsFocused } from '@react-navigation/core';
 import {useSelector, useDispatch} from 'react-redux';
-import {logoutUser, getUser} from '../redux/actions/user.actions';
 import {RootState} from '../redux/reducers';
 import {HomeComponent} from '../components/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import { failure } from '../redux';
 import { safeplaceServices } from '../services';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { LatLng } from 'react-native-maps';
@@ -14,6 +12,7 @@ import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 import {googleServices} from '../services';
 import { useNavigation } from '@react-navigation/native';
+import { getUser } from '../redux';
 
 export const Home = (): JSX.Element => {
 
@@ -38,15 +37,6 @@ export const Home = (): JSX.Element => {
   const navigation = useNavigation();
   const [count, setCount] = useState<number>(0);
 
-  const logout = async () => {
-    try {
-        dispatch(logoutUser());
-        await AsyncStorage.removeItem('persist:root');
-    } catch {
-        dispatch(failure());
-    }
-  }
-
   useEffect(() => {
     if (isFocused) {
       if (route.params !== undefined) {
@@ -66,7 +56,8 @@ export const Home = (): JSX.Element => {
 
   useEffect(() => {
     if (!credentials.username || (credentials.username && credentials.username.length <= 0)) {
-      dispatch(getUser(credentials._id, credentials.token));
+      // console.log('abc');
+      dispatch(getUser({userId: credentials._id, token: credentials.token}));
     }
     safeplaceServices.getSafeplace()
     .then((res) => {
@@ -209,7 +200,6 @@ export const Home = (): JSX.Element => {
         navigationMode={navigationMode}
         setNavigationMode={setNavigationMode}
         goToSafeplace={goToSafeplace}
-        logout={logout}
         count={count}
         setCount={setCount}
         getNearestSafe={getNearestSafe}

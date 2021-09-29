@@ -1,6 +1,5 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
-import {useSelector} from 'react-redux';
 import {SavedPlaces, Login, Register, Home, Profile, ForgotPWD, ChangePWD, Safeplace} from './src/containers';
 import {persistor} from './src/redux';
 import {PersistGate} from 'redux-persist/integration/react';
@@ -10,6 +9,7 @@ import {RootStackParamList} from './src/routes';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
+import { useAppSelector } from './src/utils/hooks';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 

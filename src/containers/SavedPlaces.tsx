@@ -74,7 +74,6 @@ export const SavedPlaces = (): JSX.Element => {
     const getOriginPlaces = (text: string, latitude: number, longitude: number) => {
         googleServices.getPlaces(text, latitude, longitude)
         .then((res) => {
-            // console.log(res.data.predictions);
             setAddressPlaces(res.data.predictions);
         })
         .catch((err) => {

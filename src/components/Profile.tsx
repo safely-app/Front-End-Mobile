@@ -56,7 +56,6 @@ export const ProfileComponent = ({logout, email, setEmail, checkEmail, isLoading
               placeholder="Password"
               placeholderTextColor="gray"
               testID="inputPassword"
-              ref={ref => {passwordRef = ref}}
             />
             <Text style={{margin: 12, marginBottom: 0, marginTop: 0}} type="body" color="red" size="s">
               {passwordError ? passwordError : ''}
@@ -72,7 +71,6 @@ export const ProfileComponent = ({logout, email, setEmail, checkEmail, isLoading
                 secureTextEntry={true}
                 placeholderTextColor="gray"
                 testID="inputConfirmPassword"
-                ref={ref => {confirmPasswordRef = ref}}
             />
             <Button
               style={{alignItems: 'center', justifyContent: 'center', margin: windowWidth*0.022, display: display}}
@@ -92,14 +90,17 @@ export const ProfileComponent = ({logout, email, setEmail, checkEmail, isLoading
               width="65%"
             >
               <Text>Delete your account</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, {display, backgroundColor: 'red', borderWidth: 0}]}
+            </Button>
+            <Button
+              style={{display: display, alignItems: 'center', justifyContent: 'center', margin: windowWidth*0.022}}
+              bgColor="red"
               onPress={() => {logout()}}
-              testID="buttonDeleteAccount"
+              type="roundedButton"
+              width="65%"
+              testID="buttonLogoutAccount"
             >
               <Text>Logout of your account</Text>
-            </TouchableOpacity>
+            </Button>
             <ActivityIndicator
               size="large"
               color="#0000ff"

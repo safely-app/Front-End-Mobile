@@ -15,7 +15,7 @@ async function login({
       password,
     });
 
-    
+          
   return response.data;
 }
 
@@ -57,7 +57,7 @@ async function updateUser(userId: string, token: string, email: string, password
 
 async function getUser(token: string, userId: string): Promise<User> {
   const response = await axios.get(API_URL + `/user/${userId}`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
-
+  
   return response.data;
 }
 

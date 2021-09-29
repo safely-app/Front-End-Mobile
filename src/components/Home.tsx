@@ -33,7 +33,6 @@ interface Props {
     navigationMode: boolean;
     setNavigationMode: (bool: boolean) => void;
     goToSafeplace: (id: string) => void;
-    logout: () => void;
     count: number;
     setCount: (number: number) => void;
     getNearestSafe: () => void;
@@ -100,13 +99,14 @@ const mapStyle = StyleSheet.create({
     }
    });
 
-export const HomeComponent = ({getNearestSafe, count, setCount, logout, goToSafeplace, setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
+export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
 
     const mapView = React.createRef();
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
+     
     if (latitude !== 0 && longitude !== 0) {
         return (
             <>

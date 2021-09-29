@@ -20,6 +20,7 @@ export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (credentials: UserLoginCredentials, thunkAPI) => {
     const response = await userServices.login({username: credentials.email, password: credentials.password});
+
     return response;
   }
 );
@@ -36,6 +37,7 @@ export const getUser = createAsyncThunk(
   'user/getUser',
   async (credentials: {userId: string, token: string}, thunkAPI) => {
     const response = await userServices.getUser(credentials.token, credentials.userId);
+
     return response
   }
 );
