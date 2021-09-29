@@ -8,7 +8,6 @@ import {createStackNavigator, StackNavigationOptions} from '@react-navigation/st
 import {NavigationContainer} from '@react-navigation/native';
 import {RootStackParamList} from './src/routes';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {RootState} from './src/redux/reducers';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
 
@@ -23,7 +22,7 @@ const options: StackNavigationOptions = {
 
 const EntryPoint: React.FC = () => {
 
-  const {credentials} = useSelector((state: RootState) => state.user);
+  const {credentials} = useAppSelector((state) => state.user);
 
   function HomeTabs() {
     return (

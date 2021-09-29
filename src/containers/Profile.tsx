@@ -1,19 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {RootState} from '../redux/reducers';
+import React, {useState} from 'react';
+import { useAppSelector, useAppDispatch } from '../utils/hooks';
 import {ProfileComponent} from '../components/index';
 import {constraints} from '../utils/constraints';
 import validate from 'validate.js';
 import {userServices} from '../services';
-import {resetFetch, getUser, logoutUser} from '../redux/actions';
+import {getUser, logoutUser} from '../redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { failure } from '../redux';
 
 export const Profile = (): JSX.Element => {
 
-  const dispatch = useDispatch();
-  const {error} = useSelector((state: RootState) => state.common);
-  const {credentials} = useSelector((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
+  const {credentials} = useAppSelector((state) => state.user);
   const [email, setEmail] = useState<string>(credentials.email);
   const [emailError, setEmailError] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string>('');
@@ -26,7 +23,7 @@ export const Profile = (): JSX.Element => {
         dispatch(logoutUser());
         await AsyncStorage.removeItem('persist:root');
     } catch {
-        dispatch(failure());
+        throw "Failed to logout"
     }
   }
 
@@ -50,7 +47,11 @@ export const Profile = (): JSX.Element => {
       setisLoading(true);
       userServices.updateUser(credentials._id, credentials.token, email, password, credentials.username)
       .then(() => {
-        dispatch(getUser(credentials._id, credentials.token));
+        Toast.show({
+          type: 'success',
+          text1: "Your modification has been applied",
+        });        
+        dispatch(getUser({userId: credentials._id, token: credentials.token}));
       })
       .catch(err => {
         console.log('err');
@@ -77,13 +78,6 @@ export const Profile = (): JSX.Element => {
       setEmailError('');
     }
   }
-
-  useEffect(() => {
-    if (Object.keys(error).length > 0) {
-      dispatch(resetFetch());
-      setisLoading(false);
-    }
-  })
 
   function onDelete() {
     userServices.deleteUser(credentials.token, credentials._id)
