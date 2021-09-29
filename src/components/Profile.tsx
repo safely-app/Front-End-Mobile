@@ -16,9 +16,10 @@ interface Props {
     onDelete: () => void;
     confirmPassword: string;
     setconfirmPassword: (password: string) => void;
+    logout: () => void;
 }
-
-export const ProfileComponent = ({email, setEmail, checkEmail, isLoading, onSubmit, emailError, passwordError, checkPassword, setPassword, password, onDelete, confirmPassword, setconfirmPassword}: Props): JSX.Element => {
+ 
+export const ProfileComponent = ({logout, email, setEmail, checkEmail, isLoading, onSubmit, emailError, passwordError, checkPassword, setPassword, password, onDelete, confirmPassword, setconfirmPassword}: Props): JSX.Element => {
 
   const display = isLoading ? "none" : "flex";
 
@@ -90,8 +91,15 @@ export const ProfileComponent = ({email, setEmail, checkEmail, isLoading, onSubm
               type="roundedButton"
               width="65%"
             >
-              <Text type="body" color="white" size="m">Delete your account</Text>
-            </Button>
+              <Text>Delete your account</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, {display, backgroundColor: 'red', borderWidth: 0}]}
+              onPress={() => {logout()}}
+              testID="buttonDeleteAccount"
+            >
+              <Text>Logout of your account</Text>
+            </TouchableOpacity>
             <ActivityIndicator
               size="large"
               color="#0000ff"

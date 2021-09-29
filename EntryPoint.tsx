@@ -1,7 +1,7 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
-import { useAppSelector } from './src/utils/hooks';
-import {Login, Register, Home, Profile, ForgotPWD, ChangePWD} from './src/containers';
+import {useSelector} from 'react-redux';
+import {SavedPlaces, Login, Register, Home, Profile, ForgotPWD, ChangePWD, Safeplace} from './src/containers';
 import {persistor} from './src/redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {createStackNavigator, StackNavigationOptions} from '@react-navigation/stack';
@@ -43,18 +43,20 @@ const EntryPoint: React.FC = () => {
       >
         <Tab.Screen name="Home" component={Home} options={{tabBarTestID: "HomePage"}} />
         <Tab.Screen name="Profile" component={Profile} options={{tabBarTestID: "ProfilePage"}} />
+        <Tab.Screen name="Saved Places" component={SavedPlaces} options={{tabBarTestID: "SavedPlacesPage"}} />
       </Tab.Navigator>
     );
   }
 
   return (
     <PersistGate persistor={persistor}>
-        <StatusBar barStyle="dark-content" hidden />
+        <StatusBar barStyle="dark-content" />
         <NavigationContainer>
             <RootStack.Navigator initialRouteName="Login">
                 {credentials.token ? (            
                 <>
                     <RootStack.Screen name="HomeTabs" component={HomeTabs} options={options} />
+                    <RootStack.Screen name="Safeplace" component={Safeplace} options={options} />
                 </>
                 ) : (
                 <>

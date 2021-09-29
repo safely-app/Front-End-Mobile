@@ -1,6 +1,6 @@
 import axios from 'react-native-axios';
 import {User} from '../redux/types';
-import {API_URL} from "@env";
+import {API_URL} from '@env';
 
 async function login({
   username,
@@ -14,7 +14,8 @@ async function login({
       email: username,       
       password,
     });
-  
+
+    
   return response.data;
 }
 
@@ -25,7 +26,7 @@ async function register({username, password, email}: {username: string, password
     email: email,
     password: password,
   });
-
+       
   return response.data;
 }
 
@@ -41,19 +42,13 @@ async function changePassword(userId: string, token: string, password: string): 
   return response;
 }
 
-async function updateUser(userId: string, token: string, email: string, password: string) {
+async function updateUser(userId: string, token: string, email: string, password: string, username: string) {
   const bodyObj = {
-    "email": email,
-    "password": password
+    username: username,
+    email: email,
+    role: "user",
+    password: password,
   };
-
-  if (email.length <= 0) {
-    delete bodyObj.email;
-  }
-
-  if (password.length <= 0) {
-    delete bodyObj.password
-  }
 
   const response = await axios.put(API_URL + `/user/${userId}`, bodyObj, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
 

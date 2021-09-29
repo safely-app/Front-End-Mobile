@@ -6,7 +6,6 @@ import validate from 'validate.js';
 import {userServices} from '../services';
 import {getUser, logoutUser} from '../redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-toast-message';
 
 export const Profile = (): JSX.Element => {
 
@@ -18,6 +17,15 @@ export const Profile = (): JSX.Element => {
   const [passwordError, setPasswordError] = useState<string | undefined>(undefined);
   const [confirmPassword, setconfirmPassword] = useState<string>('');
   const [isLoading, setisLoading] = useState<boolean>(false);
+
+  const logout = async () => {
+    try {
+        dispatch(logoutUser());
+        await AsyncStorage.removeItem('persist:root');
+    } catch {
+        throw "Failed to logout"
+    }
+  }
 
   function onSubmit(email: string, password: string) {
     const validateObj = validate({emailAddress: email}, constraints);
@@ -37,7 +45,7 @@ export const Profile = (): JSX.Element => {
 
     if (!emailErrorMsg && !passwordErrorMsg) {
       setisLoading(true);
-      userServices.updateUser(credentials._id, credentials.token, email, password)
+      userServices.updateUser(credentials._id, credentials.token, email, password, credentials.username)
       .then(() => {
         Toast.show({
           type: 'success',
@@ -98,6 +106,7 @@ export const Profile = (): JSX.Element => {
         onDelete={onDelete}
         confirmPassword={confirmPassword}
         setconfirmPassword={setconfirmPassword}
+        logout={logout}
       />
     </>
   );
