@@ -36,7 +36,7 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          API_URL=${{ secrets.API_URL }} ./gradlew assembleRelease
+          API_URL=${{ secrets.API_URL }} GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }} ./gradlew assembleRelease
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
