@@ -15,6 +15,7 @@ jobs:
       run: |
         touch .env
         echo API_URL=${{ secrets.API_URL }} >> .env
+        echo GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }} >> .env
         cat .env
 
     - name: Install node modules
