@@ -122,7 +122,7 @@ export const SavedPlaces = (): JSX.Element => {
     }
 
     const deletePlace = (idPlace: string) => {
-        safeplaceServices.deleteRecurringPlace(idPlace)
+        safeplaceServices.deleteRecurringPlace(idPlace, credentials.token)
         .then(() => {
             setSafeplaceEdit(initialStatePlace);
             setModalReccuring(false);

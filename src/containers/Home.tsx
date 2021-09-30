@@ -59,7 +59,7 @@ export const Home = (): JSX.Element => {
       // console.log('abc');
       dispatch(getUser({userId: credentials._id, token: credentials.token}));
     }
-    safeplaceServices.getSafeplace()
+    safeplaceServices.getSafeplace(credentials.token)
     .then((res) => {
       setSafeplaces(res.data);
     })
@@ -160,6 +160,7 @@ export const Home = (): JSX.Element => {
           setOriginInput(res.data.results[0].formatted_address);
         })
         .catch((err) => {
+          console.log(err);
           throw err;
         })
       })

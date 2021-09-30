@@ -18,10 +18,10 @@ export const Safeplace = (): JSX.Element => {
     const [userComments, setUserComments] = useState<[]>([]);
 
     useEffect(() => {
-        safeplaceServices.getSafeplaceId(route.params.id)
+        safeplaceServices.getSafeplaceId(route.params.id, credentials.token)
         .then((res) => {
             setSafeplace(res.data);
-            safeplaceServices.getCommentSafeplace()
+            safeplaceServices.getCommentSafeplace(credentials.token)
             .then((res) => {
                 setUserComments(res.data);
             })
@@ -36,7 +36,7 @@ export const Safeplace = (): JSX.Element => {
         safeplaceServices.setCommentSafeplace(comment, idSafeplace, credentials._id, grade, credentials.token)
         .then((res) => {
             setModalComment(false);
-            safeplaceServices.getCommentSafeplace()
+            safeplaceServices.getCommentSafeplace(credentials.token)
             .then((res) => {
                 setUserComments(res.data);
             })
