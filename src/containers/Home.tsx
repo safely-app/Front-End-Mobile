@@ -40,7 +40,7 @@ export const Home = (): JSX.Element => {
   useEffect(() => {
     if (isFocused) {
       if (route.params !== undefined) {
-        googleServices.getReverseCoords(latitude, longitude)
+        googleServices.getReverseCoords(latitude.toString(), longitude.toString())
         .then((res) => {
           setCoordsFromPlace(route.params.address, 'destination');
           setDestinationInput(route.params.address);
