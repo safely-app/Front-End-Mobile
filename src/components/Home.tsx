@@ -1,6 +1,6 @@
 import React, { LegacyRef, useEffect } from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
-import MapView, {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard, Image} from 'react-native';
+import MapView, {Callout, LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
@@ -164,18 +164,29 @@ export const HomeComponent = ({
                                 <FontAwesomeIcon icon={faLocationArrow} />
                             </Marker>
                         )}
-                        {isMapLoaded && safeplaces && safeplaces.length > 0 ? safeplaces.map((safeplace, index) => (
-                                <Marker
-                                    coordinate={{
-                                        latitude: parseFloat(safeplace.coordinate[0]),
-                                        longitude: parseFloat(safeplace.coordinate[1])
-                                    }}
-                                    key={safeplace._id}
-                                    title={safeplace.name}
-                                    onPress={() => {
-                                        goToSafeplace(safeplace._id);
-                                    }}
-                                />
+                        {isMapLoaded && safeplaces && safeplaces.length > 0 ? safeplaces.map(safeplace => (
+                            <Marker key={safeplace._id} coordinate={{
+                                latitude: parseFloat(safeplace.coordinate[0]),
+                                longitude: parseFloat(safeplace.coordinate[1])
+                            }}>
+                                <Callout style={{
+                                    width: windowWidth / 2,
+                                    height: windowHeight / 5
+                                }}>
+                                    <View>
+                                        <Text style={{fontWeight: 'bold'}}>{safeplace.name}</Text>
+                                        <Text>{safeplace.address}</Text>
+                                        <Text>
+                                            <Image style={{
+                                                width: windowWidth / 2,
+                                                height: 50
+                                            }} source={{
+                                                uri: 'https://reactnative.dev/img/tiny_logo.png'
+                                            }} resizeMode="stretch" />
+                                        </Text>
+                                    </View>
+                                </Callout>
+                            </Marker>
                         )) : null }
                         {(isMapLoaded && navigationMode && origin && origin.latitude !== 0 && origin.longitude !== 0) && (destination && destination.latitude !== 0 && destination.longitude !== 0) && (
                             <MapViewDirections
@@ -190,18 +201,18 @@ export const HomeComponent = ({
                 {isMapLoaded && (
                     <View style={{position: 'absolute', top: (windowHeight)*0.70, bottom: windowHeight*0, left: windowWidth*0.85, right: 0}}>
                         <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*0.15}} onPress={() => {setNavigationMode(!navigationMode)}}>
-                                <FontAwesomeIcon icon={faDirections} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0165, bottom: (windowHeight)*0.0135}} />
-                                <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
+                            <FontAwesomeIcon icon={faDirections} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0165, bottom: (windowHeight)*0.0135}} />
+                            <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*0.022}} onPress={() => {
-                                mapView.current?.animateCamera({center: {latitude: latitude, longitude: longitude}});
+                            mapView.current?.animateCamera({center: {latitude: latitude, longitude: longitude}});
                         }}>
-                                <FontAwesomeIcon icon={faMapPin} color={"white"} size={(windowWidth/windowHeight)*60} style={{zIndex: 9999, left: (windowWidth)*0.0140, bottom: (windowHeight)*0.0100}} />
-                                <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
+                            <FontAwesomeIcon icon={faMapPin} color={"white"} size={(windowWidth/windowHeight)*60} style={{zIndex: 9999, left: (windowWidth)*0.0140, bottom: (windowHeight)*0.0100}} />
+                            <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*-0.11}} onPress={() => {getNearestSafe();}}>
-                                <FontAwesomeIcon icon={faStore} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0185, bottom: (windowHeight)*0.0135}} />
-                                <FontAwesomeIcon icon={faCircle} color={"#EF4F4F"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
+                            <FontAwesomeIcon icon={faStore} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0185, bottom: (windowHeight)*0.0135}} />
+                            <FontAwesomeIcon icon={faCircle} color={"#EF4F4F"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                         </TouchableOpacity>
                     </View>
                 )}
