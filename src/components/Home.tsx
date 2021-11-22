@@ -1,6 +1,7 @@
 import React, { LegacyRef, useEffect } from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
-import MapView, {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView from "react-native-map-clustering";
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
@@ -143,6 +144,7 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                                     key={safeplace._id}
                                     title={safeplace.name}
                                     onPress={() => {goToSafeplace(safeplace._id);}}
+                                    tracksViewChanges={false}
                                 />
                         )) : null }
                         {(isMapLoaded && navigationMode && origin && origin.latitude !== 0 && origin.longitude !== 0) && (destination && destination.latitude !== 0 && destination.longitude !== 0) && (
