@@ -37,6 +37,10 @@ export const Home = (): JSX.Element => {
   const navigation = useNavigation();
   const [count, setCount] = useState<number>(0);
 
+  const hours: number = 24
+  const cacheExpiryTime = new Date()
+  cacheExpiryTime.setHours(cacheExpiryTime.getHours() + hours)
+
   useEffect(() => {
     if (isFocused) {
       if (route.params !== undefined) {
@@ -48,7 +52,7 @@ export const Home = (): JSX.Element => {
           setOrigin({latitude: latitude, longitude: longitude});
         })
         .catch((err) => {
-          throw err;
+          throw err;  
         })
       }
     }
@@ -59,12 +63,28 @@ export const Home = (): JSX.Element => {
       // console.log('abc');
       dispatch(getUser({userId: credentials._id, token: credentials.token}));
     }
-    safeplaceServices.getSafeplace(credentials.token)
+
+    const lastrequestFunction = async () => {
+      const lastrequest = await AsyncStorage.getItem("lastSafeplaceRequest");
+
+      if (lastrequest == null || new Date(JSON.parse(lastrequest)) > cacheExpiryTime) {
+        safeplaceServices.getSafeplace(credentials.token)
+        .then((res) => {
+          // setSafeplaces(res.data);
+          AsyncStorage.setItem("lastSafeplaceRequest", JSON.stringify(new Date()));
+          AsyncStorage.setItem("safeplaces", JSON.stringify(res.data));
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
+    }
+
+    lastrequestFunction();
+
+    AsyncStorage.getItem("safeplaces")
     .then((res) => {
-      setSafeplaces(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
+      setSafeplaces(JSON.parse(res));
     })
   }, []);
 
@@ -101,7 +121,7 @@ export const Home = (): JSX.Element => {
       setLongitude(0);
       setLatitude(0);
       setPermissions(false);
-      setSafeplaces([]);
+      // setSafeplaces([]);
       setOrigin({latitude: 0, longitude: 0});
       setDestination({latitude: 0, longitude: 0});
       setOriginInput("");

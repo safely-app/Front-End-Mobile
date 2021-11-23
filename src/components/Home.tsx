@@ -1,6 +1,7 @@
 import React, { LegacyRef, useEffect } from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard, Image} from 'react-native';
-import MapView, {Callout, LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {Callout, LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView from "react-native-map-clustering";
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
@@ -168,7 +169,7 @@ export const HomeComponent = ({
                             <Marker key={safeplace._id} coordinate={{
                                 latitude: parseFloat(safeplace.coordinate[0]),
                                 longitude: parseFloat(safeplace.coordinate[1])
-                            }}>
+                            }} tracksViewChanges={false}>
                                 <Callout style={{
                                     width: windowWidth / 2,
                                     height: windowHeight / 5
