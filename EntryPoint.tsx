@@ -7,10 +7,9 @@ import {createStackNavigator, StackNavigationOptions} from '@react-navigation/st
 import {NavigationContainer} from '@react-navigation/native';
 import {RootStackParamList} from './src/routes';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
 import { useAppSelector } from './src/utils/hooks';
-import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
+import { faLocationArrow, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -41,16 +40,6 @@ const EntryPoint: React.FC = () => {
               iconName = faMapPin
             
             return <FontAwesomeIcon icon={iconName} color={"#1E90FF"} size={14}/>
-
-        //     let iconName;
-              
-        //     if (route.name === "Home") {
-        //       iconName = 'home-outline'
-        //     }
-        //     if (route.name === "Profile") {
-        //       iconName = 'person-circle-outline'
-        //     }
-        //     return <Ionicons name={iconName} size={size} color={color}/>;
           }
         })}
       >

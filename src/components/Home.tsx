@@ -205,7 +205,8 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                                         shadowRadius: 2,  
                                         elevation: 5,
                                         borderRadius: 25,
-                                        paddingLeft: 15
+                                        paddingLeft: 15,
+                                        zIndex: 9999
                                     }}
                                     value={destinationInput}
                                     onChangeText={(text) => {setDestinationInput(text); getOriginPlaces(text, latitude, longitude, "destination")}}
@@ -216,7 +217,7 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                             {originFocus ? (
                                 <ScrollView bounces={false} style={(originPlaces.length > 0 && originFocus) ? {
                                         position: 'absolute',
-                                        top: Platform.OS == "ios" ? 53 : 45,
+                                        top: Platform.OS == "ios" ? 43 : 45,
                                         bottom: 0,
                                         left: (windowWidth)*0.07,
                                         right: 0,
@@ -240,8 +241,7 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                                                 key={index} 
                                                 style={{zIndex: 999}}
                                                 >
-                                                    <Text 
-                                                    >
+                                                    <Text>
                                                         {place.description}
                                                     </Text>
                                             </TouchableOpacity>
@@ -255,7 +255,7 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                             {destinationFocus && (
                                 <ScrollView style={(destinationPlaces.length > 0 && destinationFocus) ? {
                                     position: 'absolute',
-                                    top: 30,
+                                    top: 90,
                                     bottom: 0,
                                     left: (windowWidth)*0.07,
                                     right: 0,
@@ -277,7 +277,7 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                                                 <TouchableOpacity
                                                     onPress={() => {setDestinationInput(place.description); setDestinationFocus(false); setCoordsFromPlace(place.description, "destination")}}
                                                     key={index} 
-                                                    style={{marginBottom: 10}}
+                                                    style={{zIndex: 999}}
                                                 >
                                                     <Text>
                                                         {place.description}
