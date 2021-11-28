@@ -1,11 +1,12 @@
-import React, { LegacyRef, useEffect } from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard, Image} from 'react-native';
+import React from 'react';
+import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Callout, LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import MapView from "react-native-map-clustering";
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
+import { faDirections, faLocationArrow, faCircle, faMapPin, faStore, faStar } from '@fortawesome/free-solid-svg-icons'
 import MapViewDirections from 'react-native-maps-directions';
+import {Svg, Image as ImageSvg} from 'react-native-svg';
 import {GOOGLE_API_KEY} from '@env';
 
 interface Props {
@@ -170,21 +171,39 @@ export const HomeComponent = ({
                                 latitude: parseFloat(safeplace.coordinate[0]),
                                 longitude: parseFloat(safeplace.coordinate[1])
                             }} tracksViewChanges={false}>
-                                <Callout style={{
-                                    width: windowWidth / 2,
-                                    height: windowHeight / 5
-                                }}>
+                                <Callout
+                                    onPress={() => goToSafeplace(safeplace._id)}
+                                    style={{
+                                        width: windowWidth / 2,
+                                        height: windowHeight / 4.5
+                                    }}
+                                >
                                     <View>
                                         <Text style={{fontWeight: 'bold'}}>{safeplace.name}</Text>
                                         <Text>{safeplace.address}</Text>
-                                        <Text>
-                                            <Image style={{
-                                                width: windowWidth / 2,
-                                                height: 50
-                                            }} source={{
-                                                uri: 'https://reactnative.dev/img/tiny_logo.png'
-                                            }} resizeMode="stretch" />
-                                        </Text>
+                                        <View style={{
+                                            flex: 1,
+                                            flexDirection: 'row',
+                                            backgroundColor: 'blue',
+                                            marginBottom: 16
+                                        }}>
+                                            {[...Array(5).keys()].map(value =>
+                                                <FontAwesomeIcon
+                                                    key={value}
+                                                    size={15}
+                                                    icon={faStar}
+                                                    color={(value < 3) ? 'yellow' : 'grey'}
+                                                />
+                                            )}
+                                        </View>
+                                        <Svg width={240} height={120}>
+                                            <ImageSvg
+                                                width={'100%'}
+                                                height={'100%'}
+                                                preserveAspectRatio="xMidYMid slice"
+                                                href={{ uri: 'https://media-cdn.tripadvisor.com/media/photo-s/13/75/48/d5/p80524-122152-largejpg.jpg' }}
+                                            />
+                                        </Svg>
                                     </View>
                                 </Callout>
                             </Marker>
