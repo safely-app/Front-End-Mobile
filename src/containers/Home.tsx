@@ -9,7 +9,7 @@ import { safeplaceServices } from '../services';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { LatLng } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { LocationAccuracy } from 'expo-location';
+import { LocationAccuracy, LocationHeadingObject } from 'expo-location';
 import {googleServices} from '../services';
 import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../redux';
@@ -36,6 +36,7 @@ export const Home = (): JSX.Element => {
   const [navigationMode, setNavigationMode] = useState<boolean>(false);
   const navigation = useNavigation();
   const [count, setCount] = useState<number>(0);
+  const [heading, setHeading] = useState<LocationHeadingObject>();
 
   const hours: number = 24
   const cacheExpiryTime = new Date()
@@ -93,7 +94,6 @@ export const Home = (): JSX.Element => {
       // Get permissions of location
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        console.log('not granted');
         throw "not granted";
       } else {
         // Setting callback to get location when user moves
@@ -109,6 +109,14 @@ export const Home = (): JSX.Element => {
       }
   })();
 
+  // let unsubscribeHeadingDevice = (async (): Promise<Location.LocationSubscription> => {
+  //   return await Location.watchHeadingAsync((heading) => {
+  //       setHeading(heading);
+  //       console.log(heading);
+  //   });
+  // });
+
+    // unsubscribeHeadingDevice();
     return (() => {
       // unsubscribeLocation is called when the component is unmounted
       // it will call the remove function to remove the callback of watchPositionAsync
@@ -116,6 +124,10 @@ export const Home = (): JSX.Element => {
       .then((res) => {
         res.remove();
       })
+
+  unsubscribeHeadingDevice().then((res) => {res.remove()});
+
+
 
       // Setting all the state at null to avoid memory leak and unmounted components
       setLongitude(0);
@@ -152,6 +164,7 @@ export const Home = (): JSX.Element => {
   const setCoordsFromPlace = (address: string, type: string)  => {
     googleServices.getCoords(address)
     .then((res) => {
+      console.log(res);
       if (type === "origin") {
         setOrigin({latitude: res.data.results[0].geometry.location.lat, longitude: res.data.results[0].geometry.location.lng});
       } else {

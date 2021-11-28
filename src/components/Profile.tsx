@@ -32,7 +32,15 @@ export const ProfileComponent = ({logout, email, setEmail, checkEmail, isLoading
                 Edit your information
             </Text>
             <TextInput
-              style={{margin: windowWidth*0.025, paddingLeft: 10}}
+              style={{
+                margin: windowWidth*0.025,
+                paddingLeft: 10,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.8,
+                shadowRadius: 2,  
+                elevation: 5
+              }}
               type="roundedTextInput"
               bgColor="lightBlue"
               width="70%"
