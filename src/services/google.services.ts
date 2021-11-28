@@ -26,8 +26,19 @@ async function getReverseCoords(latitude: string, longitude: string): Promise<vo
     return response;
 }
 
+async function getDirection(origin: String, destination: String): Promise<[]> {
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/directions/json?key=${GOOGLE_API_KEY}&origin=${origin}&destination=${destination}&language=fr`, {headers: {"Content-type": "application/json"}});
+
+    // console.log(response.data.routes[0].legs);
+    Object.keys(response.data.routes).forEach((index) => {
+        console.log(response.data.routes[index])
+    })
+    return response;
+}
+
 export const googleServices = {
     getPlaces,
     getCoords,
-    getReverseCoords
+    getReverseCoords,
+    getDirection
 }

@@ -37,6 +37,7 @@ export const Home = (): JSX.Element => {
   const navigation = useNavigation();
   const [count, setCount] = useState<number>(0);
   const [heading, setHeading] = useState<LocationHeadingObject>();
+  const mapView = React.createRef();
 
   const hours: number = 24
   const cacheExpiryTime = new Date()
@@ -125,7 +126,6 @@ export const Home = (): JSX.Element => {
         res.remove();
       })
 
-  unsubscribeHeadingDevice().then((res) => {res.remove()});
 
 
 
@@ -147,6 +147,12 @@ export const Home = (): JSX.Element => {
     })
   }, [])
 
+  // useEffect(() => {
+  //   if (navigationMode) {
+  //     console.log("actif")
+  //   }
+  // })
+
   const getOriginPlaces = (text: string, latitude: number, longitude: number, input: String) => {
     googleServices.getPlaces(text, latitude, longitude)
     .then((res) => {
@@ -164,7 +170,6 @@ export const Home = (): JSX.Element => {
   const setCoordsFromPlace = (address: string, type: string)  => {
     googleServices.getCoords(address)
     .then((res) => {
-      console.log(res);
       if (type === "origin") {
         setOrigin({latitude: res.data.results[0].geometry.location.lat, longitude: res.data.results[0].geometry.location.lng});
       } else {
@@ -237,6 +242,7 @@ export const Home = (): JSX.Element => {
         count={count}
         setCount={setCount}
         getNearestSafe={getNearestSafe}
+        mapView={mapView}
       />
     </>
   );

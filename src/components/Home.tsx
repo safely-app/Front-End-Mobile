@@ -2,11 +2,13 @@ import React, { LegacyRef, useEffect } from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard, Platform} from 'react-native';
 import {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import MapView from "react-native-map-clustering";
+import { NavigationPopupComponent } from './index';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
 import MapViewDirections from 'react-native-maps-directions';
 import {GOOGLE_API_KEY} from '@env';
+import {googleServices} from '../services'
 
 interface Props {
     latitude: number;
@@ -37,6 +39,7 @@ interface Props {
     count: number;
     setCount: (number: number) => void;
     getNearestSafe: () => void;
+    mapView: React.RefObject<unknown>
 }
 
 const mapStyle = StyleSheet.create({
@@ -90,9 +93,8 @@ const mapStyle = StyleSheet.create({
     }
    });
 
-export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
+export const HomeComponent = ({mapView, getNearestSafe, count, setCount, goToSafeplace, setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
 
-    const mapView = React.createRef();
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
@@ -149,9 +151,17 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                         )}
                     </MapView>
                 </View>
+                {isMapLoaded && navigationMode ? (
+                    <NavigationPopupComponent />
+                ) : null}
                 {isMapLoaded && (
                     <View style={{position: 'absolute', top: (windowHeight)*0.70, bottom: windowHeight*0, left: windowWidth*0.85, right: 0}}>
-                        <TouchableOpacity style={{position: 'absolute', left: -7, bottom: 80}} onPress={() => {setNavigationMode(!navigationMode)}}>
+                        <TouchableOpacity style={{position: 'absolute', left: -7, bottom: 80}} onPress={() => {
+                                setNavigationMode(!navigationMode);
+                                if (origin.latitude != 0 && origin.longitude != 0 && destination.longitude != 0 && destination.latitude != 0) {
+                                    googleServices.getDirection(`${origin.latitude},${origin.longitude}`, `${destination.latitude},${destination.longitude}`)
+                                }
+                            }}>
                                 <FontAwesomeIcon icon={faDirections} color={"white"} size={28} style={{zIndex: 9999, left: 14, bottom: 1.8}} />
                                 <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={56} style={{bottom: 45}} />
                         </TouchableOpacity>
@@ -167,7 +177,7 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                         </TouchableOpacity>
                     </View>
                 )}
-                {isMapLoaded && (
+                {isMapLoaded && !navigationMode && (
                     <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); originFocus ? setOriginFocus(false) : null; destinationFocus ? setDestinationFocus(false) : null}} accessible={false}>
                         <View style={{alignItems: 'center', position: 'absolute', top: (windowHeight)*0.05, bottom: originFocus || destinationFocus ? 0 : (windowHeight)*0.700, left: originFocus || destinationFocus ? 0 : (windowWidth)*0.18, right: originFocus || destinationFocus ? 0 : (windowWidth)*0.18}}>
                             <TextInput

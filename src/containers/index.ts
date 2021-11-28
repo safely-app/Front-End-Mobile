@@ -6,3 +6,4 @@ export * from './ForgotPWD';
 export * from './ChangePWD';
 export * from './Safeplace'
 export * from './SavedPlaces';
+export * from './NavigationPopup';
