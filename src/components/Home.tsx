@@ -6,7 +6,12 @@ import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
 import MapViewDirections from 'react-native-maps-directions';
+import { Svg, Image as ImageSvg } from 'react-native-svg';
+import { SwipeablePanel } from 'rn-swipeable-panel';
+import { Text as CustomText } from './generic/Text';
+import { Rating } from './generic/Rating';
 import {GOOGLE_API_KEY} from '@env';
+import { HLine } from '.';
 
 interface Props {
     latitude: number;
@@ -37,6 +42,9 @@ interface Props {
     count: number;
     setCount: (number: number) => void;
     getNearestSafe: () => void;
+    birdNearestPlaces: SafeplaceInterface[];
+    isNearbyPanelActive: boolean;
+    setIsNearbyPanelActive: (value: boolean) => void;
 }
 
 const mapStyle = StyleSheet.create({
@@ -125,7 +133,10 @@ export const HomeComponent = ({
 	origin,
 	destination,
 	setOrigin,
-	setDestination
+	setDestination,
+    birdNearestPlaces,
+    isNearbyPanelActive,
+    setIsNearbyPanelActive
 }: Props): JSX.Element => {
 
     const mapView = React.createRef();
@@ -312,6 +323,42 @@ export const HomeComponent = ({
                             )}
                         </View>
                     </TouchableWithoutFeedback>
+                )}
+                {isMapLoaded && (
+                    <View style={{ position: 'absolute', top: windowHeight * 0.9, left: 0 }}>
+                        <SwipeablePanel
+                            onClose={() => setIsNearbyPanelActive(false)}
+                            isActive={isNearbyPanelActive}
+                            noBackgroundOpacity={true}
+                            fullWidth={true}
+                        >
+                            {((birdNearestPlaces.length > 0) ? birdNearestPlaces : safeplaces.slice(0, 10)).map(safeplace =>
+                                <View key={safeplace._id} style={{
+                                    marginTop: 20,
+                                    marginLeft: 20,
+                                    marginRight: 20
+                                }}>
+                                    <CustomText type='h1' size='m'>{safeplace.name}</CustomText>
+                                    <CustomText type='body' size='s'>{safeplace.address}</CustomText>
+                                    <Rating size={20} />
+                                    <View style={{ overflow: 'hidden', borderRadius: 8 }}>
+                                        <Svg width={windowWidth - 40} height={(windowWidth - 40) * 0.5625}>
+                                            <ImageSvg
+                                                id="Image"
+                                                width={'100%'}
+                                                height={'100%'}
+                                                preserveAspectRatio="xMidYMid slice"
+                                                href={{ uri: 'https://media-cdn.tripadvisor.com/media/photo-s/13/75/48/d5/p80524-122152-largejpg.jpg' }}
+                                            />
+                                        </Svg>
+                                    </View>
+                                    <HLine width='100%' lineColor='blue' borderWidth={1} style={{
+                                        marginTop: 20
+                                    }} />
+                                </View>
+                            )}
+                        </SwipeablePanel>
+                    </View>
                 )}
             </>
         )

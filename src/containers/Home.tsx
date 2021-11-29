@@ -30,10 +30,12 @@ export const Home = (): JSX.Element => {
   const [originInput, setOriginInput] = useState<string>('');
   const [originPlaces, setOriginPlaces] = useState<[]>([]);
   const [destinationPlaces, setDestinationPlaces] = useState<[]>([]);
+  const [birdNearestPlaces, setBirdNearestPlaces] = useState<[]>([]);
   const [originFocus, setOriginFocus] = useState<boolean>(false);
   const [destinationFocus, setDestinationFocus] = useState<boolean>(false);
   const [destinationInput, setDestinationInput] = useState<string>("");
   const [navigationMode, setNavigationMode] = useState<boolean>(false);
+  const [isNearbyPanelActive, setIsNearbyPanelActive] = useState(true);
   const navigation = useNavigation();
   const [count, setCount] = useState<number>(0);
 
@@ -57,6 +59,13 @@ export const Home = (): JSX.Element => {
       }
     }
   }, [isFocused])
+
+  useEffect(() => {
+    safeplaceServices
+      .getSafeplaceBirdNearest(latitude, longitude, 10, credentials.token)
+      .then(res => setBirdNearestPlaces(res.data))
+      .catch(err => console.error(err));
+  }, [isNearbyPanelActive]);
 
   useEffect(() => {
     if (!credentials.username || (credentials.username && credentials.username.length <= 0)) {
@@ -224,6 +233,9 @@ export const Home = (): JSX.Element => {
         count={count}
         setCount={setCount}
         getNearestSafe={getNearestSafe}
+        birdNearestPlaces={birdNearestPlaces}
+        isNearbyPanelActive={isNearbyPanelActive}
+        setIsNearbyPanelActive={setIsNearbyPanelActive}
       />
     </>
   );
