@@ -7,9 +7,10 @@ import {createStackNavigator, StackNavigationOptions} from '@react-navigation/st
 import {NavigationContainer} from '@react-navigation/native';
 import {RootStackParamList} from './src/routes';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
 import { useAppSelector } from './src/utils/hooks';
+import { faLocationArrow, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -27,19 +28,20 @@ const EntryPoint: React.FC = () => {
   function HomeTabs() {
     return (
       <Tab.Navigator
-        // screenOptions={({ route }) => ({
-        //   tabBarIcon: ({ focused, color, size }) => {
-        //     let iconName;
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
 
-        //     if (route.name === "Home") {
-        //       iconName = 'home-outline'
-        //     }
-        //     if (route.name === "Profile") {
-        //       iconName = 'person-circle-outline'
-        //     }
-        //     return <Ionicons name={iconName} size={size} color={color}/>;
-        //   }
-        // })}
+            if (route.name === "Home")
+              iconName = faLocationArrow
+            if (route.name === "Profile")
+              iconName = faStore
+            if (route.name === "Saved Places")
+              iconName = faMapPin
+            
+            return <FontAwesomeIcon icon={iconName} color={"#1E90FF"} size={14}/>
+          }
+        })}
       >
         <Tab.Screen name="Home" component={Home} options={{tabBarTestID: "HomePage"}} />
         <Tab.Screen name="Profile" component={Profile} options={{tabBarTestID: "ProfilePage"}} />

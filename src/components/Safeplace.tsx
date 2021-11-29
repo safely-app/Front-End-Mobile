@@ -126,6 +126,7 @@ export const SafeplaceComponent = ({userComments, comment, setComment, grade, se
                                             size={10}
                                             defaultRating={comment.grade}
                                             showRating={false}
+                                            isDisabled={true}
                                         />
                                     </View>
                                 </View>

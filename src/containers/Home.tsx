@@ -9,7 +9,7 @@ import { safeplaceServices } from '../services';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { LatLng } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { LocationAccuracy } from 'expo-location';
+import { LocationAccuracy, LocationHeadingObject } from 'expo-location';
 import {googleServices} from '../services';
 import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../redux';
@@ -93,7 +93,6 @@ export const Home = (): JSX.Element => {
       // Get permissions of location
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        console.log('not granted');
         throw "not granted";
       } else {
         // Setting callback to get location when user moves
