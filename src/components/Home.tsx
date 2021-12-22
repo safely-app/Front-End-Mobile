@@ -153,11 +153,11 @@ export const HomeComponent = ({navigationSteps, setNavigationSteps, mapView, get
                 </View>
                 {isMapLoaded && navigationMode ? (
                     <NavigationPopup
-                        navigationSteps={[]}
                         latitude={latitude}
                         longitude={longitude}
                         origin={origin}
                         destination={destination}
+                        setNavigationMode={setNavigationMode}
                     />
                 ) : null}
                 {isMapLoaded && (
