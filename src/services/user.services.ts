@@ -14,8 +14,8 @@ async function login({
       email: username,       
       password,
     });
-
-          
+      
+                    
   return response.data;
 }
 
@@ -26,19 +26,19 @@ async function register({username, password, email}: {username: string, password
     email: email,
     password: password,
   });
-       
+                        
   return response.data;
 }
 
 async function forgotPassword(email: string): Promise<void> {
   const response = await axios.post(API_URL + '/user/forgotPassword', {"email": email});
-
+    
   return response;
 }
 
 async function changePassword(userId: string, token: string, password: string): Promise<void> {
   const response = await axios.post(API_URL + '/user/changePassword', {"userId": userId, "token": token, "password": password});
-
+   
   return response;
 }
 

@@ -3,6 +3,7 @@ import { useRoute, useIsFocused } from '@react-navigation/core';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../redux/reducers';
 import {HomeComponent} from '../components/index';
+import { AxiosResponse } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import { safeplaceServices } from '../services';
@@ -13,6 +14,7 @@ import { LocationAccuracy, LocationHeadingObject } from 'expo-location';
 import {googleServices} from '../services';
 import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../redux';
+import { geocodeApiResponse, placesAutocompletesApiResponse, placesAutocompletesPrediction } from '../../types/googleServices';
 
 export const Home = (): JSX.Element => {
 
@@ -28,8 +30,8 @@ export const Home = (): JSX.Element => {
   const [destination, setDestination] = useState<LatLng>({latitude: 0, longitude: 0});
   const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
   const [originInput, setOriginInput] = useState<string>('');
-  const [originPlaces, setOriginPlaces] = useState<[]>([]);
-  const [destinationPlaces, setDestinationPlaces] = useState<[]>([]);
+  const [originPlaces, setOriginPlaces] = useState<placesAutocompletesPrediction[]>(new Array<placesAutocompletesPrediction>());
+  const [destinationPlaces, setDestinationPlaces] = useState<placesAutocompletesPrediction[]>(new Array<placesAutocompletesPrediction>());
   const [originFocus, setOriginFocus] = useState<boolean>(false);
   const [destinationFocus, setDestinationFocus] = useState<boolean>(false);
   const [destinationInput, setDestinationInput] = useState<string>("");
@@ -38,6 +40,7 @@ export const Home = (): JSX.Element => {
   const [count, setCount] = useState<number>(0);
   const [heading, setHeading] = useState<LocationHeadingObject>();
   const mapView = React.createRef();
+  const [navigationSteps, setNavigationSteps] = useState<[]>([]);
 
   const hours: number = 24
   const cacheExpiryTime = new Date()
@@ -46,8 +49,8 @@ export const Home = (): JSX.Element => {
   useEffect(() => {
     if (isFocused) {
       if (route.params !== undefined) {
-        googleServices.getReverseCoords(latitude, longitude)
-        .then((res) => {
+        googleServices.getReverseCoords(latitude.toString(), longitude.toString())
+        .then((res: AxiosResponse<geocodeApiResponse>) => {
           setCoordsFromPlace(route.params.address, 'destination');
           setDestinationInput(route.params.address);
           setOriginInput(res.data.results[0].formatted_address);
@@ -110,14 +113,6 @@ export const Home = (): JSX.Element => {
       }
   })();
 
-  // let unsubscribeHeadingDevice = (async (): Promise<Location.LocationSubscription> => {
-  //   return await Location.watchHeadingAsync((heading) => {
-  //       setHeading(heading);
-  //       console.log(heading);
-  //   });
-  // });
-
-    // unsubscribeHeadingDevice();
     return (() => {
       // unsubscribeLocation is called when the component is unmounted
       // it will call the remove function to remove the callback of watchPositionAsync
@@ -125,9 +120,6 @@ export const Home = (): JSX.Element => {
       .then((res) => {
         res.remove();
       })
-
-
-
 
       // Setting all the state at null to avoid memory leak and unmounted components
       setLongitude(0);
@@ -143,19 +135,12 @@ export const Home = (): JSX.Element => {
       setDestinationFocus(false);
       setDestinationInput("");
       setNavigationMode(false);
-      setNavigationMode(false);
     })
   }, [])
 
-  // useEffect(() => {
-  //   if (navigationMode) {
-  //     console.log("actif")
-  //   }
-  // })
-
-  const getOriginPlaces = (text: string, latitude: number, longitude: number, input: String) => {
+  const getOriginPlaces = (text: string, latitude: number, longitude: number, input: string) => {
     googleServices.getPlaces(text, latitude, longitude)
-    .then((res) => {
+    .then((res: AxiosResponse<placesAutocompletesApiResponse>) => {
       if (input === "origin") {
         setOriginPlaces(res.data.predictions);
       } else {
@@ -243,6 +228,8 @@ export const Home = (): JSX.Element => {
         setCount={setCount}
         getNearestSafe={getNearestSafe}
         mapView={mapView}
+        navigationSteps={navigationSteps}
+        setNavigationSteps={setNavigationSteps}
       />
     </>
   );
