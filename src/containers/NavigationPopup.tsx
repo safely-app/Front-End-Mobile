@@ -9,12 +9,11 @@ import Toast from 'react-native-toast-message';
 interface Props {
   latitude: number
   longitude: number
-  origin: {latitude: number, longitude: number}
   destination: {latitude: number, longitude: number}
   setNavigationMode: (bool: boolean) => void;
 }
 
-export const NavigationPopup = ({setNavigationMode, latitude, longitude, origin, destination}: Props): JSX.Element => {
+export const NavigationPopup = ({setNavigationMode, latitude, longitude, destination}: Props): JSX.Element => {
   const [directionText, setDirectionText] = useState<string>("")
   const [metersText, setMetersText] = useState<string | undefined>("")
   const [startTime, setStartTime] = useState<number>(new Date().getTime())

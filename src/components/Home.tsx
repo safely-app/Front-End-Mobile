@@ -155,7 +155,6 @@ export const HomeComponent = ({navigationSteps, setNavigationSteps, mapView, get
                     <NavigationPopup
                         latitude={latitude}
                         longitude={longitude}
-                        origin={origin}
                         destination={destination}
                         setNavigationMode={setNavigationMode}
                     />
