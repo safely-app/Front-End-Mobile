@@ -4,12 +4,12 @@ import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../redux/reducers';
 import {HomeComponent} from '../components/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-toast-message';
 import { safeplaceServices } from '../services';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { LatLng } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { LocationAccuracy, LocationHeadingObject } from 'expo-location';
+import { LocationAccuracy } from 'expo-location';
+import { AxiosResponse } from 'axios';
 import {googleServices} from '../services';
 import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../redux';
@@ -60,7 +60,6 @@ export const Home = (): JSX.Element => {
 
   useEffect(() => {
     if (!credentials.username || (credentials.username && credentials.username.length <= 0)) {
-      // console.log('abc');
       dispatch(getUser({userId: credentials._id, token: credentials.token}));
     }
 
@@ -69,10 +68,13 @@ export const Home = (): JSX.Element => {
 
       if (lastrequest == null || new Date(JSON.parse(lastrequest)) > cacheExpiryTime) {
         safeplaceServices.getSafeplace(credentials.token)
-        .then((res) => {
-          // setSafeplaces(res.data);
+        .then((res: AxiosResponse<SafeplaceInterface[]>) => {
           AsyncStorage.setItem("lastSafeplaceRequest", JSON.stringify(new Date()));
           AsyncStorage.setItem("safeplaces", JSON.stringify(res.data));
+          AsyncStorage.getItem("safeplaces")
+          .then((res2) => {
+            setSafeplaces(JSON.parse(res2));
+          })
         })
         .catch((err) => {
           console.log(err);

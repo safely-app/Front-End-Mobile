@@ -1,9 +1,9 @@
-import axios from 'react-native-axios';
+import axios, { AxiosResponse } from 'axios';
 import {SafeplaceInterface} from '../../types/safeplace';
 import {API_URL} from '@env';
 
-async function getSafeplace(token: string): Promise<SafeplaceInterface[]> {
-    const response = await axios.get(API_URL + `/safeplace/safeplace`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
+async function getSafeplace(token: string): Promise<AxiosResponse<SafeplaceInterface[]>> {
+    const response: AxiosResponse<SafeplaceInterface[]> = await axios.get<SafeplaceInterface[]>(API_URL + `/safeplace/safeplace`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
      
     return response;
 }
