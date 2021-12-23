@@ -1,4 +1,4 @@
-import axios from 'react-native-axios';
+import axios, { AxiosResponse } from 'axios';
 import {User} from '../redux/types';
 import {API_URL} from '@env';
 
@@ -8,15 +8,15 @@ async function login({
 }: {
   username: string;
   password: string;
-}): Promise<User> {
-  const response = await axios
-    .post(API_URL + '/login', {
+}): Promise<AxiosResponse<User>> {
+  const response: AxiosResponse<User> = await axios
+    .post<User>(API_URL + '/login', {
       email: username,       
       password,
     });
 
           
-  return response.data;
+  return response;
 }
 
 async function register({username, password, email}: {username: string, password: string, email: string}): Promise<User> {
@@ -43,22 +43,35 @@ async function changePassword(userId: string, token: string, password: string): 
 }
 
 async function updateUser(userId: string, token: string, email: string, password: string, username: string) {
-  const bodyObj = {
-    username: username,
-    email: email,
-    role: "user",
-    password: password,
-  };
+  let bodyObj: {} = {}
+
+  if (email.length > 0 && password.length === 0) {
+    bodyObj = {
+      email: email,
+      role: "user",
+    };
+  } else if (password.length > 0 && email.length === 0) {
+    bodyObj = {
+      password: password,
+      role: "user"
+    }
+  } else if (email.length > 0 && password.length > 0) {
+    bodyObj = {
+      email: email,
+      password: password,
+      role: "user"
+    }
+  }
 
   const response = await axios.put(API_URL + `/user/${userId}`, bodyObj, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
 
   return response;
 }
 
-async function getUser(token: string, userId: string): Promise<User> {
-  const response = await axios.get(API_URL + `/user/${userId}`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
+async function getUser(token: string, userId: string): Promise<AxiosResponse<User>> {
+  const response: AxiosResponse<User> = await axios.get<User>(API_URL + `/user/${userId}`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
   
-  return response.data;
+  return response;
 }
 
 async function deleteUser(token: string, userId: string): Promise<void> {

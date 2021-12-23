@@ -8,8 +8,8 @@ async function getSafeplace(token: string): Promise<AxiosResponse<SafeplaceInter
     return response;
 }
 
-async function getSafeplaceId(id: string, token: string): Promise<AxiosResponse<SafeplaceInterface[]>> {
-    const response: AxiosResponse<SafeplaceInterface[]> = await axios.get<SafeplaceInterface[]>(API_URL + `/safeplace/safeplace/${id}`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
+async function getSafeplaceId(id: string, token: string): Promise<AxiosResponse<SafeplaceInterface>> {
+    const response: AxiosResponse<SafeplaceInterface> = await axios.get<SafeplaceInterface>(API_URL + `/safeplace/safeplace/${id}`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
   
     return response;
 }

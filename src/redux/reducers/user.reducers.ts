@@ -59,7 +59,7 @@ export const userSlice = createSlice({
     })
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.credentials.response.status = "Fetch success";
-      state.credentials = action.payload;
+      state.credentials = action.payload.data;
     })
     builder.addCase(loginUser.rejected, (state) => {
       state.credentials.response.errorMsg = "Fetch failed";
@@ -74,9 +74,9 @@ export const userSlice = createSlice({
       state.credentials.response.errorMsg = "Fetch failed";
     })
     builder.addCase(getUser.fulfilled, (state, action) => {
-      state.credentials.username = action.payload.username;
-      state.credentials.email = action.payload.email;
-      state.credentials._id = action.payload._id;
+      state.credentials.username = action.payload.data.username;
+      state.credentials.email = action.payload.data.email;
+      state.credentials._id = action.payload.data._id;
     })
   }
 });

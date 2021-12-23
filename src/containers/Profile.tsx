@@ -6,6 +6,7 @@ import validate from 'validate.js';
 import {userServices} from '../services';
 import {getUser, logoutUser} from '../redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 export const Profile = (): JSX.Element => {
 
@@ -52,6 +53,9 @@ export const Profile = (): JSX.Element => {
           text1: "Your modification has been applied",
         });        
         dispatch(getUser({userId: credentials._id, token: credentials.token}));
+        setisLoading(false);
+        setconfirmPassword('')
+        setPassword('')
       })
       .catch(err => {
         console.log('err');
