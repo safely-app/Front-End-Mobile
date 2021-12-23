@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import {SafeplaceInterface} from '../../types/safeplace';
+import {SafeplaceCommentsInterface, SafeplaceAPIResponse, SafeplaceInterface, SafeplaceRecurringInterface} from '../../types/safeplace';
 import {API_URL} from '@env';
 
 async function getSafeplace(token: string): Promise<AxiosResponse<SafeplaceInterface[]>> {
@@ -8,28 +8,28 @@ async function getSafeplace(token: string): Promise<AxiosResponse<SafeplaceInter
     return response;
 }
 
-async function getSafeplaceId(id: string, token: string): Promise<SafeplaceInterface[]> {
-    const response = await axios.get(API_URL + `/safeplace/safeplace/${id}`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
+async function getSafeplaceId(id: string, token: string): Promise<AxiosResponse<SafeplaceInterface[]>> {
+    const response: AxiosResponse<SafeplaceInterface[]> = await axios.get<SafeplaceInterface[]>(API_URL + `/safeplace/safeplace/${id}`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
   
     return response;
 }
 
-async function setCommentSafeplace(comment: string, idSafeplace: string, idUser: string, grade: number, token: string): Promise<void> {
+async function setCommentSafeplace(comment: string, idSafeplace: string, idUser: string, grade: number, token: string): Promise<AxiosResponse<SafeplaceAPIResponse>> {
     
-    const response = await axios.post(API_URL + '/safeplace/comment', {userId: idUser, safeplaceId: idSafeplace, comment: comment, grade: grade.toString()});
+    const response: AxiosResponse<SafeplaceAPIResponse> = await axios.post<SafeplaceAPIResponse>(API_URL + '/safeplace/comment', {userId: idUser, safeplaceId: idSafeplace, comment: comment, grade: grade.toString()}, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
 
     return response;
 }
 
-async function getCommentSafeplace(token: string): Promise<SafeplaceInterface[]> {
-    const response = await axios.get(API_URL + `/safeplace/comment`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
+async function getCommentSafeplace(token: string): Promise<AxiosResponse<SafeplaceCommentsInterface[]>> {
+    const response: AxiosResponse<SafeplaceCommentsInterface[]> = await axios.get<SafeplaceCommentsInterface[]>(API_URL + `/safeplace/comment`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
 
     return response;
 }
 
-async function getRecurringPlaces(token: string): Promise<void> {
-    const response = await axios.get(API_URL + `/safeplace/recurring`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
-  
+async function getRecurringPlaces(token: string): Promise<AxiosResponse<SafeplaceRecurringInterface[]>> {
+    const response: AxiosResponse<SafeplaceRecurringInterface[]> = await axios.get<SafeplaceRecurringInterface[]>(API_URL + `/safeplace/recurring`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
+    
     return response;
 }
 
@@ -40,6 +40,7 @@ async function deleteRecurringPlace(idPlace: string, token: string): Promise<voi
 }
 
 async function editRecurringPlace(idPlace: string, name: string, address: string, city: string, coordinate: Array<string>, token: string): Promise<void> {
+    console.log("name: ", name, " | address: ", address, " | city: ", city, " | coordinate: ", coordinate);
     const response = await axios.put(API_URL + `/safeplace/recurring/${idPlace}`,{
         name: name,
         address: address,
@@ -51,8 +52,8 @@ async function editRecurringPlace(idPlace: string, name: string, address: string
     return response;
 }
 
-async function createRecurringPlace(userId: string, name: string, address: string, city: string, coordinate: Array<string>, token: string): Promise<void> {
-    const response = await axios.post(API_URL + `/safeplace/recurring`, {
+async function createRecurringPlace(userId: string, name: string, address: string, city: string, coordinate: Array<string>, token: string): Promise<AxiosResponse<SafeplaceAPIResponse>> {
+    const response: AxiosResponse<SafeplaceAPIResponse> = await axios.post<SafeplaceAPIResponse>(API_URL + `/safeplace/recurring`, {
         userId: userId,
         name: name,
         address: address,
@@ -64,8 +65,8 @@ async function createRecurringPlace(userId: string, name: string, address: strin
     return response;
 }
 
-async function getSafeplaceNearest(latitude: number, longitude: number, token: string): Promise<void> {
-    const response = await axios.post(API_URL + `/safeplace/safeplace/nearest`, {
+async function getSafeplaceNearest(latitude: number, longitude: number, token: string): Promise<AxiosResponse<SafeplaceInterface>> {
+    const response: AxiosResponse<SafeplaceInterface> = await axios.post<SafeplaceInterface>(API_URL + `/safeplace/safeplace/nearest`, {
         coord: {
             latitude: latitude,
             longitude: longitude
