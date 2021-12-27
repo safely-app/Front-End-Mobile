@@ -196,7 +196,7 @@ export const HomeComponent = ({
                                                 />
                                             )}
                                         </View>
-                                        <Svg width={240} height={120}>
+                                        <Svg width={windowWidth / 2} height={windowHeight / 5}>
                                             <ImageSvg
                                                 width={'100%'}
                                                 height={'100%'}
