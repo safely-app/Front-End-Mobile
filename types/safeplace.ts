@@ -24,10 +24,6 @@ export interface SafeplaceCommentsInterface {
     userId: string
 }
 
-export interface SafeplaceAPIResponse {
-    message: string
-}
-
 export interface SafeplaceRecurringInterface {
     _id: string,
     name: string,

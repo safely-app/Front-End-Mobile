@@ -3,7 +3,7 @@ import {GOOGLE_API_KEY} from '@env'
 
 async function getPlaces(input: String, latitude: Number, longitude: Number): Promise<[]> {
     if (latitude !== 0 && longitude !== 0) {
-        const response = await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${GOOGLE_API_KEY}&input=${input}&location=${latitude}, ${longitude}&radius=2000`, {headers: {"Content-type": "application/json"}});
+        const response = await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${GOOGLE_API_KEY}&input=${input}&location=${latitude.toString()},${longitude.toString()}&radius=2000`, {headers: {"Content-type": "application/json"}});
 
         return response;
     } else {

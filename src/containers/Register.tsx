@@ -8,7 +8,7 @@ import validate from 'validate.js';
 
 export const Register = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const {credentials} = useAppSelector((state) => state.user);
+  const {credentials, statusResponse} = useAppSelector((state) => state.user);
   const [username, setUsername] = useState<string>('');
   const [usernameError, setUsernameError] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -60,7 +60,7 @@ export const Register = (): JSX.Element => {
     }
   }
 
-  function checkUsername(username: string) {
+function checkUsername(username: string) {
     const validateObj = validate({username: username}, constraints);
     const usernameErrorMsg = validateObj ? validateObj['username'] : undefined;
 
@@ -72,7 +72,7 @@ export const Register = (): JSX.Element => {
   }
 
   useEffect(() => {
-    if (credentials.response && credentials.response.errorMsg === "Fetch failed") {
+    if (statusResponse.response && statusResponse.response.errorMsg === "Fetch failed") {
       dispatch(resetFetchStatus());
       setisLoading(false);
     }

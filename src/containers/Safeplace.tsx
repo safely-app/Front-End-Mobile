@@ -4,8 +4,9 @@ import {RouteProp, useRoute} from '@react-navigation/native';
 import {safeplaceServices} from '../services';
 import {useSelector} from 'react-redux';
 import { AxiosResponse } from 'axios';
-import { SafeplaceAPIResponse, SafeplaceCommentsInterface, SafeplaceInterface } from '../../types/safeplace';
+import { SafeplaceCommentsInterface, SafeplaceInterface } from '../../types/safeplace';
 import { RootState } from '../redux';
+import { APIResponse } from '../../types/api';
 
 export const Safeplace = (): JSX.Element => {
 
@@ -40,8 +41,8 @@ export const Safeplace = (): JSX.Element => {
     }, [])
 
     const sendComment = (comment: string, idSafeplace: string, grade: number) => {
-        safeplaceServices.setCommentSafeplace(comment, idSafeplace, credentials._id, grade, credentials.token)
-        .then((res: AxiosResponse<SafeplaceAPIResponse>) => {
+        safeplaceServices.setCommentSafeplace(comment, idSafeplace, credentials.id, grade, credentials.token)
+        .then((res: AxiosResponse<APIResponse>) => {
             setModalComment(false);
             safeplaceServices.getCommentSafeplace(credentials.token)
             .then((res: AxiosResponse<SafeplaceCommentsInterface[]>) => {

@@ -59,8 +59,8 @@ export const Home = (): JSX.Element => {
   }, [isFocused])
 
   useEffect(() => {
-    if (!credentials.username || (credentials.username && credentials.username.length <= 0)) {
-      dispatch(getUser({userId: credentials._id, token: credentials.token}));
+    if (credentials.username.length <= 0) {
+      dispatch(getUser({userId: credentials.id, token: credentials.token}));
     }
 
     const lastrequestFunction = async () => {
