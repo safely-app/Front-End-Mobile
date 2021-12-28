@@ -1,13 +1,14 @@
 import React, { LegacyRef, RefObject, useEffect } from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard, Platform} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard, Platform} from 'react-native';
 import {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import MapView from "react-native-map-clustering";
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
+import { faDirections, faLocationArrow, faCircle, faMapPin, faStore, faMoon } from '@fortawesome/free-solid-svg-icons'
 import MapViewDirections from 'react-native-maps-directions';
 import {GOOGLE_API_KEY} from '@env';
-import {theme} from '../styles'
+import {theme} from '../styles';
+import { Text } from '../components/generic/Text';
 
 interface Props {
     latitude: number;
@@ -38,6 +39,7 @@ interface Props {
     count: number;
     setCount: (number: number) => void;
     getNearestSafe: () => void;
+    goToInputAddress: () => void;
 }
 
 const mapStyle = StyleSheet.create({
@@ -91,7 +93,7 @@ const mapStyle = StyleSheet.create({
     }
    });
 
-export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
+export const HomeComponent = ({goToInputAddress, getNearestSafe, count, setCount, goToSafeplace, setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
 
     const mapView = React.createRef();
     let destinationRef: TextInput | null;
@@ -208,6 +210,58 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                         </View>
                     ) : null}
                     {isMapLoaded ? (
+                        <TouchableOpacity 
+                            style={{
+                                position: 'absolute',
+                                width: '90%',
+                                height: '7%',
+                                backgroundColor: 'white',
+                                bottom: 0,
+                                top: "8%",
+                                borderRadius: 35,
+                                shadowColor: '#000',
+                                shadowOffset: { width: 0, height: 1 },
+                                shadowOpacity: 0.8,
+                                shadowRadius: 2,
+                                elevation: 5
+                            }}
+                            onPress={() => {
+                                goToInputAddress();
+                            }}
+                        >
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: 'row'
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        width: '10%',
+                                        height: '100%',
+                                        marginLeft: 10,
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faMoon} color={"#4179B5"} size={18} />
+                                </View>
+                                <View
+                                    style={{
+                                        width: '80%',
+                                        height: '100%',
+                                        marginLeft: 10,
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <Text type="body" style={{
+                                        color: "#a9a9a9"
+                                    }}>Rechercher une adresse</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    ) : null}
+                    {/* {isMapLoaded ? (
                             <View
                                 style={{
                                     position: 'absolute',
@@ -339,7 +393,7 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                                     </ScrollView>
                                 ) : null}
                             </View>
-                    ) : null}
+                    ) : null} */}
                 </View>
             </>
         )

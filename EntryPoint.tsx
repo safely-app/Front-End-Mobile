@@ -1,6 +1,6 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
-import {SavedPlaces, Login, Register, Home, Profile, ForgotPWD, ChangePWD, Safeplace} from './src/containers';
+import {SavedPlaces, Login, Register, Home, Profile, ForgotPWD, ChangePWD, Safeplace, InputAddress} from './src/containers';
 import {persistor} from './src/redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {createStackNavigator, StackNavigationOptions} from '@react-navigation/stack';
@@ -59,6 +59,7 @@ const EntryPoint: React.FC = () => {
                 <>
                     <RootStack.Screen name="HomeTabs" component={HomeTabs} options={options} />
                     <RootStack.Screen name="Safeplace" component={Safeplace} options={options} />
+                    <RootStack.Screen name="InputAddress" component={InputAddress} options={options} />
                 </>
                 ) : (
                 <>

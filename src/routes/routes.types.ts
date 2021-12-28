@@ -5,4 +5,5 @@ export type RootStackParamList = {
     ForgotPWD: undefined;
     ChangePWD: {id: string, token: string};
     Safeplace: {id: string};
+    InputAddress: { latitude: number, longitude: number };
 };

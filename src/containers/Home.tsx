@@ -168,6 +168,10 @@ export const Home = (): JSX.Element => {
     navigation.navigate('Safeplace', {id: id});
   }
 
+  const goToInputAddress = () => {
+    navigation.navigate('InputAddress', { latitude: latitude, longitude: longitude });
+  }
+
   const getNearestSafe = () => {
     safeplaceServices.getSafeplaceNearest(latitude, longitude, credentials.token)
     .then((res) => {
@@ -225,6 +229,7 @@ export const Home = (): JSX.Element => {
         count={count}
         setCount={setCount}
         getNearestSafe={getNearestSafe}
+        goToInputAddress={goToInputAddress}
       />
     </>
   );
