@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import {SafeplaceCommentsInterface, SafeplaceInterface, SafeplaceRecurringInterface} from '../../types/safeplace';
-import {API_URL} from '@env';
+import {API_URL, GOOGLE_API_KEY} from '@env';
 import { APIResponse } from '../../types/api';
 
 async function getSafeplace(token: string): Promise<AxiosResponse<SafeplaceInterface[]>> {
@@ -74,7 +74,32 @@ async function getSafeplaceNearest(latitude: number, longitude: number, token: s
     },
     {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
   
+    console.log(response.data);
     return response;
+}
+
+
+async function getWaypoints(origin: {latitude: number, longitude: number}, destination: {latitude: number, longitude: number}, token: string): Promise<void> {
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=${GOOGLE_API_KEY}&mode=walking&language=fr`, {headers: {"Content-type": "application/json"}});
+    const coordinates = [];
+
+    Object.keys(response.data.routes).forEach((place) => {
+        const steps = response.data.routes[place].legs[0].steps;
+        Object.keys(steps).forEach((idstep) => {
+            coordinates.push({"latitude": steps[idstep].end_location.lat, "longitude": steps[idstep].end_location.lng});
+        })
+    })
+
+    console.log(coordinates);
+    // console.log(response.data.routes);
+
+    const response2 = await axios.post(`http://localhost:8082` + `/traject`, {
+        coordinates
+    },
+    {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWNjNWUxZDRhNDZmMzYwN2U5NDAwZmEiLCJpYXQiOjE2NDA3ODczMDQsImV4cCI6MTY0MDc5NDUwNH0.RKKmDsdr5iOUEf5pUL5Aa2n9FT24YfIKvx-yfg3ByoMPZwx0mmue3j3NFp9KKfidxDKsOPUg_VLeLgV4MbZovQ'}});
+  
+    console.log(response2.config);
+    // return response;
 }
 
 export const safeplaceServices = {
@@ -86,5 +111,6 @@ export const safeplaceServices = {
     editRecurringPlace,
     createRecurringPlace,
     deleteRecurringPlace,
-    getSafeplaceNearest
+    getSafeplaceNearest,
+    getWaypoints
 }

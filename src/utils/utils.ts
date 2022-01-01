@@ -5,5 +5,4 @@ export const extractTokenAndUserId = (url: string) => {
     const userId = resultRegex[1];
 
     return {userId: userId, token: token};
-
 }

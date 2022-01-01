@@ -33,9 +33,16 @@ async function getPlacesSearch(input: string, latitude: number, longitude: numbe
     return response;
 }
 
+async function getDirections(origin: {latitude: number, longitude: number}, destination: {latitude: number, longitude: number}): Promise<void> {
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=${GOOGLE_API_KEY}&mode=walking&language=fr`, {headers: {"Content-type": "application/json"}});
+
+    return response;
+}
+
 export const googleServices = {
     getPlaces,
     getCoords,
     getReverseCoords,
-    getPlacesSearch
+    getPlacesSearch,
+    getDirections
 }

@@ -1,3 +1,5 @@
+import { State } from "../../types/general";
+
 export type RootStackParamList = {
     Login: undefined;
     Register: undefined;
@@ -5,5 +7,14 @@ export type RootStackParamList = {
     ForgotPWD: undefined;
     ChangePWD: {id: string, token: string};
     Safeplace: {id: string};
-    InputAddress: { latitude: number, longitude: number };
+    InputAddress: { 
+        latitude: number,
+        longitude: number,
+        mapState: {setter: (val: State) => void},
+        routingInputs: {
+            origin: { value: string, setter: (input: string) => void },
+            destination: { value: string, setter: (input: string) => void }
+        },
+        inputToModify: string
+    };
 };

@@ -13,6 +13,7 @@ interface Props {
     fetchPlacesSearch: (query: string) => void;
     places: [];
     setInputRef: (ref: TextInput | null) => void;
+    chooseAddress: () => void;
 }
 
 export const InputAddressComponent = ({
@@ -21,7 +22,8 @@ export const InputAddressComponent = ({
     setInput,
     fetchPlacesSearch,
     places,
-    setInputRef
+    setInputRef,
+    chooseAddress
 }: Props): JSX.Element => {
 
     return (
@@ -117,14 +119,14 @@ export const InputAddressComponent = ({
                     }}
                 >
                     {places && places.results && places.results.length > 0 ? places.results.map((place, index) => (
-                        <View key={index}
+                        <TouchableOpacity key={index}
                             style={{
                                 flex: 1,
                                 flexDirection: 'row',
-                                width: '100%',
-                                // backgroundColor: 'pink',
-                                // borderWidth: 2,
-                                // borderColor: 'black'
+                                width: '100%'
+                            }}
+                            onPress={() => {
+                                chooseAddress(place.formatted_address);
                             }}
                         >
                             <View
@@ -178,8 +180,8 @@ export const InputAddressComponent = ({
                                     }}
                                 />
                             </View>
-                        </View>
-                    )) : (<Text type="body" size="m" style={{marginTop: 20}}>Aucun résultat à afficher</Text>)}
+                        </TouchableOpacity>
+                    )) : (<Text type="body" size="m" style={{marginTop: 20}}>Aucun éléments à afficher</Text>)}
 
                 </ScrollView>
                 
