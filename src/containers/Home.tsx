@@ -5,15 +5,17 @@ import {RootState} from '../redux/reducers';
 import {HomeComponent} from '../components/index';
 import { AxiosResponse } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-toast-message';
 import { safeplaceServices } from '../services';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { LatLng } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { LocationAccuracy, LocationHeadingObject } from 'expo-location';
+import { LocationAccuracy } from 'expo-location';
 import {googleServices} from '../services';
 import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../redux';
+import { State } from '../../types/general';
+import { Animated } from 'react-native'
+
 import { geocodeApiResponse, placesAutocompletesApiResponse, placesAutocompletesPrediction } from '../../types/googleServices';
 
 export const Home = (): JSX.Element => {
@@ -21,25 +23,19 @@ export const Home = (): JSX.Element => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const route = useRoute();
+  const navigation = useNavigation();
   const {credentials} = useSelector((state: RootState) => state.user);
   const [longitude, setLongitude] = useState<number>(0);
   const [latitude, setLatitude] = useState<number>(0);
-  const [permissions, setPermissions] = useState<boolean>(false);
   const [safeplaces, setSafeplaces] = useState<SafeplaceInterface[]>([]);
   const [origin, setOrigin] = useState<LatLng>({latitude: 0, longitude: 0});
   const [destination, setDestination] = useState<LatLng>({latitude: 0, longitude: 0});
   const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
   const [originInput, setOriginInput] = useState<string>('');
-  const [originPlaces, setOriginPlaces] = useState<placesAutocompletesPrediction[]>(new Array<placesAutocompletesPrediction>());
-  const [destinationPlaces, setDestinationPlaces] = useState<placesAutocompletesPrediction[]>(new Array<placesAutocompletesPrediction>());
-  const [originFocus, setOriginFocus] = useState<boolean>(false);
-  const [destinationFocus, setDestinationFocus] = useState<boolean>(false);
   const [destinationInput, setDestinationInput] = useState<string>("");
-  const [navigationMode, setNavigationMode] = useState<boolean>(false);
-  const navigation = useNavigation();
-  const [count, setCount] = useState<number>(0);
+  const [mapState, setMapState] = useState<State>(State.MAP);
+  const [inputAnim, setInputAnim] = useState(new Animated.Value(-50))
   const [heading, setHeading] = useState<LocationHeadingObject>();
-  const mapView = React.createRef();
   const [navigationSteps, setNavigationSteps] = useState<[]>([]);
 
   const hours: number = 24
@@ -48,7 +44,7 @@ export const Home = (): JSX.Element => {
 
   useEffect(() => {
     if (isFocused) {
-      if (route.params !== undefined) {
+      if (route.params !== undefined && route.params.address) {
         googleServices.getReverseCoords(latitude.toString(), longitude.toString())
         .then((res: AxiosResponse<geocodeApiResponse>) => {
           setCoordsFromPlace(route.params.address, 'destination');
@@ -64,9 +60,26 @@ export const Home = (): JSX.Element => {
   }, [isFocused])
 
   useEffect(() => {
-    if (!credentials.username || (credentials.username && credentials.username.length <= 0)) {
-      // console.log('abc');
-      dispatch(getUser({userId: credentials._id, token: credentials.token}));
+    if (mapState === State.NAVIGATION) {
+      Animated.spring(inputAnim, {
+        toValue: -100,
+        friction: 10,
+        useNativeDriver: true
+      }).start();
+    }
+
+    if (mapState === State.MAP) {
+      Animated.spring(inputAnim, {
+        toValue: 0,
+        friction: 10,
+        useNativeDriver: true
+      }).start();
+    }
+  }, [mapState])
+
+  useEffect(() => {
+    if (credentials.username.length <= 0) {
+      dispatch(getUser({userId: credentials.id, token: credentials.token}));
     }
 
     const lastrequestFunction = async () => {
@@ -74,10 +87,13 @@ export const Home = (): JSX.Element => {
 
       if (lastrequest == null || new Date(JSON.parse(lastrequest)) > cacheExpiryTime) {
         safeplaceServices.getSafeplace(credentials.token)
-        .then((res) => {
-          // setSafeplaces(res.data);
+        .then((res: AxiosResponse<SafeplaceInterface[]>) => {
           AsyncStorage.setItem("lastSafeplaceRequest", JSON.stringify(new Date()));
           AsyncStorage.setItem("safeplaces", JSON.stringify(res.data));
+          AsyncStorage.getItem("safeplaces")
+          .then((res2) => {
+            setSafeplaces(JSON.parse(res2));
+          })
         })
         .catch((err) => {
           console.log(err);
@@ -101,7 +117,6 @@ export const Home = (): JSX.Element => {
         throw "not granted";
       } else {
         // Setting callback to get location when user moves
-        setPermissions(true);
         return await Location.watchPositionAsync({
           accuracy: LocationAccuracy.BestForNavigation,
           timeInterval: 0,
@@ -124,33 +139,12 @@ export const Home = (): JSX.Element => {
       // Setting all the state at null to avoid memory leak and unmounted components
       setLongitude(0);
       setLatitude(0);
-      setPermissions(false);
-      // setSafeplaces([]);
       setOrigin({latitude: 0, longitude: 0});
       setDestination({latitude: 0, longitude: 0});
       setOriginInput("");
-      setOriginPlaces([]);
-      setDestinationPlaces([]);
-      setOriginFocus(false);
-      setDestinationFocus(false);
       setDestinationInput("");
-      setNavigationMode(false);
     })
   }, [])
-
-  const getOriginPlaces = (text: string, latitude: number, longitude: number, input: string) => {
-    googleServices.getPlaces(text, latitude, longitude)
-    .then((res: AxiosResponse<placesAutocompletesApiResponse>) => {
-      if (input === "origin") {
-        setOriginPlaces(res.data.predictions);
-      } else {
-        setDestinationPlaces(res.data.predictions);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  }
 
   const setCoordsFromPlace = (address: string, type: string)  => {
     googleServices.getCoords(address)
@@ -170,7 +164,25 @@ export const Home = (): JSX.Element => {
     navigation.navigate('Safeplace', {id: id});
   }
 
+  const goToInputAddress = (inputToModify: string) => {
+    navigation.navigate('InputAddress', { 
+      latitude: latitude,
+      longitude: longitude,
+      mapState: {setter: setMapState},
+      routingInputs: {
+        origin: { value: originInput, setter: setOriginInput },
+        destination: { value: destinationInput, setter: setDestinationInput }
+      },
+      routingCoordinates: {
+        origin: { latitude: origin.latitude, longitude: origin.longitude, setter: setOrigin },
+        destination: { latitude: destination.latitude, longitude: destination.longitude, setter: setDestination }
+      },
+      inputToModify: inputToModify
+    });
+  }
+
   const getNearestSafe = () => {
+    console.log('latitude: ', latitude, " | longitude: ", longitude, ' | token: ', credentials.token);
     safeplaceServices.getSafeplaceNearest(latitude, longitude, credentials.token)
     .then((res) => {
       googleServices.getReverseCoords(res.data.nearest.latitude, res.data.nearest.longitude)
@@ -202,32 +214,24 @@ export const Home = (): JSX.Element => {
         latitude={latitude}
         longitude={longitude}
         safeplaces={safeplaces}
-        permissions={permissions}
-        origin={origin}
-        destination={destination}
-        setOrigin={setOrigin}
-        setDestination={setDestination}
         isMapLoaded={isMapLoaded}
         setIsMapLoaded={setIsMapLoaded}
-        setOriginInput={setOriginInput}
-        setDestinationInput={setDestinationInput}
-        originInput={originInput}
-        originPlaces={originPlaces}
-        destinationInput={destinationInput}
-        getOriginPlaces={getOriginPlaces}
-        originFocus={originFocus}
-        destinationFocus={destinationFocus}
-        setOriginFocus={setOriginFocus}
-        setDestinationFocus={setDestinationFocus}
-        destinationPlaces={destinationPlaces}
-        setCoordsFromPlace={setCoordsFromPlace}
-        navigationMode={navigationMode}
-        setNavigationMode={setNavigationMode}
         goToSafeplace={goToSafeplace}
-        count={count}
-        setCount={setCount}
         getNearestSafe={getNearestSafe}
-        mapView={mapView}
+        goToInputAddress={goToInputAddress}
+        routingCoordinates={{
+          origin: { latitude: origin.latitude, longitude: origin.longitude, setter: setOrigin },
+          destination: { latitude: destination.latitude, longitude: destination.longitude, setter: setDestination }
+        }}
+        routingInputs={{
+          origin: { value: originInput, setter: setOriginInput },
+          destination: { value: destinationInput, setter: setDestinationInput }
+        }}
+        mapState={{
+          value: mapState,
+          setter: setMapState
+        }}
+        inputAnim={inputAnim}
         navigationSteps={navigationSteps}
         setNavigationSteps={setNavigationSteps}
       />

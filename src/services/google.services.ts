@@ -32,9 +32,24 @@ async function getDirection(origin: string, destination: string): Promise<AxiosR
     return response;
 }
 
+async function getPlacesSearch(input: string, latitude: number, longitude: number): Promise<[]> {
+    // console.log(encodeURI(`https://maps.googleapis.com/maps/api/place/textsearch/json?key=${GOOGLE_API_KEY}&query=${input}&inputtype=textquery&location=${latitude.toString()},${longitude.toString()}&radius=5000`))
+    const response = await axios.get(encodeURI(`https://maps.googleapis.com/maps/api/place/textsearch/json?key=${GOOGLE_API_KEY}&query=${input}&inputtype=textquery&location=${latitude.toString()},${longitude.toString()}&radius=10000`), {headers: {"Content-type": "application/json"}});
+
+    return response;
+}
+
+async function getDirections(origin: {latitude: number, longitude: number}, destination: {latitude: number, longitude: number}): Promise<void> {
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=${GOOGLE_API_KEY}&mode=walking&language=fr`, {headers: {"Content-type": "application/json"}});
+
+    return response;
+}
+
 export const googleServices = {
     getPlaces,
     getCoords,
     getReverseCoords,
+    getPlacesSearch,
+    getDirections,
     getDirection
 }
