@@ -6,6 +6,7 @@ import validate from 'validate.js';
 import {userServices} from '../services';
 import {getUser, logoutUser} from '../redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 export const Profile = (): JSX.Element => {
 
@@ -45,13 +46,16 @@ export const Profile = (): JSX.Element => {
 
     if (!emailErrorMsg && !passwordErrorMsg) {
       setisLoading(true);
-      userServices.updateUser(credentials._id, credentials.token, email, password, credentials.username)
+      userServices.updateUser(credentials.id, credentials.token, email, password, credentials.username)
       .then(() => {
         Toast.show({
           type: 'success',
           text1: "Your modification has been applied",
         });        
-        dispatch(getUser({userId: credentials._id, token: credentials.token}));
+        dispatch(getUser({userId: credentials.id, token: credentials.token}));
+        setisLoading(false);
+        setconfirmPassword('')
+        setPassword('')
       })
       .catch(err => {
         console.log('err');
@@ -80,7 +84,7 @@ export const Profile = (): JSX.Element => {
   }
 
   function onDelete() {
-    userServices.deleteUser(credentials.token, credentials._id)
+    userServices.deleteUser(credentials.token, credentials.id)
     .then(() => {
       dispatch(logoutUser());
       AsyncStorage.removeItem('persist:root');

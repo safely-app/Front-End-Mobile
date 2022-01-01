@@ -9,7 +9,8 @@ const paletteLight: typeof colors = {
   yellow: "#FFF3AA",
   steelBlue: "#4179B5",
   lightBlue: "#D6E0EC",
-  red: "#EF4F4F"
+  red: "#EF4F4F",
+  gray: "#C0C0C0"
 }
 
 // const paletteDark: typeof colors = {

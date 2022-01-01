@@ -83,7 +83,7 @@ export const SavedPlaces = (): JSX.Element => {
     }
 
     const newPlace = (name: string, address: string, city: string, coordinate: Array<string>) => {
-        safeplaceServices.createRecurringPlace(credentials._id, name, address, city, coordinate, credentials.token)
+        safeplaceServices.createRecurringPlace(credentials.id, name, address, city, coordinate, credentials.token)
         .then((res) => {
             setModalReccuring(false);
             setSafeplaceEdit({});
