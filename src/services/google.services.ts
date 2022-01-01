@@ -33,7 +33,6 @@ async function getDirection(origin: string, destination: string): Promise<AxiosR
 }
 
 async function getPlacesSearch(input: string, latitude: number, longitude: number): Promise<[]> {
-    // console.log(encodeURI(`https://maps.googleapis.com/maps/api/place/textsearch/json?key=${GOOGLE_API_KEY}&query=${input}&inputtype=textquery&location=${latitude.toString()},${longitude.toString()}&radius=5000`))
     const response = await axios.get(encodeURI(`https://maps.googleapis.com/maps/api/place/textsearch/json?key=${GOOGLE_API_KEY}&query=${input}&inputtype=textquery&location=${latitude.toString()},${longitude.toString()}&radius=10000`), {headers: {"Content-type": "application/json"}});
 
     return response;

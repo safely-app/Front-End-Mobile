@@ -3,32 +3,39 @@ import {NavigationPopupComponent} from '../components/index';
 import {googleServices} from '../services'
 import { directionsApiResponse } from '../../types/googleServices';
 import { AxiosResponse } from 'axios';
-import { isPointWithinRadius } from 'geolib'
+import { isPointWithinRadius } from 'geolib';
 import Toast from 'react-native-toast-message';
+import { State } from '../../types/general';
+import { Animated } from 'react-native';
 
 interface Props {
-  latitude: number
-  longitude: number
-  destination: {latitude: number, longitude: number}
-  setNavigationMode: (bool: boolean) => void;
+  latitude: number;
+  longitude: number;
+  destination: {latitude: number, longitude: number};
+  mapState: {
+    value: number,
+    setter: (val: State) => void;
+  };
 }
 
-export const NavigationPopup = ({setNavigationMode, latitude, longitude, destination}: Props): JSX.Element => {
+export const NavigationPopup = ({latitude, longitude, destination, mapState}: Props): JSX.Element => {
   const [directionText, setDirectionText] = useState<string>("")
   const [metersText, setMetersText] = useState<string | undefined>("")
   const [startTime, setStartTime] = useState<number>(new Date().getTime())
   const [isFinished, setIsFinished] = useState<boolean>(false)
+  const [valueAnim, setValueAnim] = useState(new Animated.Value(-155));
 
   useEffect(() => {
-    if (latitude == 0 || longitude == 0)
+    if ((latitude == 0 || longitude == 0) || (destination.latitude === 0 && destination.longitude === 0) || mapState.value !== State.NAVIGATION)
       return;
 
     if (isFinished) {
-      setNavigationMode(false)
+      mapState.setter(State.MAP)
       Toast.show({
         type: 'success',
         text1: "Vous êtes arrivé à destination !",
       });
+      setIsFinished(false);
     }
 
     if (isPointWithinRadius({latitude: latitude, longitude: longitude}, {latitude: destination.latitude, longitude: destination.longitude}, 70)) {
@@ -58,12 +65,15 @@ export const NavigationPopup = ({setNavigationMode, latitude, longitude, destina
   }, [latitude, longitude])
 
   useEffect(() => {
-    if (latitude == 0 || longitude == 0)
+    if ((latitude == 0 || longitude == 0) || (destination.latitude === 0 && destination.longitude === 0))
       return;
     
     googleServices.getDirection(`${latitude},${longitude}`, `${destination.latitude},${destination.longitude}`)
     .then((res: AxiosResponse<directionsApiResponse>) => {
         const directions: directionsApiResponse = res.data;
+
+        if (!directions || !directions.routes[0] || !directions.routes || !directions.routes[0])
+          return;
         const cssHtml = `
           <head>
             <style type="text/css">
@@ -78,13 +88,30 @@ export const NavigationPopup = ({setNavigationMode, latitude, longitude, destina
         setDirectionText(cssHtml + `<p style='font-family:WorkSans-Regular;font-size: 50'>` + directions.routes[0].legs[0].steps[0].html_instructions + '</p></body>')
         setMetersText(directions.routes[0].legs[0].steps[0].distance?.text)
     })
-  }, [])
+  }, [destination])
+
+  useEffect(() => {
+    if (mapState.value === State.NAVIGATION) {
+      Animated.spring(valueAnim, {
+        toValue: 50,
+        friction: 10,
+        useNativeDriver: true
+      }).start();
+    } else if (mapState.value === State.MAP) {
+      Animated.spring(valueAnim, {
+        toValue: -155,
+        friction: 10,
+        useNativeDriver: true
+      }).start();
+    }
+  }, [mapState])
 
   return (
     <>
       <NavigationPopupComponent
         directionText={directionText}
         metersText={metersText}
+        valueAnim={valueAnim}
       />
     </>
   );

@@ -74,7 +74,6 @@ async function getSafeplaceNearest(latitude: number, longitude: number, token: s
     },
     {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
   
-    console.log(response.data);
     return response;
 }
 

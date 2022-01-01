@@ -4,6 +4,7 @@ import { Animated } from 'react-native'
 import { State } from '../../types/general';
 import { googleServices } from '../services';
 import {LatLng} from 'react-native-maps';
+import Toast from 'react-native-toast-message';
 
 interface Props {
     mapState: {
@@ -52,10 +53,19 @@ export const ConfirmRoute = ({
             (routingCoordinates.destination.latitude !== 0 && routingCoordinates.destination.longitude !== 0)) {
                 googleServices.getDirections(routingCoordinates.origin, routingCoordinates.destination)
                 .then((res) => {
-                    setDuration(res.data.routes[0].legs[0].duration.text);
-                    setDistance(res.data.routes[0].legs[0].distance.text);
-                    if (mapState.value === State.CONFIRMROUTE)
-                        showBottomComponent();
+                    if (!res.data.routes || !res.data.routes[0] || !res.data.routes[0].legs[0]) {
+                        Toast.show({
+                            type: 'error',
+                            text1: "Une erreur est survenue lors du calcul d'itinéraire.",
+                            text2: "Veuillez rédéfinir votre itinéraire."
+                        });
+                        return;
+                    } else {
+                        setDuration(res.data.routes[0].legs[0].duration.text);
+                        setDistance(res.data.routes[0].legs[0].distance.text);
+                        if (mapState.value === State.CONFIRMROUTE)
+                            showBottomComponent();
+                    }
                 })
         } else
             hideBottomComponent();
@@ -149,11 +159,16 @@ export const ConfirmRoute = ({
             longitude: tmpOriginCoords.longitude
         });
 
-        googleServices.getDirections(routingCoordinates.origin, routingCoordinates.destination)
-        .then((res) => {
-            setDuration(res.data.routes[0].legs[0].duration.text);
-            setDistance(res.data.routes[0].legs[0].distance.text);
-        })
+        if ((routingCoordinates.origin.latitude !== 0 && routingCoordinates.origin.longitude !== 0) &&
+        (routingCoordinates.destination.latitude !== 0 && routingCoordinates.destination.longitude !== 0)) {
+            googleServices.getDirections(routingCoordinates.origin, routingCoordinates.destination)
+            .then((res) => {
+                setDuration(res.data.routes[0].legs[0].duration.text);
+                setDistance(res.data.routes[0].legs[0].distance.text);
+                if (mapState.value === State.CONFIRMROUTE)
+                    showBottomComponent();
+            })
+        }
     }
 
     return (
