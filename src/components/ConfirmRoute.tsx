@@ -1,5 +1,6 @@
 import React from 'react';
-import { Animated, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Animated, TextInput, View, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faChevronLeft, faExchangeAlt, faLocationArrow, faMapMarkedAlt, faEllipsisV, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
 import { Text } from '../components/generic/Text';
@@ -123,7 +124,7 @@ export const ConfirmRouteComponent = ({
                                     margin: 5,
                                     borderRadius: 7,
                                     borderWidth: 1,
-                                    borderColor: "#E0E0E0"
+                                    borderColor: "#E0E0E0",
                                 }}
                                 onPress={() => {
                                     changeInput('destination');

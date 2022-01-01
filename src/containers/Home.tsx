@@ -35,8 +35,7 @@ export const Home = (): JSX.Element => {
   const [destinationInput, setDestinationInput] = useState<string>("");
   const [mapState, setMapState] = useState<State>(State.MAP);
   const [inputAnim, setInputAnim] = useState(new Animated.Value(-50))
-  const [heading, setHeading] = useState<LocationHeadingObject>();
-  const [navigationSteps, setNavigationSteps] = useState<[]>([]);
+  // const [heading, setHeading] = useState<LocationHeadingObject>();
 
   const hours: number = 24
   const cacheExpiryTime = new Date()
@@ -182,7 +181,6 @@ export const Home = (): JSX.Element => {
   }
 
   const getNearestSafe = () => {
-    console.log('latitude: ', latitude, " | longitude: ", longitude, ' | token: ', credentials.token);
     safeplaceServices.getSafeplaceNearest(latitude, longitude, credentials.token)
     .then((res) => {
       googleServices.getReverseCoords(res.data.nearest.latitude, res.data.nearest.longitude)
@@ -193,6 +191,7 @@ export const Home = (): JSX.Element => {
         .then((res) => {
           setCoordsFromPlace(res.data.results[0].formatted_address, "origin");
           setOriginInput(res.data.results[0].formatted_address);
+          setMapState(State.CONFIRMROUTE)
         })
         .catch((err) => {
           console.log(err);
@@ -206,6 +205,14 @@ export const Home = (): JSX.Element => {
     .catch((err) => {
       throw err;
     })
+  }
+
+  const clearRouting = () => {
+    setOrigin({ latitude: 0, longitude: 0 });
+    setDestination({ latitude: 0, longitude: 0 });
+
+    setOriginInput('');
+    setDestinationInput('');
   }
 
   return (
@@ -232,8 +239,7 @@ export const Home = (): JSX.Element => {
           setter: setMapState
         }}
         inputAnim={inputAnim}
-        navigationSteps={navigationSteps}
-        setNavigationSteps={setNavigationSteps}
+        clearRouting={clearRouting}
       />
     </>
   );

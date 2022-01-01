@@ -35,6 +35,7 @@ interface Props {
         setter: (val: State) => void;
     },
     inputAnim: Animated.Value;
+    clearRouting: () => void;
 }
 
 export const HomeComponent = ({
@@ -49,7 +50,8 @@ export const HomeComponent = ({
     routingCoordinates,
     routingInputs,
     mapState,
-    inputAnim
+    inputAnim,
+    clearRouting
 }: Props): JSX.Element => {
 
     const mapView = React.createRef<MapView>();
@@ -128,9 +130,10 @@ export const HomeComponent = ({
                                     justifyContent: 'center'
                                 }}
                                 onPress={() => {
-                                    if (mapState.value === State.NAVIGATION)
+                                    if (mapState.value === State.NAVIGATION) {
                                         mapState.setter(State.MAP)
-                                    else
+                                        clearRouting();
+                                    } else
                                         mapState.setter(State.NAVIGATION)
                                 }}
                             >
@@ -252,6 +255,15 @@ export const HomeComponent = ({
                                     longitude: longitude
                                 }}
                                 routingCoordinates={routingCoordinates}
+                            />
+                            {/*
+                                ***** Navigation Instructions Popup *****
+                            */}
+                            <NavigationPopup
+                                latitude={latitude}
+                                longitude={longitude}
+                                destination={{ latitude: routingCoordinates.destination.latitude, longitude: routingCoordinates.destination.longitude }}
+                                mapState={mapState}
                             />
                         </>
                     ) : null}
