@@ -3,19 +3,20 @@ import { useRoute, useIsFocused } from '@react-navigation/core';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../redux/reducers';
 import {HomeComponent} from '../components/index';
+import { AxiosResponse } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { safeplaceServices } from '../services';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { LatLng } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
-import { AxiosResponse } from 'axios';
 import {googleServices} from '../services';
 import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../redux';
 import { State } from '../../types/general';
 import { Animated } from 'react-native'
 
+import { geocodeApiResponse, placesAutocompletesApiResponse, placesAutocompletesPrediction } from '../../types/googleServices';
 
 export const Home = (): JSX.Element => {
 
@@ -34,6 +35,8 @@ export const Home = (): JSX.Element => {
   const [destinationInput, setDestinationInput] = useState<string>("");
   const [mapState, setMapState] = useState<State>(State.MAP);
   const [inputAnim, setInputAnim] = useState(new Animated.Value(-50))
+  const [heading, setHeading] = useState<LocationHeadingObject>();
+  const [navigationSteps, setNavigationSteps] = useState<[]>([]);
 
   const hours: number = 24
   const cacheExpiryTime = new Date()
@@ -42,8 +45,8 @@ export const Home = (): JSX.Element => {
   useEffect(() => {
     if (isFocused) {
       if (route.params !== undefined && route.params.address) {
-        googleServices.getReverseCoords(latitude, longitude)
-        .then((res) => {
+        googleServices.getReverseCoords(latitude.toString(), longitude.toString())
+        .then((res: AxiosResponse<geocodeApiResponse>) => {
           setCoordsFromPlace(route.params.address, 'destination');
           setDestinationInput(route.params.address);
           setOriginInput(res.data.results[0].formatted_address);
@@ -229,6 +232,8 @@ export const Home = (): JSX.Element => {
           setter: setMapState
         }}
         inputAnim={inputAnim}
+        navigationSteps={navigationSteps}
+        setNavigationSteps={setNavigationSteps}
       />
     </>
   );

@@ -36,7 +36,7 @@ async function getRecurringPlaces(token: string): Promise<AxiosResponse<Safeplac
 
 async function deleteRecurringPlace(idPlace: string, token: string): Promise<void> {
     const response = await axios.delete(API_URL + `/safeplace/recurring/${idPlace}`, {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
-  
+     
     return response;
 }
 
@@ -48,7 +48,7 @@ async function editRecurringPlace(idPlace: string, name: string, address: string
         coordinate: coordinate,
     },
     {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
-    
+       
     return response;
 }
 

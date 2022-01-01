@@ -8,3 +8,4 @@ export * from './Safeplace'
 export * from './SavedPlaces';
 export * from './InputAddress';
 export * from './ConfirmRoute';
+export * from './NavigationPopup';

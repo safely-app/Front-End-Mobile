@@ -2,6 +2,7 @@ import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Keyboard, Animated} from 'react-native';
 import {LatLng, Marker} from 'react-native-maps';
 import MapView from "react-native-map-clustering";
+import { NavigationPopup } from './../containers/index';
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faMapPin, faStore, faMoon } from '@fortawesome/free-solid-svg-icons'
