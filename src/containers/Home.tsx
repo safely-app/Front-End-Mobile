@@ -30,14 +30,23 @@ export const Home = (): JSX.Element => {
   const [originInput, setOriginInput] = useState<string>('');
   const [originPlaces, setOriginPlaces] = useState<[]>([]);
   const [destinationPlaces, setDestinationPlaces] = useState<[]>([]);
+  const [birdNearestPlaces, setBirdNearestPlaces] = useState<[]>([]);
   const [originFocus, setOriginFocus] = useState<boolean>(false);
   const [destinationFocus, setDestinationFocus] = useState<boolean>(false);
   const [destinationInput, setDestinationInput] = useState<string>("");
   const [navigationMode, setNavigationMode] = useState<boolean>(false);
+  const [isNearbyPanelActive, setIsNearbyPanelActive] = useState(true);
   const navigation = useNavigation();
   const [count, setCount] = useState<number>(0);
 
+  const hours: number = 24
+  const cacheExpiryTime = new Date()
+  cacheExpiryTime.setHours(cacheExpiryTime.getHours() + hours)
+
   useEffect(() => {
+
+    setIsNearbyPanelActive(true);
+
     if (isFocused) {
       if (route.params !== undefined) {
         googleServices.getReverseCoords(latitude, longitude)
@@ -48,23 +57,48 @@ export const Home = (): JSX.Element => {
           setOrigin({latitude: latitude, longitude: longitude});
         })
         .catch((err) => {
-          throw err;
+          throw err;  
         })
       }
     }
   }, [isFocused])
 
   useEffect(() => {
+    if (latitude !== 0 && longitude !== 0) {
+      safeplaceServices
+        .getSafeplaceBirdNearest(latitude, longitude, 10, credentials.token)
+        .then(res => setBirdNearestPlaces(res.data.nearest))
+        .catch(err => console.error(err));
+    }
+  }, [isNearbyPanelActive, latitude, longitude]);
+
+  useEffect(() => {
     if (!credentials.username || (credentials.username && credentials.username.length <= 0)) {
       // console.log('abc');
       dispatch(getUser({userId: credentials._id, token: credentials.token}));
     }
-    safeplaceServices.getSafeplace(credentials.token)
+
+    const lastrequestFunction = async () => {
+      const lastrequest = await AsyncStorage.getItem("lastSafeplaceRequest");
+
+      if (lastrequest == null || new Date(JSON.parse(lastrequest)) > cacheExpiryTime) {
+        safeplaceServices.getSafeplace(credentials.token)
+        .then((res) => {
+          // setSafeplaces(res.data);
+          AsyncStorage.setItem("lastSafeplaceRequest", JSON.stringify(new Date()));
+          AsyncStorage.setItem("safeplaces", JSON.stringify(res.data));
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
+    }
+
+    lastrequestFunction();
+
+    AsyncStorage.getItem("safeplaces")
     .then((res) => {
-      setSafeplaces(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
+      setSafeplaces(JSON.parse(res));
     })
   }, []);
 
@@ -101,7 +135,7 @@ export const Home = (): JSX.Element => {
       setLongitude(0);
       setLatitude(0);
       setPermissions(false);
-      setSafeplaces([]);
+      // setSafeplaces([]);
       setOrigin({latitude: 0, longitude: 0});
       setDestination({latitude: 0, longitude: 0});
       setOriginInput("");
@@ -111,7 +145,10 @@ export const Home = (): JSX.Element => {
       setDestinationFocus(false);
       setDestinationInput("");
       setNavigationMode(false);
-      setNavigationMode(false);
+      setIsMapLoaded(false);
+      setBirdNearestPlaces([]);
+      setIsNearbyPanelActive(true);
+      setCount(0);
     })
   }, [])
 
@@ -204,6 +241,9 @@ export const Home = (): JSX.Element => {
         count={count}
         setCount={setCount}
         getNearestSafe={getNearestSafe}
+        birdNearestPlaces={birdNearestPlaces}
+        isNearbyPanelActive={isNearbyPanelActive}
+        setIsNearbyPanelActive={setIsNearbyPanelActive}
       />
     </>
   );

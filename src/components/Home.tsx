@@ -1,11 +1,17 @@
-import React, { LegacyRef, useEffect } from 'react';
+import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
-import MapView, {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView from "react-native-map-clustering";
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
 import MapViewDirections from 'react-native-maps-directions';
+import { Svg, Image as ImageSvg } from 'react-native-svg';
+import { SwipeablePanel } from 'rn-swipeable-panel';
+import { Text as CustomText } from './generic/Text';
+import { Rating } from './generic/Rating';
 import {GOOGLE_API_KEY} from '@env';
+import { HLine } from '.';
 
 interface Props {
     latitude: number;
@@ -36,17 +42,20 @@ interface Props {
     count: number;
     setCount: (number: number) => void;
     getNearestSafe: () => void;
+    birdNearestPlaces: SafeplaceInterface[];
+    isNearbyPanelActive: boolean;
+    setIsNearbyPanelActive: (value: boolean) => void;
 }
 
 const mapStyle = StyleSheet.create({
-      placesInput: {
-          zIndex: 9999,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-      },
-      container: {
+    placesInput: {
+        zIndex: 9999,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+    },
+    container: {
         position: 'absolute',
         top: 0,
         left: 0,
@@ -54,30 +63,27 @@ const mapStyle = StyleSheet.create({
         bottom: 0,
         justifyContent: 'flex-end',
         alignItems: 'center',
-      },
-      map: {
+    },
+    map: {
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-      },
-      originInput: {
-        
     },
+    originInput: {},
     destinationInput: {
-      width: '80%',
-      marginTop: 10,
-      backgroundColor: "white",
-    //   borderRadius: 25,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 2,
-        height: 0,
-     },
-     shadowOpacity: 0.25,
-     shadowRadius: 15.84,
-     elevation: 2,
+        width: '80%',
+        marginTop: 10,
+        backgroundColor: "white",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 2,
+            height: 0,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 15.84,
+        elevation: 2,
     },
     originPlace: {
         backgroundColor: "white",
@@ -89,24 +95,56 @@ const mapStyle = StyleSheet.create({
         top: 48
     },
     destinationPlace: {
-      backgroundColor: "white",
-      width: '80%',
-      borderBottomLeftRadius: 25,
-      borderBottomRightRadius: 25,
-      height: '70%',
-      position: 'absolute',
-      top: 100
+        backgroundColor: "white",
+        width: '80%',
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25,
+        height: '70%',
+        position: 'absolute',
+        top: 100
     }
    });
 
-export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, setOriginInput, setDestinationInput, originInput, originPlaces, destinationInput, getOriginPlaces, originFocus, destinationFocus, setOriginFocus, setDestinationFocus, destinationPlaces, setCoordsFromPlace, navigationMode, setNavigationMode, isMapLoaded, setIsMapLoaded, latitude, longitude, safeplaces, permissions, origin, destination, setOrigin, setDestination}: Props): JSX.Element => {
+export const HomeComponent = ({
+    getNearestSafe,
+	count,
+	setCount,
+	goToSafeplace,
+	setOriginInput,
+	setDestinationInput,
+	originInput,
+	originPlaces,
+	destinationInput,
+	getOriginPlaces,
+	originFocus,
+	destinationFocus,
+	setOriginFocus,
+	setDestinationFocus,
+	destinationPlaces,
+	setCoordsFromPlace,
+	navigationMode,
+	setNavigationMode,
+	isMapLoaded,
+	setIsMapLoaded,
+	latitude,
+	longitude,
+	safeplaces,
+	permissions,
+	origin,
+	destination,
+	setOrigin,
+	setDestination,
+    birdNearestPlaces,
+    isNearbyPanelActive,
+    setIsNearbyPanelActive
+}: Props): JSX.Element => {
 
     const mapView = React.createRef();
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
-     
+
     if (latitude !== 0 && longitude !== 0) {
         return (
             <>
@@ -137,13 +175,14 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                                 <FontAwesomeIcon icon={faLocationArrow} />
                             </Marker>
                         )}
-                        {isMapLoaded && safeplaces && safeplaces.length > 0 ? safeplaces.map((safeplace, index) => (
-                                <Marker
-                                    coordinate={{latitude: parseFloat(safeplace.coordinate[0]), longitude: parseFloat(safeplace.coordinate[1])}}
-                                    key={safeplace._id}
-                                    title={safeplace.name}
-                                    onPress={() => {goToSafeplace(safeplace._id);}}
-                                />
+                        {isMapLoaded && safeplaces && safeplaces.length > 0 ? safeplaces.map(safeplace => (
+                            <Marker
+                                coordinate={{latitude: parseFloat(safeplace.coordinate[0]), longitude: parseFloat(safeplace.coordinate[1])}}
+                                key={safeplace._id}
+                                title={safeplace.name}
+                                onPress={() => {goToSafeplace(safeplace._id);}}
+                                tracksViewChanges={false}
+                            />
                         )) : null }
                         {(isMapLoaded && navigationMode && origin && origin.latitude !== 0 && origin.longitude !== 0) && (destination && destination.latitude !== 0 && destination.longitude !== 0) && (
                             <MapViewDirections
@@ -158,24 +197,35 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                 {isMapLoaded && (
                     <View style={{position: 'absolute', top: (windowHeight)*0.70, bottom: windowHeight*0, left: windowWidth*0.85, right: 0}}>
                         <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*0.15}} onPress={() => {setNavigationMode(!navigationMode)}}>
-                                <FontAwesomeIcon icon={faDirections} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0165, bottom: (windowHeight)*0.0135}} />
-                                <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
+                            <FontAwesomeIcon icon={faDirections} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0165, bottom: (windowHeight)*0.0135}} />
+                            <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*0.022}} onPress={() => {
-                                mapView.current.animateCamera({center: {latitude: latitude, longitude: longitude}});
+                            mapView.current.animateCamera({center: {latitude: latitude, longitude: longitude}});
                         }}>
-                                <FontAwesomeIcon icon={faMapPin} color={"white"} size={(windowWidth/windowHeight)*60} style={{zIndex: 9999, left: (windowWidth)*0.0140, bottom: (windowHeight)*0.0100}} />
-                                <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
+                            <FontAwesomeIcon icon={faMapPin} color={"white"} size={(windowWidth/windowHeight)*60} style={{zIndex: 9999, left: (windowWidth)*0.0140, bottom: (windowHeight)*0.0100}} />
+                            <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*-0.11}} onPress={() => {getNearestSafe();}}>
-                                <FontAwesomeIcon icon={faStore} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0185, bottom: (windowHeight)*0.0135}} />
-                                <FontAwesomeIcon icon={faCircle} color={"#EF4F4F"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
+                            <FontAwesomeIcon icon={faStore} color={"white"} size={(windowWidth/windowHeight)*55} style={{zIndex: 9999, left: (windowWidth)*0.0185, bottom: (windowHeight)*0.0135}} />
+                            <FontAwesomeIcon icon={faCircle} color={"#EF4F4F"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                         </TouchableOpacity>
                     </View>
                 )}
                 {isMapLoaded && (
-                    <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); originFocus ? setOriginFocus(false) : null; destinationFocus ? setDestinationFocus(false) : null}} accessible={false}>
-                        <View style={{alignItems: 'center', position: 'absolute', top: (windowHeight)*0.05, bottom: originFocus || destinationFocus ? 0 : (windowHeight)*0.700, left: originFocus || destinationFocus ? 0 : (windowWidth)*0.18, right: originFocus || destinationFocus ? 0 : (windowWidth)*0.18}}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        Keyboard.dismiss();
+                        if (originFocus) setOriginFocus(false);
+                        if (destinationFocus) setDestinationFocus(false);
+                    }} accessible={false}>
+                        <View style={{
+                            alignItems: 'center',
+                            position: 'absolute',
+                            top: (windowHeight)*0.05,
+                            bottom: originFocus || destinationFocus ? 0 : (windowHeight)*0.700,
+                            left: originFocus || destinationFocus ? 0 : (windowWidth)*0.18,
+                            right: originFocus || destinationFocus ? 0 : (windowWidth)*0.18
+                        }}>
                             <TextInput
                                 placeholder="Origin"
                                 style={{backgroundColor: 'white', height: (windowHeight)*0.065, width: (windowWidth)*0.6, top: (windowHeight)*0.02, shadowColor: "#000", elevation: 15}}
@@ -183,7 +233,6 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                                 onChangeText={(text) => {setOriginInput(text); getOriginPlaces(text, latitude, longitude, "origin");}}
                                 onFocus={() => {setOriginFocus(true)}}
                             />
-    
                             {originInput.length > 0 && !originFocus && (
                                 <TextInput
                                     placeholder="Destination"
@@ -193,53 +242,125 @@ export const HomeComponent = ({getNearestSafe, count, setCount, goToSafeplace, s
                                     onFocus={() => {setDestinationFocus(true)}}
                                 />
                             )}
-    
                             {originFocus && (
-                                <ScrollView style={(originPlaces.length > 0 && originFocus) ? {position: 'absolute', top: (windowHeight)*0.085, bottom: 0, left: (windowWidth)*0.20, right: 0, backgroundColor: 'white', width: '60%', height: '40%', borderBottomLeftRadius: 25, borderBottomRightRadius: 25} : {}} contentContainerStyle={{margin: 20}}>
+                                <ScrollView style={(originPlaces.length > 0 && originFocus) ? {
+                                    position: 'absolute',
+                                    top: (windowHeight)*0.085,
+                                    bottom: 0,
+                                    left: (windowWidth)*0.20,
+                                    right: 0,
+                                    backgroundColor: 'white',
+                                    width: '60%',
+                                    height: '40%',
+                                    borderBottomLeftRadius: 25,
+                                    borderBottomRightRadius: 25
+                                } : {}} contentContainerStyle={{margin: 20}}>
                                     {(originPlaces.length > 0 && originFocus) && originPlaces.map((place, index) => (
                                         <View key={"view" + index}>
-                                            
                                             <TouchableOpacity
-                                                onPress={() => {setOriginInput(place.description); setOriginFocus(false); setCoordsFromPlace(place.description, "origin"); Keyboard.dismiss()}}
-                                                key={index} 
+                                                onPress={() => {
+                                                    setOriginInput(place.description);
+                                                    setOriginFocus(false);
+                                                    setCoordsFromPlace(place.description, "origin");
+                                                    Keyboard.dismiss()
+                                                }}
+                                                key={index}
                                                 style={{zIndex: 9999, marginBottom: 10}}
-                                                >
-                                                <Text 
-                                                >
+                                            >
+                                                <Text>
                                                     {place.description}
                                                 </Text>
                                             </TouchableOpacity>
-                                            
-                                            <View key={"line" + index} style={{alignSelf: 'stretch', borderBottomWidth: 0.2, borderBottomColor: 'lightgray', width: '100%', marginBottom: 15}} />
-                                        
+                                            <View key={"line" + index} style={{
+                                                alignSelf: 'stretch',
+                                                borderBottomWidth: 0.2,
+                                                borderBottomColor: 'lightgray',
+                                                width: '100%',
+                                                marginBottom: 15
+                                            }} />
                                         </View>
                                     ))}
                                 </ScrollView>
                             )}
                             {destinationFocus && (
-                                <ScrollView style={(destinationPlaces.length > 0 && destinationFocus) ? {position: 'absolute', top: (windowHeight)*0.170, bottom: 0, left: (windowWidth)*0.20, right: 0, backgroundColor: 'white', width: '60%', height: '40%', borderBottomLeftRadius: 25, borderBottomRightRadius: 25} : {}} contentContainerStyle={{margin: 20}}>
-                    
-                                        {(destinationPlaces.length > 0 && destinationFocus) && destinationPlaces.map((place, index) => (
-                                            <View key={"view" + index}>
-                                                
-                                                <TouchableOpacity
-                                                    onPress={() => {setDestinationInput(place.description); setDestinationFocus(false); setCoordsFromPlace(place.description, "destination")}}
-                                                    key={index} 
-                                                    style={{zIndex: 9999, marginBottom: 10}}
-                                                >
-                                                    <Text>
-                                                        {place.description}
-                                                    </Text>
-                                                </TouchableOpacity>
-                
-                                                <View key={"line" + index} style={{alignSelf: 'stretch', borderBottomWidth: 0.2, borderBottomColor: 'lightgray', width: '100%', marginBottom: 15}} />
-                                            
-                                            </View>
-                                        ))}
+                                <ScrollView style={(destinationPlaces.length > 0 && destinationFocus) ? {
+                                    position: 'absolute',
+                                    top: (windowHeight)*0.170,
+                                    bottom: 0,
+                                    left: (windowWidth)*0.20,
+                                    right: 0,
+                                    backgroundColor: 'white',
+                                    width: '60%',
+                                    height: '40%',
+                                    borderBottomLeftRadius: 25,
+                                    borderBottomRightRadius: 25
+                                } : {}} contentContainerStyle={{margin: 20}}>
+                                    {(destinationPlaces.length > 0 && destinationFocus) && destinationPlaces.map((place, index) => (
+                                        <View key={"view" + index}>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    setDestinationInput(place.description);
+                                                    setDestinationFocus(false);
+                                                    setCoordsFromPlace(place.description, "destination")
+                                                }}
+                                                key={index}
+                                                style={{zIndex: 9999, marginBottom: 10}}
+                                            >
+                                                <Text>
+                                                    {place.description}
+                                                </Text>
+                                            </TouchableOpacity>
+                                            <View key={"line" + index} style={{
+                                                alignSelf: 'stretch',
+                                                borderBottomWidth: 0.2,
+                                                borderBottomColor: 'lightgray',
+                                                width: '100%',
+                                                marginBottom: 15
+                                            }} />
+                                        </View>
+                                    ))}
                                 </ScrollView>
                             )}
                         </View>
                     </TouchableWithoutFeedback>
+                )}
+                {isMapLoaded && (
+                    <View style={{ position: 'absolute', top: windowHeight, left: 0 }}>
+                        <SwipeablePanel
+                            onClose={() => setIsNearbyPanelActive(false)}
+                            isActive={isNearbyPanelActive}
+                            noBackgroundOpacity={true}
+                            fullWidth={true}
+                        >
+                            {birdNearestPlaces.map((safeplace, index) =>
+                                <View key={index} style={{
+                                    marginTop: 20,
+                                    marginLeft: 20,
+                                    marginRight: 20
+                                }}>
+                                    <TouchableOpacity onPress={() => goToSafeplace(safeplace._id)}>
+                                        <CustomText type='h1' size='m'>{safeplace.name}</CustomText>
+                                        <CustomText type='body' size='s'>{safeplace.address}</CustomText>
+                                        <Rating size={20} />
+                                        <View style={{ overflow: 'hidden', borderRadius: 8 }}>
+                                            <Svg width={windowWidth - 40} height={(windowWidth - 40) * 0.5625}>
+                                                <ImageSvg
+                                                    id="Image"
+                                                    width={'100%'}
+                                                    height={'100%'}
+                                                    preserveAspectRatio="xMidYMid slice"
+                                                    href={{ uri: 'https://media-cdn.tripadvisor.com/media/photo-s/13/75/48/d5/p80524-122152-largejpg.jpg' }}
+                                                />
+                                            </Svg>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <HLine width='100%' lineColor='blue' borderWidth={1} style={{
+                                        marginTop: 20
+                                    }} />
+                                </View>
+                            )}
+                        </SwipeablePanel>
+                    </View>
                 )}
             </>
         )
