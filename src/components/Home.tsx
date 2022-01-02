@@ -325,15 +325,15 @@ export const HomeComponent = ({
                     </TouchableWithoutFeedback>
                 )}
                 {isMapLoaded && (
-                    <View style={{ position: 'absolute', top: windowHeight * 0.9, left: 0 }}>
+                    <View style={{ position: 'absolute', top: windowHeight, left: 0 }}>
                         <SwipeablePanel
                             onClose={() => setIsNearbyPanelActive(false)}
                             isActive={isNearbyPanelActive}
                             noBackgroundOpacity={true}
                             fullWidth={true}
                         >
-                            {birdNearestPlaces.map(safeplace =>
-                                <View key={safeplace._id} style={{
+                            {birdNearestPlaces.map((safeplace, index) =>
+                                <View key={index} style={{
                                     marginTop: 20,
                                     marginLeft: 20,
                                     marginRight: 20
