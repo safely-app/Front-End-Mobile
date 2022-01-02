@@ -2,7 +2,7 @@ import { UserLoginCredentials } from '../types';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { userServices } from '../../services';
 
-interface UserState {
+export interface UserState {
   credentials: {
     id: string,
     hashedId: string,
@@ -18,7 +18,7 @@ interface UserState {
   statusResponse: {response: {status: string, errorMsg: string}}
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
   credentials: {
     id: "",
     hashedId: "",
