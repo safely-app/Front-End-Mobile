@@ -6,8 +6,12 @@ import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faDirections, faLocationArrow, faCircle, faMapPin, faStore, faStar } from '@fortawesome/free-solid-svg-icons'
 import MapViewDirections from 'react-native-maps-directions';
-import {Svg, Image as ImageSvg} from 'react-native-svg';
+import { Svg, Image as ImageSvg } from 'react-native-svg';
+import { SwipeablePanel } from 'rn-swipeable-panel';
+import { Text as CustomText } from './generic/Text';
+import { Rating } from './generic/Rating';
 import {GOOGLE_API_KEY} from '@env';
+import { HLine } from '.';
 
 interface Props {
     latitude: number;
@@ -38,6 +42,9 @@ interface Props {
     count: number;
     setCount: (number: number) => void;
     getNearestSafe: () => void;
+    birdNearestPlaces: SafeplaceInterface[];
+    isNearbyPanelActive: boolean;
+    setIsNearbyPanelActive: (value: boolean) => void;
 }
 
 const mapStyle = StyleSheet.create({
@@ -69,7 +76,6 @@ const mapStyle = StyleSheet.create({
         width: '80%',
         marginTop: 10,
         backgroundColor: "white",
-    //   borderRadius: 25,
         shadowColor: "#000",
         shadowOffset: {
             width: 2,
@@ -101,33 +107,36 @@ const mapStyle = StyleSheet.create({
 
 export const HomeComponent = ({
     getNearestSafe,
-    count,
-    setCount,
-    goToSafeplace,
-    setOriginInput,
-    setDestinationInput,
-    originInput,
-    originPlaces,
-    destinationInput,
-    getOriginPlaces,
-    originFocus,
-    destinationFocus,
-    setOriginFocus,
-    setDestinationFocus,
-    destinationPlaces,
-    setCoordsFromPlace,
-    navigationMode,
-    setNavigationMode,
-    isMapLoaded,
-    setIsMapLoaded,
-    latitude,
-    longitude,
-    safeplaces,
-    permissions,
-    origin,
-    destination,
-    setOrigin,
-    setDestination
+	count,
+	setCount,
+	goToSafeplace,
+	setOriginInput,
+	setDestinationInput,
+	originInput,
+	originPlaces,
+	destinationInput,
+	getOriginPlaces,
+	originFocus,
+	destinationFocus,
+	setOriginFocus,
+	setDestinationFocus,
+	destinationPlaces,
+	setCoordsFromPlace,
+	navigationMode,
+	setNavigationMode,
+	isMapLoaded,
+	setIsMapLoaded,
+	latitude,
+	longitude,
+	safeplaces,
+	permissions,
+	origin,
+	destination,
+	setOrigin,
+	setDestination,
+    birdNearestPlaces,
+    isNearbyPanelActive,
+    setIsNearbyPanelActive
 }: Props): JSX.Element => {
 
     const mapView = React.createRef<MapView>();
@@ -349,6 +358,44 @@ export const HomeComponent = ({
                             )}
                         </View>
                     </TouchableWithoutFeedback>
+                )}
+                {isMapLoaded && (
+                    <View style={{ position: 'absolute', top: windowHeight, left: 0 }}>
+                        <SwipeablePanel
+                            onClose={() => setIsNearbyPanelActive(false)}
+                            isActive={isNearbyPanelActive}
+                            noBackgroundOpacity={true}
+                            fullWidth={true}
+                        >
+                            {birdNearestPlaces.map((safeplace, index) =>
+                                <View key={index} style={{
+                                    marginTop: 20,
+                                    marginLeft: 20,
+                                    marginRight: 20
+                                }}>
+                                    <TouchableOpacity onPress={() => goToSafeplace(safeplace._id)}>
+                                        <CustomText type='h1' size='m'>{safeplace.name}</CustomText>
+                                        <CustomText type='body' size='s'>{safeplace.address}</CustomText>
+                                        <Rating size={20} />
+                                        <View style={{ overflow: 'hidden', borderRadius: 8 }}>
+                                            <Svg width={windowWidth - 40} height={(windowWidth - 40) * 0.5625}>
+                                                <ImageSvg
+                                                    id="Image"
+                                                    width={'100%'}
+                                                    height={'100%'}
+                                                    preserveAspectRatio="xMidYMid slice"
+                                                    href={{ uri: 'https://media-cdn.tripadvisor.com/media/photo-s/13/75/48/d5/p80524-122152-largejpg.jpg' }}
+                                                />
+                                            </Svg>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <HLine width='100%' lineColor='blue' borderWidth={1} style={{
+                                        marginTop: 20
+                                    }} />
+                                </View>
+                            )}
+                        </SwipeablePanel>
+                    </View>
                 )}
             </>
         )

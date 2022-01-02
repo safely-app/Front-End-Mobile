@@ -30,10 +30,12 @@ export const Home = (): JSX.Element => {
   const [originInput, setOriginInput] = useState<string>('');
   const [originPlaces, setOriginPlaces] = useState<[]>([]);
   const [destinationPlaces, setDestinationPlaces] = useState<[]>([]);
+  const [birdNearestPlaces, setBirdNearestPlaces] = useState<[]>([]);
   const [originFocus, setOriginFocus] = useState<boolean>(false);
   const [destinationFocus, setDestinationFocus] = useState<boolean>(false);
   const [destinationInput, setDestinationInput] = useState<string>("");
   const [navigationMode, setNavigationMode] = useState<boolean>(false);
+  const [isNearbyPanelActive, setIsNearbyPanelActive] = useState(true);
   const navigation = useNavigation();
   const [count, setCount] = useState<number>(0);
 
@@ -42,6 +44,9 @@ export const Home = (): JSX.Element => {
   cacheExpiryTime.setHours(cacheExpiryTime.getHours() + hours)
 
   useEffect(() => {
+
+    setIsNearbyPanelActive(true);
+
     if (isFocused) {
       if (route.params !== undefined) {
         googleServices.getReverseCoords(latitude.toString(), longitude.toString())
@@ -57,6 +62,15 @@ export const Home = (): JSX.Element => {
       }
     }
   }, [isFocused])
+
+  useEffect(() => {
+    if (latitude !== 0 && longitude !== 0) {
+      safeplaceServices
+        .getSafeplaceBirdNearest(latitude, longitude, 10, credentials.token)
+        .then(res => setBirdNearestPlaces(res.data.nearest))
+        .catch(err => console.error(err));
+    }
+  }, [isNearbyPanelActive, latitude, longitude]);
 
   useEffect(() => {
     if (!credentials.username || (credentials.username && credentials.username.length <= 0)) {
@@ -131,7 +145,10 @@ export const Home = (): JSX.Element => {
       setDestinationFocus(false);
       setDestinationInput("");
       setNavigationMode(false);
-      setNavigationMode(false);
+      setIsMapLoaded(false);
+      setBirdNearestPlaces([]);
+      setIsNearbyPanelActive(true);
+      setCount(0);
     })
   }, [])
 
@@ -224,6 +241,9 @@ export const Home = (): JSX.Element => {
         count={count}
         setCount={setCount}
         getNearestSafe={getNearestSafe}
+        birdNearestPlaces={birdNearestPlaces}
+        isNearbyPanelActive={isNearbyPanelActive}
+        setIsNearbyPanelActive={setIsNearbyPanelActive}
       />
     </>
   );

@@ -76,6 +76,18 @@ async function getSafeplaceNearest(latitude: number, longitude: number, token: s
     return response;
 }
 
+async function getSafeplaceBirdNearest(latitude: number, longitude: number, amount: number, token: string) {
+    const response = await axios.post(API_URL + `/safeplace/safeplace/birdNearest/${amount}`, {
+        coord: {
+            latitude: latitude,
+            longitude: longitude
+        }
+    },
+    {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
+
+    return response;
+}
+
 export const safeplaceServices = {
     getSafeplace,
     getSafeplaceId,
@@ -85,5 +97,6 @@ export const safeplaceServices = {
     editRecurringPlace,
     createRecurringPlace,
     deleteRecurringPlace,
-    getSafeplaceNearest
+    getSafeplaceNearest,
+    getSafeplaceBirdNearest
 }
