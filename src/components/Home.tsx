@@ -332,26 +332,28 @@ export const HomeComponent = ({
                             noBackgroundOpacity={true}
                             fullWidth={true}
                         >
-                            {((birdNearestPlaces.length > 0) ? birdNearestPlaces : safeplaces.slice(0, 10)).map(safeplace =>
+                            {birdNearestPlaces.map(safeplace =>
                                 <View key={safeplace._id} style={{
                                     marginTop: 20,
                                     marginLeft: 20,
                                     marginRight: 20
                                 }}>
-                                    <CustomText type='h1' size='m'>{safeplace.name}</CustomText>
-                                    <CustomText type='body' size='s'>{safeplace.address}</CustomText>
-                                    <Rating size={20} />
-                                    <View style={{ overflow: 'hidden', borderRadius: 8 }}>
-                                        <Svg width={windowWidth - 40} height={(windowWidth - 40) * 0.5625}>
-                                            <ImageSvg
-                                                id="Image"
-                                                width={'100%'}
-                                                height={'100%'}
-                                                preserveAspectRatio="xMidYMid slice"
-                                                href={{ uri: 'https://media-cdn.tripadvisor.com/media/photo-s/13/75/48/d5/p80524-122152-largejpg.jpg' }}
-                                            />
-                                        </Svg>
-                                    </View>
+                                    <TouchableOpacity onPress={() => goToSafeplace(safeplace._id)}>
+                                        <CustomText type='h1' size='m'>{safeplace.name}</CustomText>
+                                        <CustomText type='body' size='s'>{safeplace.address}</CustomText>
+                                        <Rating size={20} />
+                                        <View style={{ overflow: 'hidden', borderRadius: 8 }}>
+                                            <Svg width={windowWidth - 40} height={(windowWidth - 40) * 0.5625}>
+                                                <ImageSvg
+                                                    id="Image"
+                                                    width={'100%'}
+                                                    height={'100%'}
+                                                    preserveAspectRatio="xMidYMid slice"
+                                                    href={{ uri: 'https://media-cdn.tripadvisor.com/media/photo-s/13/75/48/d5/p80524-122152-largejpg.jpg' }}
+                                                />
+                                            </Svg>
+                                        </View>
+                                    </TouchableOpacity>
                                     <HLine width='100%' lineColor='blue' borderWidth={1} style={{
                                         marginTop: 20
                                     }} />

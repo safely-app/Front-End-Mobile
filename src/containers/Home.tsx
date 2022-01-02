@@ -44,6 +44,9 @@ export const Home = (): JSX.Element => {
   cacheExpiryTime.setHours(cacheExpiryTime.getHours() + hours)
 
   useEffect(() => {
+
+    setIsNearbyPanelActive(true);
+
     if (isFocused) {
       if (route.params !== undefined) {
         googleServices.getReverseCoords(latitude, longitude)
@@ -61,11 +64,13 @@ export const Home = (): JSX.Element => {
   }, [isFocused])
 
   useEffect(() => {
-    safeplaceServices
-      .getSafeplaceBirdNearest(latitude, longitude, 10, credentials.token)
-      .then(res => setBirdNearestPlaces(res.data))
-      .catch(err => console.error(err));
-  }, [isNearbyPanelActive]);
+    if (latitude !== 0 && longitude !== 0) {
+      safeplaceServices
+        .getSafeplaceBirdNearest(latitude, longitude, 10, credentials.token)
+        .then(res => setBirdNearestPlaces(res.data.nearest))
+        .catch(err => console.error(err));
+    }
+  }, [isNearbyPanelActive, latitude, longitude]);
 
   useEffect(() => {
     if (!credentials.username || (credentials.username && credentials.username.length <= 0)) {
@@ -140,7 +145,10 @@ export const Home = (): JSX.Element => {
       setDestinationFocus(false);
       setDestinationInput("");
       setNavigationMode(false);
-      setNavigationMode(false);
+      setIsMapLoaded(false);
+      setBirdNearestPlaces([]);
+      setIsNearbyPanelActive(true);
+      setCount(0);
     })
   }, [])
 
