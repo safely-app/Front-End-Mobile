@@ -89,16 +89,15 @@ async function getWaypoints(origin: {latitude: number, longitude: number}, desti
         })
     })
 
-    console.log(coordinates);
+    // console.log(coordinates);
     // console.log(response.data.routes);
 
-    const response2 = await axios.post(`http://localhost:8082` + `/traject`, {
+    const response2 = await axios.post(API_URL + `/safeplace/traject`, {
         coordinates
     },
-    {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWNjNWUxZDRhNDZmMzYwN2U5NDAwZmEiLCJpYXQiOjE2NDA3ODczMDQsImV4cCI6MTY0MDc5NDUwNH0.RKKmDsdr5iOUEf5pUL5Aa2n9FT24YfIKvx-yfg3ByoMPZwx0mmue3j3NFp9KKfidxDKsOPUg_VLeLgV4MbZovQ'}});
-  
-    console.log(response2.config);
-    // return response;
+    {headers: {"Content-type": "application/json", Authorization: 'Bearer ' + token}});
+    
+    return response2.data;
 }
 
 export const safeplaceServices = {

@@ -8,7 +8,7 @@ import { WebView } from 'react-native-webview'
 interface Props {
     directionText: string;
     metersText: string | undefined;
-    valueAnim: Animated.Value
+    valueAnim: Animated.Value;
 }
 
 export const NavigationPopupComponent = ({valueAnim, directionText, metersText}: Props): JSX.Element => {

@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationPopupComponent} from '../components/index';
-import {googleServices} from '../services'
+import {googleServices, safeplaceServices} from '../services'
 import { directionsApiResponse } from '../../types/googleServices';
 import { AxiosResponse } from 'axios';
 import { isPointWithinRadius } from 'geolib';
 import Toast from 'react-native-toast-message';
 import { State } from '../../types/general';
 import { Animated } from 'react-native';
+import {useSelector} from 'react-redux';
 
 interface Props {
   latitude: number;
@@ -16,14 +17,19 @@ interface Props {
     value: number,
     setter: (val: State) => void;
   };
+  waypoints: {
+    value: [{latitude: number, longitude: number}],
+    setter: (val: [{latitude: number, longitude: number}]) => void
+  };
 }
 
-export const NavigationPopup = ({latitude, longitude, destination, mapState}: Props): JSX.Element => {
+export const NavigationPopup = ({latitude, longitude, destination, mapState, waypoints}: Props): JSX.Element => {
   const [directionText, setDirectionText] = useState<string>("")
   const [metersText, setMetersText] = useState<string | undefined>("")
   const [startTime, setStartTime] = useState<number>(new Date().getTime())
   const [isFinished, setIsFinished] = useState<boolean>(false)
   const [valueAnim, setValueAnim] = useState(new Animated.Value(-155));
+  const {credentials} = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if ((latitude == 0 || longitude == 0) || (destination.latitude === 0 && destination.longitude === 0) || mapState.value !== State.NAVIGATION)
@@ -67,6 +73,15 @@ export const NavigationPopup = ({latitude, longitude, destination, mapState}: Pr
   useEffect(() => {
     if ((latitude == 0 || longitude == 0) || (destination.latitude === 0 && destination.longitude === 0))
       return;
+
+    safeplaceServices.getWaypoints({latitude: latitude, longitude: longitude}, destination, credentials.token)
+    .then((res) => {
+      let arrayWaypoints: [{latitude: number, longitude: number}] = [];
+      Object.keys(res).forEach((index) => {
+        arrayWaypoints.push({latitude: Number(res[index].latitude), longitude: Number(res[index].longitude)})
+      })
+      waypoints.setter(arrayWaypoints);
+    })
     
     googleServices.getDirection(`${latitude},${longitude}`, `${destination.latitude},${destination.longitude}`)
     .then((res: AxiosResponse<directionsApiResponse>) => {

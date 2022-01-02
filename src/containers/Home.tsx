@@ -35,6 +35,7 @@ export const Home = (): JSX.Element => {
   const [destinationInput, setDestinationInput] = useState<string>("");
   const [mapState, setMapState] = useState<State>(State.MAP);
   const [inputAnim, setInputAnim] = useState(new Animated.Value(-50))
+  const [waypoints, setWaypoints] = useState<[{latitude: number, longitude: number}]>([]);
   // const [heading, setHeading] = useState<LocationHeadingObject>();
 
   const hours: number = 24
@@ -75,6 +76,10 @@ export const Home = (): JSX.Element => {
       }).start();
     }
   }, [mapState])
+
+  // useEffect(() => {
+  //   console.log(waypoints)
+  // }, [waypoints])
 
   useEffect(() => {
     if (credentials.username.length <= 0) {
@@ -240,6 +245,10 @@ export const Home = (): JSX.Element => {
         }}
         inputAnim={inputAnim}
         clearRouting={clearRouting}
+        waypoints={{
+          value: waypoints,
+          setter: setWaypoints
+        }}
       />
     </>
   );

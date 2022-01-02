@@ -5,6 +5,7 @@ import { State } from '../../types/general';
 import { googleServices } from '../services';
 import {LatLng} from 'react-native-maps';
 import Toast from 'react-native-toast-message';
+import { Dimensions } from 'react-native';
 
 interface Props {
     mapState: {
@@ -38,9 +39,11 @@ export const ConfirmRoute = ({
     const [animBottom, setAnimBottom] = useState(new Animated.Value(100));
     const [duration, setDuration] = useState<string>('');
     const [distance, setDistance] = useState<string>('');
+    const windowHeight = Dimensions.get('window').height;
 
     useEffect(() => {
         if (mapState.value === State.CONFIRMROUTE) {
+            console.log(windowHeight)
             showTopComponent()
         } else {
             hideTopComponent()

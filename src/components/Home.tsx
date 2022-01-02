@@ -36,6 +36,10 @@ interface Props {
     },
     inputAnim: Animated.Value;
     clearRouting: () => void;
+    waypoints: {
+        value: [{latitude: number, longitude: number}],
+        setter: (val: [{latitude: number, longitude: number}]) => void
+    };
 }
 
 export const HomeComponent = ({
@@ -51,7 +55,8 @@ export const HomeComponent = ({
     routingInputs,
     mapState,
     inputAnim,
-    clearRouting
+    clearRouting,
+    waypoints
 }: Props): JSX.Element => {
 
     const mapView = React.createRef<MapView>();
@@ -112,6 +117,8 @@ export const HomeComponent = ({
                                     latitude: routingCoordinates.destination.latitude,
                                     longitude: routingCoordinates.destination.longitude
                                 }}
+                                waypoints={waypoints.value}
+                                mode={"WALKING"}
                             />
                         ) : null}
                     </MapView>
@@ -264,6 +271,7 @@ export const HomeComponent = ({
                                 longitude={longitude}
                                 destination={{ latitude: routingCoordinates.destination.latitude, longitude: routingCoordinates.destination.longitude }}
                                 mapState={mapState}
+                                waypoints={waypoints}
                             />
                         </>
                     ) : null}
