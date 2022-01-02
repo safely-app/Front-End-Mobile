@@ -1,10 +1,10 @@
 import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
-import {LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {Callout, LatLng, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import MapView from "react-native-map-clustering";
 import { SafeplaceInterface } from '../../types/safeplace';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faDirections, faLocationArrow, faCircle, faMapPin, faStore } from '@fortawesome/free-solid-svg-icons'
+import { faDirections, faLocationArrow, faCircle, faMapPin, faStore, faStar } from '@fortawesome/free-solid-svg-icons'
 import MapViewDirections from 'react-native-maps-directions';
 import { Svg, Image as ImageSvg } from 'react-native-svg';
 import { SwipeablePanel } from 'rn-swipeable-panel';
@@ -103,7 +103,7 @@ const mapStyle = StyleSheet.create({
         position: 'absolute',
         top: 100
     }
-   });
+});
 
 export const HomeComponent = ({
     getNearestSafe,
@@ -139,7 +139,7 @@ export const HomeComponent = ({
     setIsNearbyPanelActive
 }: Props): JSX.Element => {
 
-    const mapView = React.createRef();
+    const mapView = React.createRef<MapView>();
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
@@ -162,7 +162,7 @@ export const HomeComponent = ({
                         onMapReady={() => {
                             if (count === 0) {
                                 setIsMapLoaded(true);
-                                mapView.current.animateCamera({center: {latitude: latitude, longitude: longitude}})
+                                mapView.current?.animateCamera({center: {latitude: latitude, longitude: longitude}})
                             }
                             setCount(count++);
                         }}
@@ -176,13 +176,46 @@ export const HomeComponent = ({
                             </Marker>
                         )}
                         {isMapLoaded && safeplaces && safeplaces.length > 0 ? safeplaces.map(safeplace => (
-                            <Marker
-                                coordinate={{latitude: parseFloat(safeplace.coordinate[0]), longitude: parseFloat(safeplace.coordinate[1])}}
-                                key={safeplace._id}
-                                title={safeplace.name}
-                                onPress={() => {goToSafeplace(safeplace._id);}}
-                                tracksViewChanges={false}
-                            />
+                            <Marker key={safeplace._id} coordinate={{
+                                latitude: parseFloat(safeplace.coordinate[0]),
+                                longitude: parseFloat(safeplace.coordinate[1])
+                            }} tracksViewChanges={false}>
+                                <Callout
+                                    onPress={() => goToSafeplace(safeplace._id)}
+                                    style={{
+                                        width: windowWidth / 2,
+                                        height: windowHeight / 4.5
+                                    }}
+                                >
+                                    <View>
+                                        <Text style={{fontWeight: 'bold'}}>{safeplace.name}</Text>
+                                        <Text>{safeplace.address}</Text>
+                                        <View style={{
+                                            flex: 1,
+                                            flexDirection: 'row',
+                                            backgroundColor: 'blue',
+                                            marginBottom: 16
+                                        }}>
+                                            {[...Array(5).keys()].map(value =>
+                                                <FontAwesomeIcon
+                                                    key={value}
+                                                    size={15}
+                                                    icon={faStar}
+                                                    color={(value < 3) ? 'yellow' : 'grey'}
+                                                />
+                                            )}
+                                        </View>
+                                        <Svg width={windowWidth / 2} height={windowHeight / 5}>
+                                            <ImageSvg
+                                                width={'100%'}
+                                                height={'100%'}
+                                                preserveAspectRatio="xMidYMid slice"
+                                                href={{ uri: 'https://media-cdn.tripadvisor.com/media/photo-s/13/75/48/d5/p80524-122152-largejpg.jpg' }}
+                                            />
+                                        </Svg>
+                                    </View>
+                                </Callout>
+                            </Marker>
                         )) : null }
                         {(isMapLoaded && navigationMode && origin && origin.latitude !== 0 && origin.longitude !== 0) && (destination && destination.latitude !== 0 && destination.longitude !== 0) && (
                             <MapViewDirections
@@ -201,7 +234,7 @@ export const HomeComponent = ({
                             <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{position: 'absolute', left: 0, bottom: (windowWidth)*0.022}} onPress={() => {
-                            mapView.current.animateCamera({center: {latitude: latitude, longitude: longitude}});
+                            mapView.current?.animateCamera({center: {latitude: latitude, longitude: longitude}});
                         }}>
                             <FontAwesomeIcon icon={faMapPin} color={"white"} size={(windowWidth/windowHeight)*60} style={{zIndex: 9999, left: (windowWidth)*0.0140, bottom: (windowHeight)*0.0100}} />
                             <FontAwesomeIcon icon={faCircle} color={"#1E90FF"} size={(windowWidth/windowHeight)*80} style={{bottom: 45}} />
@@ -233,6 +266,7 @@ export const HomeComponent = ({
                                 onChangeText={(text) => {setOriginInput(text); getOriginPlaces(text, latitude, longitude, "origin");}}
                                 onFocus={() => {setOriginFocus(true)}}
                             />
+
                             {originInput.length > 0 && !originFocus && (
                                 <TextInput
                                     placeholder="Destination"
@@ -242,6 +276,7 @@ export const HomeComponent = ({
                                     onFocus={() => {setDestinationFocus(true)}}
                                 />
                             )}
+
                             {originFocus && (
                                 <ScrollView style={(originPlaces.length > 0 && originFocus) ? {
                                     position: 'absolute',
@@ -262,7 +297,7 @@ export const HomeComponent = ({
                                                     setOriginInput(place.description);
                                                     setOriginFocus(false);
                                                     setCoordsFromPlace(place.description, "origin");
-                                                    Keyboard.dismiss()
+                                                    Keyboard.dismiss();
                                                 }}
                                                 key={index}
                                                 style={{zIndex: 9999, marginBottom: 10}}
@@ -301,7 +336,7 @@ export const HomeComponent = ({
                                                 onPress={() => {
                                                     setDestinationInput(place.description);
                                                     setDestinationFocus(false);
-                                                    setCoordsFromPlace(place.description, "destination")
+                                                    setCoordsFromPlace(place.description, "destination");
                                                 }}
                                                 key={index}
                                                 style={{zIndex: 9999, marginBottom: 10}}
