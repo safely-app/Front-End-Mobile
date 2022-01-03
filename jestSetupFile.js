@@ -3,6 +3,32 @@ import { NativeModules as RNNativeModules } from "react-native";
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
+jest.mock('expo-location', () => {
+  return jest.fn();
+});
+
+const mockedNavigate = jest.fn();
+
+jest.mock('@react-navigation/native', () => {
+  const actualNav = jest.requireActual('@react-navigation/native');
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: mockedNavigate,
+    }),
+    useIsFocused: jest.fn(),
+    useRoute: jest.fn(),
+  };
+});
+
+jest.mock('@react-navigation/core', () => {
+  const actualNav = jest.requireActual('@react-navigation/core');
+  return {
+    ...actualNav,
+    useIsFocused: jest.fn()
+  }
+})
+
 jest.mock('redux-persist', () => {
   const real = jest.requireActual('redux-persist');
   return {

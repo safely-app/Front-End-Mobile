@@ -5,9 +5,10 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 import { faMapMarkerAlt, faClock, faChevronDown, faPlusSquare, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {TextInput, Text, Button} from '../components';
+import { SafeplaceCommentsInterface, SafeplaceInterface } from '../../types/safeplace';
 
 interface Props {
-    safeplace: {};
+    safeplace: SafeplaceInterface;
     showHours: boolean;
     setShowHours: (bool: boolean) => void;
     days: Array<string>;
@@ -18,7 +19,7 @@ interface Props {
     setComment: (comment: string) => void;
     grade: number;
     setGrade: (grade: number) => void;
-    userComments: [];
+    userComments: SafeplaceCommentsInterface[];
 }
 
 export const SafeplaceComponent = ({userComments, comment, setComment, grade, setGrade, sendComment, modalComment, setModalComment, days, showHours, setShowHours, safeplace}: Props): JSX.Element => {
@@ -126,6 +127,7 @@ export const SafeplaceComponent = ({userComments, comment, setComment, grade, se
                                             size={10}
                                             defaultRating={comment.grade}
                                             showRating={false}
+                                            isDisabled={true}
                                         />
                                     </View>
                                 </View>

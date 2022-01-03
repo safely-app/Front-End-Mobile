@@ -12,7 +12,7 @@ import {AppState} from '../utils/isAppLaunched';
 
 export const Login = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const {credentials} = useAppSelector((state) => state.user);
+  const {credentials, statusResponse} = useAppSelector((state) => state.user);
   const [username, setUsername] = useState<string>('');
   const [emailError, setEmailError] = useState<string>('');
   const [passwordError, setPasswordError] = useState<string>('');
@@ -96,7 +96,7 @@ export const Login = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    if (isFocused && credentials.response && credentials.response.errorMsg === "Fetch failed") {
+    if (isFocused && statusResponse.response && statusResponse.response.errorMsg === "Fetch failed") {
       dispatch(resetFetchStatus());
       setisLoading(false);
       Toast.show({

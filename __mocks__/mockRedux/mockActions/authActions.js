@@ -1,7 +1,8 @@
-import {request, failure} from '../../../src/redux/actions/index';
+// import {request, failure} from '../../../src/redux/actions/index';
 import axios from 'react-native-axios';
 import { userServices } from '../../../src/services';
-import { loginUserSuccess, registerUserSuccess, getUserAction } from '../../../src/redux';
+// import { loginUserSuccess, registerUserSuccess, getUserAction } from '../../../src/redux';
+import { loginUser } from '../../../src/redux';
 
 jest.mock('react-native-axios');
 
@@ -22,14 +23,16 @@ export function mockLoginUser(username, password) {
             axios.post = jest.fn().mockResolvedValue(Promise.reject("Error: Request failed with status code 401"));
         }
 
-        return userServices
-            .login({username, password})
-            .then(response => {
-                dispatch(loginUserSuccess(response));
-            })
-            .catch(() => {
-                dispatch(failure('Login failure'));
-            })
+        // return userServices
+        //     .login({username, password})
+        //     .then(response => {
+        //         // dispatch(loginUserSuccess(response));
+        //         dispatch(loginUser())
+        //     })
+        //     .catch(() => {
+        //         // dispatch(failure('Login failure'));
+        //     })
+        return 
     }
 }
 
