@@ -200,11 +200,11 @@ export const Home = (): JSX.Element => {
   const getNearestSafe = () => {
     safeplaceServices.getSafeplaceNearest(latitude, longitude, credentials.token)
     .then((res) => {
-      googleServices.getReverseCoords(res.data.nearest.latitude, res.data.nearest.longitude)
+      googleServices.getReverseCoords(res.data.nearest.coordinate[0], res.data.nearest.coordinate[1])
       .then((res) => {
         setCoordsFromPlace(res.data.results[0].formatted_address, "destination");
         setDestinationInput(res.data.results[0].formatted_address);
-        googleServices.getReverseCoords(latitude, longitude)
+        googleServices.getReverseCoords(latitude.toString(), longitude.toString())
         .then((res) => {
           setCoordsFromPlace(res.data.results[0].formatted_address, "origin");
           setOriginInput(res.data.results[0].formatted_address);
